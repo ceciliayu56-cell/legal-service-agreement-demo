@@ -127,6 +127,28 @@
       .empty {
         color: var(--muted);
       }
+
+      .status-pill {
+        display: inline-flex;
+        align-items: center;
+        border-radius: 999px;
+        padding: 5px 10px;
+        color: #175cd3;
+        background: #eef4ff;
+        font-size: 13px;
+      }
+
+      .action-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+      }
+
+      .note {
+        color: var(--muted);
+        line-height: 1.7;
+      }
     </style>
   </head>
   <body>
@@ -146,9 +168,22 @@
           <dd id="status">-</dd>
           <dt>关联案件</dt>
           <dd id="caseInfo">-</dd>
-          <dt>合规审查状态</dt>
+          <dt>合规抽查状态</dt>
           <dd id="reviewStatus">-</dd>
         </dl>
+      </section>
+      <section>
+        <div class="action-row">
+          <div>
+            <h2>底线突破申请</h2>
+            <p class="note">仅当当前合同明确突破事务所底线规则时发起；申请按合同维度管理，不绑定A版或B版页面。</p>
+          </div>
+          <span class="status-pill" id="bottomlineStatus">无申请</span>
+        </div>
+        <p class="note" style="margin-top:12px;">审批流：申请人提交 → 臧律师建议通过/不通过 → 管委会最终审批 → 形成最终结论。普通用户仅查看最终审批结论。</p>
+        <div style="margin-top:14px;text-align:right;">
+          <button type="button" id="bottomlineButton">发起/查看底线突破申请</button>
+        </div>
       </section>
       <section>
         <h2>关联原协议</h2>
@@ -178,7 +213,8 @@
           caseNumber: "",
           relationshipType: "independent",
           relatedContractId: "",
-          reviewStatus: "待审查",
+          reviewStatus: "未抽查",
+          bottomlineStatus: "无申请",
         },
         {
           id: "LSA-20260527-002",
@@ -189,7 +225,8 @@
           caseNumber: "",
           relationshipType: "append",
           relatedContractId: "LSA-20260526-006",
-          reviewStatus: "待审查",
+          reviewStatus: "建议抽查",
+          bottomlineStatus: "审批中",
         },
         {
           id: "LSA-20260526-004",
@@ -201,6 +238,7 @@
           relationshipType: "replace",
           relatedContractId: "LSA-20260520-009",
           reviewStatus: "发现问题",
+          bottomlineStatus: "未通过",
         },
         {
           id: "LSA-20260526-005",
@@ -211,7 +249,8 @@
           caseNumber: "SQT112236",
           relationshipType: "supplement",
           relatedContractId: "LSA-20260527-003",
-          reviewStatus: "待审查",
+          reviewStatus: "待补充说明",
+          bottomlineStatus: "无申请",
         },
         {
           id: "LSA-20260527-003",
@@ -222,7 +261,8 @@
           caseNumber: "SQT112233",
           relationshipType: "independent",
           relatedContractId: "",
-          reviewStatus: "待审查",
+          reviewStatus: "未抽查",
+          bottomlineStatus: "无申请",
         },
         {
           id: "LSA-20260526-006",
@@ -234,17 +274,19 @@
           relationshipType: "independent",
           relatedContractId: "",
           reviewStatus: "审查通过",
+          bottomlineStatus: "已通过",
         },
         {
           id: "LSA-20260525-007",
           name: "启明数据付款协议",
           client: "启明数据",
-          status: "待事后审核",
+          status: "待抽查说明",
           caseName: "数据合规专项",
           caseNumber: "SQT112237",
           relationshipType: "append",
           relatedContractId: "LSA-20260527-003",
           reviewStatus: "待补充说明",
+          bottomlineStatus: "审批中",
         },
         {
           id: "LSA-20260524-008",
@@ -256,6 +298,7 @@
           relationshipType: "independent",
           relatedContractId: "",
           reviewStatus: "审查通过",
+          bottomlineStatus: "已撤回",
         },
         {
           id: "LSA-20260520-009",
@@ -267,6 +310,7 @@
           relationshipType: "independent",
           relatedContractId: "",
           reviewStatus: "审查通过",
+          bottomlineStatus: "无申请",
         },
       ];
 
@@ -299,7 +343,11 @@
       document.querySelector("#caseInfo").textContent = contract.caseNumber
         ? `${contract.caseName}（${contract.caseNumber}）`
         : contract.caseName;
-      document.querySelector("#reviewStatus").textContent = contract.reviewStatus || "待审查";
+      document.querySelector("#reviewStatus").textContent = contract.reviewStatus || "未抽查";
+      document.querySelector("#bottomlineStatus").textContent = contract.bottomlineStatus || "无申请";
+      document.querySelector("#bottomlineButton").addEventListener("click", () => {
+        location.href = `./flow-demo.html?page=a&bottomline=1&contractId=${encodeURIComponent(contract.id)}`;
+      });
 
       document.querySelector("#relationRows").innerHTML = relations.length
         ? relations

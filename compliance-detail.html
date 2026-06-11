@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>合规审查详情</title>
+    <title>合规抽查详情</title>
     <style>
       :root { --bg:#f5f7fb; --panel:#fff; --text:#172033; --muted:#667085; --line:#e5eaf0; --primary:#1f6feb; --red:#d92d20; --green:#079455; --amber:#b54708; }
       * { box-sizing:border-box; }
@@ -41,10 +41,10 @@
   <body>
     <header>
       <div>
-        <h1>合规审查详情</h1>
+        <h1>合规抽查详情</h1>
         <p class="muted" id="subtitle">-</p>
       </div>
-      <a href="./compliance-review.html">返回审核台</a>
+      <a href="./compliance-review.html">返回抽查台</a>
     </header>
 
     <main id="app"></main>
@@ -82,6 +82,16 @@
             ${field("关联案件", item.matter)}${field("签约确认人", item.confirmer)}${field("制作人", item.maker)}${field("上传B版人", item.bUploader)}
             ${field("上传C版人", item.cUploader)}${field("协议路径", item.path)}${field("协议关系", item.relation)}${field("关联原协议", item.relation === "独立" ? "-" : item.original)}
           </div></section>
+          <section class="panel"><h2>底线突破申请审批链路</h2><div class="grid">
+            ${field("申请内容", "客户要求删除赔偿责任上限")}
+            ${field("申请人", item.bUploader)}
+            ${field("申请时间", "2026-05-28 10:20")}
+            ${field("当前状态", item.highRiskCount > 0 ? "审批中" : "已通过")}
+            ${field("臧律师建议", item.highRiskCount > 0 ? "建议补充说明后再判断" : "建议通过")}
+            ${field("管委会最终结论", item.highRiskCount > 0 ? "审批中" : "通过")}
+            ${field("审批意见", item.highRiskCount > 0 ? "需补充责任上限替代安排及客户坚持修改的证据。" : "同意本次底线突破申请。")}
+            ${field("审批时间", item.highRiskCount > 0 ? "-" : "2026-05-28 16:40")}
+          </div></section>
           <section class="panel"><h2>版本文件</h2><div class="files">
             ${aCard}
             ${fileCard("待用印版/B版", "已上传", `${item.name}_B版.docx`, "2026-05-28 15:00", item.bUploader)}
@@ -93,7 +103,7 @@
           <div class="tab-panel active" id="risk">${riskTable()}</div>
           <div class="tab-panel" id="ab">${abTable()}</div>
           <div class="tab-panel" id="bc">${bcPanel()}</div></section>
-          <section class="panel"><h2>签约确认与报备记录</h2><div class="two">
+          <section class="panel"><h2>签约确认与底线突破记录</h2><div class="two">
             <div>${field("签约确认人", item.confirmer)}${field("确认时间", "2026-05-28 17:30")}${field("承诺状态", "已承诺")}</div>
             <div>${reportTable()}</div>
           </div><h3 style="margin-top:14px;">操作日志</h3><p class="muted">B版上传、风险说明、签约确认、C版上传均已记录操作人和时间。</p></section>
@@ -101,13 +111,13 @@
             ${field("电子归档状态", "C版已上传")} ${field("纸质归档状态", item.paper)} ${field("C版上传人", item.cUploader)} ${field("C版上传时间", item.cAt)}
             ${field("合同编号", item.no)} ${field("归属组/业务组", item.group)}
           </div></section>
-          <section class="panel"><h2>审查结论</h2><div class="two">
-            <label>审查结论<select><option>审查通过</option><option>标记问题</option><option>要求补充说明</option></select></label>
-            <label>问题类型<select><option>风险报备不充分</option><option>B/C版本不一致</option><option>未按模板路径处理</option><option>签约确认异常</option><option>案件关联异常</option><option>归档信息异常</option><option>其他</option></select></label>
+          <section class="panel"><h2>抽查结论</h2><div class="two">
+            <label>抽查结论<select><option>抽查通过</option><option>标记问题</option><option>要求补充说明</option></select></label>
+            <label>问题类型<select><option>底线突破审批不充分</option><option>B/C版本不一致</option><option>未按模板路径处理</option><option>签约确认异常</option><option>案件关联异常</option><option>归档信息异常</option><option>其他</option></select></label>
             <label>指派补充人<input value="${item.maker}" /></label>
-            <label>审查意见<textarea placeholder="填写合规审查意见"></textarea></label>
+            <label>抽查意见<textarea placeholder="填写合规抽查意见"></textarea></label>
           </div></section>
-          <div class="actions"><button onclick="location.href='./compliance-review.html'">返回审核台</button><button>导出审核记录</button><button>要求补充说明</button><button>标记问题</button><button class="primary">审查通过</button></div>`;
+          <div class="actions"><button onclick="location.href='./compliance-review.html'">返回抽查台</button><button>导出抽查记录</button><button>要求补充说明</button><button>标记问题</button><button class="primary">抽查通过</button></div>`;
         document.querySelectorAll("[data-tab]").forEach(btn => btn.onclick = () => {
           document.querySelectorAll("[data-tab]").forEach(item => item.classList.remove("active"));
           document.querySelectorAll(".tab-panel").forEach(panel => panel.classList.remove("active"));
@@ -116,10 +126,10 @@
         });
       }
       function field(label, value) { return `<div class="field"><span>${label}</span><strong>${value}</strong></div>`; }
-      function riskTable() { return `<table><thead><tr><th>条款位置</th><th>风险类型</th><th>风险等级</th><th>系统识别结果</th><th>处理状态</th><th>报备说明</th></tr></thead><tbody><tr><td>第7条 保密义务</td><td>标准条款修改</td><td>中风险</td><td>客户要求调整保密期限</td><td>${tag("已应用A版预报备")}</td><td>与A版预报备一致</td></tr><tr><td>第9条 责任限制</td><td>责任扩大</td><td>高风险</td><td>赔偿上限被删除</td><td>${tag("B版阶段补充说明")}</td><td>签约确认人已承诺</td></tr><tr><td>签署主体</td><td>主体差异</td><td>低风险</td><td>未发现风险</td><td>${tag("未发现风险")}</td><td>-</td></tr></tbody></table>`; }
+      function riskTable() { return `<table><thead><tr><th>条款位置</th><th>风险类型</th><th>风险等级</th><th>系统识别结果</th><th>处理状态</th><th>底线说明</th></tr></thead><tbody><tr><td>第7条 保密义务</td><td>标准条款修改</td><td>中风险</td><td>客户要求调整保密期限</td><td>${tag("已应用A版记录")}</td><td>与A版底线相关记录一致</td></tr><tr><td>第9条 责任限制</td><td>责任扩大</td><td>高风险</td><td>赔偿上限被删除</td><td>${tag("B版阶段补充说明")}</td><td>签约确认人已承诺</td></tr><tr><td>签署主体</td><td>主体差异</td><td>低风险</td><td>未发现风险</td><td>${tag("未发现风险")}</td><td>-</td></tr></tbody></table>`; }
       function abTable() { return `<table><thead><tr><th>差异位置</th><th>A版内容</th><th>B版内容</th><th>是否涉及风险</th></tr></thead><tbody><tr><td>费用支付</td><td>30日内支付</td><td>60日内支付</td><td>${tag("涉及风险")}</td></tr><tr><td>服务范围</td><td>项目专项服务</td><td>增加境外咨询协调</td><td>${tag("低风险")}</td></tr></tbody></table>`; }
       function bcPanel() { return `<p>${tag(item.bc)}</p><p class="muted" style="margin-top:10px;">${item.bc === "无法自动比对" ? "C版为扫描件，系统无法完成完整文本比对，请审核人结合B版和C版人工查看。" : item.bc === "存在差异" ? "系统发现B版与C版存在文本差异，请审核人复核差异位置。" : "未发现B版与C版存在明显内容差异。"}</p>`; }
-      function reportTable() { return `<table><thead><tr><th>报备阶段</th><th>条款位置</th><th>报备人</th><th>报备时间</th><th>报备说明</th><th>用于B版</th></tr></thead><tbody><tr><td>A版</td><td>保密义务</td><td>${item.maker}</td><td>2026-05-27</td><td>客户集团政策要求</td><td>是</td></tr><tr><td>B版</td><td>责任限制</td><td>${item.bUploader}</td><td>2026-05-28</td><td>客户法务坚持调整</td><td>是</td></tr></tbody></table>`; }
+      function reportTable() { return `<table><thead><tr><th>记录阶段</th><th>条款位置</th><th>记录人</th><th>记录时间</th><th>底线说明</th><th>用于B版</th></tr></thead><tbody><tr><td>A版</td><td>保密义务</td><td>${item.maker}</td><td>2026-05-27</td><td>客户集团政策要求</td><td>是</td></tr><tr><td>B版</td><td>责任限制</td><td>${item.bUploader}</td><td>2026-05-28</td><td>客户法务坚持调整</td><td>是</td></tr></tbody></table>`; }
       render();
     </script>
   </body>

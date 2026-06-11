@@ -207,6 +207,7 @@
       .page { display: none; }
       .page.active { display: block; }
       .single { max-width: 1500px; margin: 0 auto; padding: 22px 32px 90px; }
+      .compact-top { padding-bottom: 0; }
       .upload-box {
         border: 1px dashed #94a3b8;
         background: #f8fafc;
@@ -224,6 +225,9 @@
       .diff-text { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
       .readonly { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 7px; padding: 11px; font-size: 14px; line-height: 1.7; }
       .status-tag { display: inline-flex; align-items: center; border-radius: 999px; padding: 5px 10px; font-size: 13px; font-weight: 700; background: #eff6ff; color: #1d4ed8; }
+      .bottomline-card { border-color: #c7d7fe; background: #fbfdff; }
+      .bottomline-actions { display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+      .btn:disabled { cursor:not-allowed; opacity:.55; }
       .upload-c-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
       .upload-c-card { min-height: 100%; }
       .c-upload-zone {
@@ -580,6 +584,7 @@
             <button id="previewModeBtn" onclick="setPreviewMode(true)">正式预览</button>
           </div>
           <div class="systembar-actions" id="aTopActions">
+            <button class="btn" type="button" data-bottomline-entry>底线突破申请</button>
             <button class="btn" onclick="openNewContractModal()">新建协议</button>
             <button class="btn" onclick="toast('草稿已保存')">保存草稿</button>
             <button class="btn primary" onclick="generateA()">生成A版</button>
@@ -598,6 +603,21 @@
     </nav>
 
     <section class="page active" id="page-a">
+      <div class="single compact-top">
+        <div class="card bottomline-card">
+          <div class="section-title">
+            <div>
+              <h2>底线突破申请</h2>
+              <p class="muted">仅当合同明确突破事务所底线规则时发起。该申请按合同维度管理，不绑定A版或B版页面。</p>
+            </div>
+            <span class="status-tag" data-bottomline-status>无申请</span>
+          </div>
+          <div class="bottomline-actions">
+            <span class="muted" data-bottomline-summary>当前合同暂无底线突破申请。</span>
+            <button class="btn primary" type="button" data-bottomline-entry>发起/查看申请</button>
+          </div>
+        </div>
+      </div>
       <main class="layout">
         <section class="word">
           <div class="word-title">
@@ -613,8 +633,8 @@
               <h3>当前条款填写提示</h3>
             </div>
             <div id="currentClauseHint">
-              <div class="hint-section info"><strong>当前填写说明</strong><span id="hintInstruction">当前为协议正文填写区域。请在挖空字段中填写对应内容；黑字标准条款原则上不可修改；如确需修改，请提交修改预报备。</span></div>
-              <div class="hint-section risk"><strong>合规风险提示</strong><span id="hintRisk">A版可做初步风险提示，正式合规审查将在B版上传页完成。</span></div>
+              <div class="hint-section info"><strong>当前填写说明</strong><span id="hintInstruction">当前为协议正文填写区域。请在挖空字段中填写对应内容；黑字标准条款原则上不可修改；如确已突破事务所底线规则，请发起底线突破申请。</span></div>
+              <div class="hint-section risk"><strong>合规风险提示</strong><span id="hintRisk">A版可做初步风险提示，正式风险确认将在B版上传页完成。</span></div>
               <div class="hint-section action"><strong>操作提醒</strong><span id="hintAction">点击左侧不同字段或条款，右侧提示会自动切换。</span></div>
               <div class="breakthrough-action" id="breakthroughAction">
                 <button class="btn primary" type="button" id="breakthroughButton">填写突破申请</button>
@@ -622,10 +642,10 @@
             </div>
           </div>
           <div class="card" id="preReportCard">
-            <div class="section-title"><h3>待提交修改记录</h3><span class="badge yellow" id="preReportCount">0项</span></div>
-            <p class="tip">该预报备不阻断A版生成。后续上传B版时，系统将结合最终待用印版本确认该预报备是否适用。</p>
+            <div class="section-title"><h3>底线相关修改记录</h3><span class="badge yellow" id="preReportCount">0项</span></div>
+            <p class="tip">记录用于辅助判断是否需要发起合同维度的底线突破申请；一般黑字条款修改不再默认要求提前申请。</p>
             <div id="preReportList"></div>
-            <button class="btn primary" id="mergeSubmitReports" style="display:none;margin-top:12px;width:100%;" onclick="submitAllDraftReports()">合并提交修改预报备</button>
+            <button class="btn primary" id="mergeSubmitReports" style="display:none;margin-top:12px;width:100%;" onclick="submitAllDraftReports()">合并提交底线突破申请</button>
           </div>
           <div class="card">
             <div class="section-title"><h3>操作日志</h3></div>
@@ -640,7 +660,7 @@
       </main>
       <div class="bottom">
         <div class="bottom-inner">
-          <span class="muted">A版仅为所内模板底稿。预报备不阻断A版生成和下载，正式合规审查在B版节点完成。</span>
+          <span class="muted">A版仅为所内模板底稿。一般黑字修改不要求提前申请；明确突破底线规则时，发起合同维度底线突破申请。</span>
           <div class="a-action-group" id="aBottomActions">
             <button class="btn" onclick="toast('草稿已保存')">保存草稿</button>
             <button class="btn" onclick="openFormalPreview()">预览正式版</button>
@@ -652,6 +672,19 @@
 
     <section class="page" id="page-b">
       <main class="single">
+        <div class="card bottomline-card">
+          <div class="section-title">
+            <div>
+              <h2>底线突破申请</h2>
+              <p class="muted">B版可继续上传或替换；若申请仍在审批中，将在用印前卡点阻断。</p>
+            </div>
+            <span class="status-tag" data-bottomline-status>无申请</span>
+          </div>
+          <div class="bottomline-actions">
+            <span class="muted" data-bottomline-summary>当前合同暂无底线突破申请。</span>
+            <button class="btn primary" type="button" data-bottomline-entry>发起/查看申请</button>
+          </div>
+        </div>
         <div class="card" id="bMatterCard">
           <div class="section-title">
             <h2>案件关联信息（可选）</h2>
@@ -673,22 +706,22 @@
         </div>
         <div id="diffArea" style="display:none; margin-top:18px;">
           <div class="card">
-            <p class="note">A版预报备不会自动豁免B版风险。请确认预报备内容是否适用于当前B版最终修改；如不适用，请补充突破说明。</p>
+            <p class="note">A版阶段记录不会自动豁免B版风险。请确认当前B版是否明确突破底线规则；如存在突破，应发起或更新合同维度底线突破申请。</p>
           </div>
           <div class="card" style="margin-top:16px;">
-            <div class="section-title"><h2>可引用A版预报备差异</h2></div>
-            <p class="muted">该类差异在A版阶段存在预报备记录，但不能自动通过。请确认当前B版修改内容是否与A版预报备内容一致。</p>
+            <div class="section-title"><h2>可引用A版底线相关记录</h2></div>
+            <p class="muted">该类差异在A版阶段已有记录，但不能自动通过。请确认当前B版修改是否仍构成底线突破。</p>
             <div class="diff yellowline" id="preReportDiff">
               <strong>第7条 保密义务</strong><span class="badge orange" style="float:right;" id="preReportStatus">待处理</span>
               <div class="diff-text">
                 <div class="readonly">标准模板内容：双方应对在履行本协议过程中知悉的对方商业秘密及非公开信息承担保密义务。</div>
-                <div class="readonly">A版预报备拟修改内容：双方保密义务延长至十年，客户集团公司可在合规需要范围内接收相关信息。</div>
+                <div class="readonly">A版记录拟修改内容：双方保密义务延长至十年，客户集团公司可在合规需要范围内接收相关信息。</div>
               </div>
               <div class="diff-text">
                 <div class="readonly">B版实际修改内容：双方保密义务延长至十年，客户集团公司可在合规需要范围内接收相关信息。</div>
-                <div class="readonly">A版预报备原因：客户集团合规政策要求统一保密期限。</div>
+                <div class="readonly">A版记录原因：客户集团合规政策要求统一保密期限。</div>
               </div>
-              <button class="btn primary" style="margin-top:12px;" id="applyExistingPreReport">应用已有预报备</button>
+              <button class="btn primary" style="margin-top:12px;" id="applyExistingPreReport">应用已有记录</button>
               <button class="btn" style="margin-top:12px;" id="rewritePreReport">补充/重新填写说明</button>
             </div>
           </div>
@@ -715,7 +748,7 @@
             <button class="btn danger" style="margin-top:12px;" id="submitUnifiedBReason">提交统一突破说明</button>
           </div>
           <div class="card" style="margin-top:16px; display:flex; justify-content:space-between; align-items:center;">
-            <span id="confirmHint" class="red">存在待处理风险差异，请先处理可引用预报备差异并补充突破说明。</span>
+            <span id="confirmHint" class="red">存在待处理风险差异，请先处理可引用底线相关记录并补充突破说明。</span>
             <button class="btn primary" id="confirmRisk" disabled>确认风险差异，进入签约确认人承诺</button>
           </div>
         </div>
@@ -724,48 +757,32 @@
 
     <section class="page" id="page-c">
       <main class="single">
-        <div class="grid2">
-          <div class="card">
-            <div class="section-title"><h2>合同基础信息</h2></div>
-            <div class="rows">
-              <div class="row"><span class="muted">客户</span><strong>锐景科技有限公司</strong></div>
-              <div class="row"><span class="muted">案件</span><strong data-matter-summary>未关联案件</strong></div>
-              <div class="row"><span class="muted">合同名称</span><strong>锐景科技常年法律服务协议<span class="relation-tag" id="detailRelationTag" style="display:none;"></span></strong></div>
-              <div class="row"><span class="muted">签约合伙人</span><strong>周合伙人</strong></div>
-              <div class="row"><span class="muted">当前B版文件</span><strong>锐景科技_B版_待用印.docx</strong></div>
-            </div>
-            <div style="margin-top:14px; text-align:right;"><button class="btn" data-matter-action onclick="openMatterModal()">关联案件</button></div>
-            <p class="note" style="margin-top:18px;">请确认已阅读待用印版本，并已就所有已知突破事项完成报备。</p>
-          </div>
-          <div class="card">
-            <div class="section-title"><h2>风险摘要</h2></div>
-            <div class="metric-grid">
-              <div class="metric"><span class="muted">已提前报备</span><strong id="aRiskNum">1</strong></div>
-              <div class="metric"><span class="muted">B版补充报备</span><strong id="bRiskNum">0</strong></div>
-              <div class="metric"><span class="muted">未处理风险</span><strong id="openRiskNum">1</strong></div>
-            </div>
-          </div>
-        </div>
         <div class="card" style="margin-top:18px;">
-          <div class="section-title"><h2>风险明细</h2></div>
-          <table>
-            <thead><tr><th>条款位置</th><th>风险类型</th><th>风险等级</th><th>报备阶段</th><th>报备说明</th><th>状态</th></tr></thead>
-            <tbody id="commitRows"></tbody>
-          </table>
+          <div class="section-title"><h2>待用印版本文件信息</h2></div>
+          <div class="rows">
+            <div class="row"><span class="muted">合同名称</span><strong>锐景科技常年法律服务协议<span class="relation-tag" id="detailRelationTag" style="display:none;"></span></strong></div>
+            <div class="row"><span class="muted">客户</span><strong>锐景科技有限公司</strong></div>
+            <div class="row"><span class="muted">案件</span><strong data-matter-summary>未关联案件</strong></div>
+            <div class="row"><span class="muted">签约确认人</span><strong>周合伙人</strong></div>
+            <div class="row"><span class="muted">待用印版本文件</span><strong>锐景科技_B版_待用印.docx</strong></div>
+            <div class="row"><span class="muted">B版上传时间</span><strong id="commitBUploadTime">尚未上传</strong></div>
+            <div class="row"><span class="muted">底线突破申请状态</span><strong data-bottomline-status>无申请</strong></div>
+          </div>
+          <div id="commitBottomlineHint" class="alert-red" style="display:none;margin-top:14px;"></div>
+          <div style="margin-top:14px; text-align:right;"><button class="btn" data-matter-action onclick="openMatterModal()">关联案件</button></div>
         </div>
         <div class="card" style="margin-top:18px;">
           <div class="section-title"><h2>关联协议</h2></div>
           <div id="relatedAgreementPanel" class="tip">当前合同为独立新协议，暂无关联原协议。</div>
         </div>
         <div class="card" style="margin-top:18px;">
-          <div class="section-title"><h2>签约确认人承诺</h2></div>
+          <div class="section-title"><h2>签约确认声明</h2></div>
           <div class="note" style="background:#f8fafc;border-color:#e2e8f0;color:#17202a;font-size:15px;line-height:1.9;">
-            我确认已阅读本协议待用印版本，并已知悉系统识别的版本差异及风险提示；我确认已就已知突破事项完成报备，且不存在其他未披露的突破事项。
+            我已阅读本协议待用印版本，并确认该版本未突破事务所底线规则；如存在突破底线规则的事项，我确认已取得相应审批，并愿意就本协议内容及用印申请承担签约确认责任。
           </div>
-          <p class="muted">点击下方按钮，即表示签约确认人已阅读并确认上述承诺内容。</p>
-          <p class="red" id="commitWarning">仍存在未报备的标准条款修改，请返回B版风险确认完成报备。</p>
+          <p class="muted">点击下方按钮，即表示签约确认人已阅读并确认上述声明。</p>
+          <p class="red" id="commitWarning"></p>
           <div style="display:flex;justify-content:flex-end;gap:10px;">
-            <button class="btn" onclick="showPage('b')">返回B版风险确认</button>
             <button class="btn primary" id="submitCommit" disabled>确认并承诺，进入用印</button>
           </div>
         </div>
@@ -782,6 +799,11 @@
             </div>
             <span class="status-tag" id="sealStatusTag">待发起用印申请</span>
           </div>
+          <div class="bottomline-actions" style="margin-top:14px;">
+            <span class="muted">底线突破申请状态：<strong data-bottomline-status>无申请</strong></span>
+            <button class="btn" type="button" data-bottomline-entry>查看/发起底线突破申请</button>
+          </div>
+          <div id="sealBottomlineAlert" class="alert-red" style="display:none;margin-top:14px;"></div>
         </div>
 
         <div class="grid2" style="margin-top:18px;">
@@ -898,7 +920,7 @@
               <div class="readonly"><strong>上传时间：</strong><span id="cUploadedAt">--</span></div>
               <div class="readonly"><strong>文件状态：</strong>已上传</div>
             </div>
-            <div class="note" style="margin-top:14px;">C版已上传。系统将基于当前B版进行B/C一致性核查。如发现差异，将进入合规委员会事后审核。</div>
+            <div class="note" style="margin-top:14px;">C版已上传。系统将基于当前B版进行B/C一致性核查。如发现差异，将形成合规抽查线索。</div>
           </div>
           <div id="bcCheckPanel" class="check-panel">
             上传C版后，系统将自动进行B/C一致性核查。
@@ -968,16 +990,16 @@
 
     <div class="modal-mask" id="aModal">
       <div class="modal">
-        <div class="modal-head"><h2>标准条款修改预报备</h2><button class="close" onclick="closeModal('aModal')">×</button></div>
+        <div class="modal-head"><h2>底线相关修改记录</h2><button class="close" onclick="closeModal('aModal')">×</button></div>
         <div class="modal-body">
-          <div class="note" style="background:#fffbeb;border-color:#fde68a;color:#92400e;">该申请不会阻断A版制作和下载。后续上传B版时，系统将结合A/B差异进行最终确认。</div>
+          <div class="note" style="background:#fffbeb;border-color:#fde68a;color:#92400e;">一般黑字条款修改不再默认提前申请；仅明确突破事务所底线规则时，才需要提交合同维度的底线突破申请。</div>
           <div class="readonly"><strong>条款位置：</strong><span id="aClausePosition">标准条款</span></div>
           <div class="readonly"><strong>原标准条款：</strong><span id="aOriginalText">标准条款内容</span></div>
           <label>拟修改后内容（必填）<textarea id="aModified">世辉承担的赔偿金额不设上限。</textarea></label>
           <label>修改原因（必填）<textarea id="aReason" placeholder="请说明客户要求、业务背景、必须修改的原因。">客户法务要求删除责任限制。</textarea></label>
           <label>是否预计突破底线条款<select id="aBreakthrough"><option>是</option><option>否</option><option>不确定</option></select></label>
           <label>风险等级<select id="aLevel"><option value="中风险">中风险</option><option value="低风险">低风险</option><option value="高风险">高风险</option></select></label>
-          <div style="text-align:right;"><button class="btn primary" id="submitAReport">保存为待提交修改项</button></div>
+          <div style="text-align:right;"><button class="btn primary" id="submitAReport">保存为待提交底线相关记录</button></div>
         </div>
       </div>
     </div>
@@ -991,12 +1013,53 @@
 
     <div class="modal-mask" id="bModal">
       <div class="modal">
-        <div class="modal-head"><h2>B版突破补充报备</h2><button class="close" onclick="closeModal('bModal')">×</button></div>
+        <div class="modal-head"><h2>B版底线突破说明</h2><button class="close" onclick="closeModal('bModal')">×</button></div>
         <div class="modal-body">
           <div class="readonly"><strong>条款位置：</strong>第9条 协议解除与违约责任</div>
           <div class="grid2"><div class="readonly">标准版：世辉承担的赔偿金额不应超过已实际收取的律师费。</div><div class="readonly">B版：世辉承担的赔偿金额不设上限。</div></div>
-          <label>突破说明<textarea id="bReason" placeholder="请说明该修改的原因、客户要求、业务背景及是否已与签约合伙人确认。">客户坚持删除责任上限，已与签约合伙人沟通确认，后续提交合规委员会事后审核。</textarea></label>
-          <div style="text-align:right;"><button class="btn primary" id="submitBReport">提交报备</button></div>
+          <label>突破说明<textarea id="bReason" placeholder="请说明该修改的原因、客户要求、业务背景及是否已与签约合伙人确认。">客户坚持删除责任上限，已与签约合伙人沟通确认，需提交底线突破申请。</textarea></label>
+          <div style="text-align:right;"><button class="btn primary" id="submitBReport">保存突破说明</button></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-mask" id="bottomlineModal">
+      <div class="modal">
+        <div class="modal-head"><h2>底线突破申请</h2><button class="close" onclick="closeModal('bottomlineModal')">×</button></div>
+        <div class="modal-body">
+          <div class="note" data-bottomline-public-note>底线突破申请是合同维度的独立支线。普通用户和签约确认人仅查看当前状态或最终状态。</div>
+          <div class="grid2">
+            <div class="readonly"><strong>申请状态：</strong><span data-bottomline-status>无申请</span></div>
+            <div class="readonly"><strong>申请维度：</strong>当前合同</div>
+          </div>
+          <label>突破事项类型
+            <select id="bottomlineType">
+              <option>赔偿责任/责任限制</option>
+              <option>利益冲突</option>
+              <option>付款条件</option>
+              <option>服务范围</option>
+              <option>解除条款</option>
+              <option>其他底线事项</option>
+            </select>
+          </label>
+          <label>申请说明<textarea id="bottomlineReason" placeholder="请说明突破的具体条款、客户要求、业务背景、已采取的风险控制措施。">客户要求删除赔偿责任上限，拟申请底线突破审批。</textarea></label>
+          <div class="rows" data-bottomline-internal hidden>
+            <div class="row"><span class="muted">申请内容</span><strong id="bottomlineInternalContent">赔偿责任/责任限制</strong></div>
+            <div class="row"><span class="muted">申请人</span><strong>李**秘书</strong></div>
+            <div class="row"><span class="muted">申请时间</span><strong id="bottomlineStepApplicant">未提交</strong></div>
+            <div class="row"><span class="muted">臧律师建议</span><strong id="bottomlineZangAdvice">待建议</strong></div>
+            <div class="row"><span class="muted">管委会最终结论</span><strong id="bottomlineStepCommittee">无结论</strong></div>
+            <div class="row"><span class="muted">审批意见</span><strong id="bottomlineApprovalOpinion">无</strong></div>
+            <div class="row"><span class="muted">审批时间</span><strong id="bottomlineApprovalTime">-</strong></div>
+            <div class="row"><span class="muted">最终状态</span><strong id="bottomlineStepFinal">无申请</strong></div>
+          </div>
+          <div style="display:flex;justify-content:flex-end;gap:10px;flex-wrap:wrap;">
+            <button class="btn" type="button" data-bottomline-internal onclick="setBottomlineStatus('none')">设为无申请</button>
+            <button class="btn" type="button" onclick="setBottomlineStatus('withdrawn')">撤回申请</button>
+            <button class="btn" type="button" data-bottomline-internal onclick="setBottomlineStatus('rejected')">模拟未通过</button>
+            <button class="btn" type="button" data-bottomline-internal onclick="setBottomlineStatus('approved')">模拟已通过</button>
+            <button class="btn primary" type="button" onclick="submitBottomlineApplication()">提交申请</button>
+          </div>
         </div>
       </div>
     </div>
@@ -1018,8 +1081,8 @@
             </label>
             <label>制作路径
               <select id="newTemplatePath">
-                <option value="internal">使用所内模板制作</option>
-                <option value="client">客户模板/客户版本（直接进入上传B版）</option>
+                <option value="internal">主路径：使用所内模板制作</option>
+                <option value="client">例外路径：客户模板/既有版本（直接进入上传B版）</option>
               </select>
             </label>
             <label>关联案件（选填）<input id="newMatterOptional" placeholder="可填写案号或案件名称，也可暂不关联" /></label>
@@ -1052,6 +1115,8 @@
             </label>
             <p class="tip" id="relationNotice"></p>
           </div>
+          <p class="tip">主路径是使用所内模板制作；客户模板/既有版本是例外路径，补充协议可以按例外路径处理。</p>
+          <p class="tip">争议解决、知识产权等业务线原则上仍应使用所内模板主文；特殊服务范围、服务内容、附件可通过附件或特别约定补充。</p>
           <p class="tip">归属组/业务组用于生成合同编号及后续纸质归档分类。创建后将生成 mock 编号，例如 HG-2026-0001。</p>
           <p class="tip">如当前尚未立案，可暂不关联；上传待用印版/B版前需完成关联。</p>
           <div style="text-align:right;"><button class="btn primary" onclick="createMockContract()">创建合同</button></div>
@@ -1995,7 +2060,7 @@
         }
         list.innerHTML = records.map(r => `
           <div class="pre-record">
-            <strong>${escapeHtml(r.position)}</strong> <span class="badge ${r.status === "draft" ? "yellow" : "green"}">${r.status === "draft" ? "待提交" : "已提交预报备"}</span>
+            <strong>${escapeHtml(r.position)}</strong> <span class="badge ${r.status === "draft" ? "yellow" : "green"}">${r.status === "draft" ? "待提交" : "已提交底线申请"}</span>
             <div class="muted">拟修改：${escapeHtml((r.modifiedText || "").slice(0, 42))}${(r.modifiedText || "").length > 42 ? "..." : ""}</div>
             <div class="muted">原因：${escapeHtml((r.reason || "").slice(0, 42))}${(r.reason || "").length > 42 ? "..." : ""}</div>
           </div>
@@ -2011,7 +2076,7 @@
         drafts.forEach(r => {
           r.status = "submitted";
           if (!risks.some(existing => existing.clause === r.position && existing.reason === r.reason)) {
-            risks.push({ clause: r.position, level: r.level, stage: "A版阶段", reason: r.reason || "申请修改标准条款", status: "已提交预报备" });
+            risks.push({ clause: r.position, level: r.level, stage: "A版阶段", reason: r.reason || "申请修改标准条款", status: "已提交底线申请" });
           }
         });
         aReported = true;
@@ -2019,7 +2084,9 @@
         renderPreReportList();
         refreshActiveStandardClause();
         renderRisks();
-        toast("已合并提交修改预报备。该预报备不阻断A版生成。");
+        bottomlineStatus = "pending";
+        renderBottomlineStatus();
+        toast("已合并提交底线突破申请。申请不阻断A版生成，但审批中不可发起用印。");
       }
 
       const steps = ["制作A版","上传B版","签约确认人承诺","发起用印申请","上传C版"];
@@ -2037,6 +2104,7 @@
       let paperArchiveStage = "WAITING_C_UPLOAD";
       let mockContractSeq = 4;
       let bRiskReady = false;
+      let bottomlineStatus = "none";
       let bPreReportStatus = "pending";
       let bSupplementStatus = "pending";
       let currentBReportTarget = "supplement";
@@ -2057,6 +2125,105 @@
         { matterNo: "DIS-2026-009", matterName: "客户合同争议处理", clientName: "锐景科技有限公司", group: "争议解决组", partner: "周合伙人", lawyer: "孙律师" }
       ];
       const risks = [{ clause: "第7条 保密义务", level: "中风险", stage: "A版阶段", reason: "客户集团合规政策要求统一保密期限。", status: "已同意" }];
+
+      const roleParam = new URLSearchParams(location.search).get("role") || "user";
+      const canViewBottomlineWorkflow = ["compliance", "committee", "management", "compliance_reviewer"].includes(roleParam);
+      const bottomlineStatusText = {
+        none: "无申请",
+        pending: "审批中",
+        approved: "已通过",
+        rejected: "未通过",
+        withdrawn: "已撤回"
+      };
+
+      function getBottomlineSummary() {
+        if (bottomlineStatus === "pending") return "当前合同存在审批中的底线突破申请，审批完成前不可发起用印。";
+        if (bottomlineStatus === "approved") return "底线突破申请已通过，可在完成签约确认后发起用印。";
+        if (bottomlineStatus === "rejected") return "当前底线突破申请未通过，请修改协议版本或重新提交申请后再发起用印。";
+        if (bottomlineStatus === "withdrawn") return "底线突破申请已撤回，如仍存在突破事项需重新提交。";
+        return "当前合同暂无底线突破申请。";
+      }
+
+      function renderBottomlineStatus() {
+        document.querySelectorAll("[data-bottomline-status]").forEach(el => {
+          el.textContent = bottomlineStatusText[bottomlineStatus] || "无申请";
+        });
+        document.querySelectorAll("[data-bottomline-summary]").forEach(el => {
+          el.textContent = getBottomlineSummary();
+        });
+        const applicant = document.getElementById("bottomlineStepApplicant");
+        const committee = document.getElementById("bottomlineStepCommittee");
+        const final = document.getElementById("bottomlineStepFinal");
+        const zangAdvice = document.getElementById("bottomlineZangAdvice");
+        const approvalOpinion = document.getElementById("bottomlineApprovalOpinion");
+        const approvalTime = document.getElementById("bottomlineApprovalTime");
+        const internalContent = document.getElementById("bottomlineInternalContent");
+        const typeValue = document.getElementById("bottomlineType")?.value || "赔偿责任/责任限制";
+        if (applicant) applicant.textContent = bottomlineStatus === "none" ? "未提交" : "2026-05-28 10:20";
+        if (committee) {
+          committee.textContent = bottomlineStatus === "approved" ? "通过" : bottomlineStatus === "rejected" ? "不通过" : bottomlineStatus === "pending" ? "审批中" : "无结论";
+        }
+        if (zangAdvice) {
+          zangAdvice.textContent = bottomlineStatus === "approved" ? "建议通过" : bottomlineStatus === "rejected" ? "建议不通过" : bottomlineStatus === "pending" ? "待建议/审批中" : "无";
+        }
+        if (approvalOpinion) {
+          approvalOpinion.textContent = bottomlineStatus === "approved"
+            ? "已结合客户要求、责任上限安排及业务背景，同意本次突破。"
+            : bottomlineStatus === "rejected"
+              ? "未同意当前版本突破，请修改协议版本或重新提交申请。"
+              : bottomlineStatus === "pending"
+                ? "审批流转中。"
+                : "无";
+        }
+        if (approvalTime) approvalTime.textContent = ["approved", "rejected", "withdrawn"].includes(bottomlineStatus) ? "2026-05-28 16:40" : "-";
+        if (internalContent) internalContent.textContent = typeValue;
+        if (final) final.textContent = bottomlineStatusText[bottomlineStatus] || "无申请";
+        document.querySelectorAll("[data-bottomline-internal]").forEach(el => {
+          el.hidden = !canViewBottomlineWorkflow;
+        });
+        const publicNote = document.querySelector("[data-bottomline-public-note]");
+        if (publicNote && canViewBottomlineWorkflow) {
+          publicNote.textContent = "后台审批流：申请人提交 → 臧律师建议通过/不通过 → 管委会最终审批 → 形成最终结论。";
+        } else if (publicNote) {
+          publicNote.textContent = "底线突破申请是合同维度的独立支线。普通用户和签约确认人仅查看当前状态或最终状态。";
+        }
+        renderCommitBottomlineHint();
+        renderSealPage();
+      }
+
+      function renderCommitBottomlineHint() {
+        const hint = document.getElementById("commitBottomlineHint");
+        if (!hint) return;
+        const text = bottomlineStatus === "pending"
+          ? "当前合同存在审批中的底线突破申请，审批完成前不可发起用印。"
+          : bottomlineStatus === "rejected"
+            ? "当前底线突破申请未通过，请修改协议版本或重新提交申请后再发起用印。"
+            : "";
+        hint.textContent = text;
+        hint.style.display = text ? "block" : "none";
+      }
+
+      function openBottomlineModal() {
+        renderBottomlineStatus();
+        document.getElementById("bottomlineModal").classList.add("show");
+      }
+
+      function submitBottomlineApplication() {
+        bottomlineStatus = "pending";
+        renderBottomlineStatus();
+        closeModal("bottomlineModal");
+        toast("底线突破申请已提交，当前状态为审批中。");
+      }
+
+      function setBottomlineStatus(status) {
+        bottomlineStatus = status;
+        renderBottomlineStatus();
+        if (status === "none") {
+          toast("已切换为无申请状态。");
+        } else {
+          toast(`底线突破申请状态已更新为：${bottomlineStatusText[status]}`);
+        }
+      }
 
       function openMatterModal() {
         renderMatterOptions();
@@ -2132,6 +2299,8 @@
         const bTime = document.getElementById("sealBUploadTime");
         const commitTime = document.getElementById("sealCommitTime");
         const statusTag = document.getElementById("sealStatusTag");
+        const sealButton = document.getElementById("submitSealApply");
+        const bottomlineAlert = document.getElementById("sealBottomlineAlert");
         if (bStatus) bStatus.textContent = bUploaded ? "已完成" : "未完成";
         if (riskStatus) riskStatus.textContent = bRiskReady ? "已完成" : "未完成";
         if (commitStatus) commitStatus.textContent = commitmentDone ? "已完成" : "未完成";
@@ -2152,6 +2321,23 @@
             if (matterAction) matterAction.textContent = "管理关联案件";
           }
         }
+        if (bottomlineAlert) {
+          const blockedText = bottomlineStatus === "pending"
+            ? "当前合同存在审批中的底线突破申请，审批完成前不可发起用印。"
+            : bottomlineStatus === "rejected"
+              ? "当前底线突破申请未通过，请修改协议版本或重新提交申请后再发起用印。"
+              : "";
+          bottomlineAlert.textContent = blockedText;
+          bottomlineAlert.style.display = blockedText ? "block" : "none";
+        }
+        if (sealButton) {
+          sealButton.disabled = bottomlineStatus === "pending" || bottomlineStatus === "rejected";
+          sealButton.title = bottomlineStatus === "pending"
+            ? "当前合同存在审批中的底线突破申请，审批完成前不可发起用印。"
+            : bottomlineStatus === "rejected"
+              ? "当前底线突破申请未通过，请修改协议版本或重新提交申请后再发起用印。"
+              : "";
+        }
       }
 
       function submitSealApplication() {
@@ -2170,6 +2356,14 @@
         }
         if (!commitmentDone) {
           toast("请先完成签约确认人承诺。");
+          return;
+        }
+        if (bottomlineStatus === "pending") {
+          toast("当前合同存在审批中的底线突破申请，审批完成前不可发起用印。");
+          return;
+        }
+        if (bottomlineStatus === "rejected") {
+          toast("当前底线突破申请未通过，请修改协议版本或重新提交申请后再发起用印。");
           return;
         }
         if (!(bReported || aReported)) {
@@ -2197,7 +2391,7 @@
         bRiskReady = bPreReportStatus !== "pending" && bSupplementStatus !== "pending";
         if (!bRiskReady) {
           btn.disabled = true;
-          hint.textContent = "存在待处理风险差异，请先处理可引用预报备差异并补充突破说明。";
+          hint.textContent = "存在待处理风险差异，请先处理可引用底线相关记录并补充突破说明。";
           hint.className = "red";
           return;
         }
@@ -2215,7 +2409,7 @@
           if (bPreReportStatus === "applied") {
             preBox.className = "diff greenline";
             preStatus.className = "badge green";
-            preStatus.textContent = "已应用预报备";
+            preStatus.textContent = "已应用记录";
             if (applyBtn) applyBtn.style.display = "none";
             if (rewriteBtn) rewriteBtn.textContent = "补充/重新填写说明";
           } else if (bPreReportStatus === "explained") {
@@ -2411,7 +2605,7 @@
       }
       function renderCommitRows() {
         const rows = risks.map(r => `<tr><td>${r.clause}</td><td>黑字标准条款修改</td><td>${r.level}</td><td>${r.stage}</td><td>${r.reason}</td><td>${r.status}</td></tr>`);
-        if (!bReported && !aReported) rows.push(`<tr style="background:#fff1f2;"><td>第9条 协议解除与违约责任</td><td>未报备黑字修改</td><td>待判断</td><td>未报备</td><td>尚未填写突破说明</td><td>需返回处理</td></tr>`);
+        if (!bReported && !aReported) rows.push(`<tr style="background:#fff1f2;"><td>第9条 协议解除与违约责任</td><td>底线相关修改</td><td>待判断</td><td>未说明</td><td>尚未填写突破说明</td><td>需返回处理</td></tr>`);
         document.getElementById("commitRows").innerHTML = rows.join("");
       }
       function showPage(page) {
@@ -2576,11 +2770,11 @@
         } else if (/费用及支付方式|律师费|账期|预付费/.test(text)) {
           instruction.textContent = "请填写收费方式、金额或计算方式、付款节点、账期、开票安排及办案费用承担范围。";
           risk.textContent = "小时费率不得低于所内最低标准；账期不得超过管理办法规定期限；如存在低费率、超长账期或特殊付款安排，请提交突破说明。";
-          action.textContent = "A版可先生成底稿；正式合规审查在B版上传后完成。";
+          action.textContent = "A版可先生成底稿；正式风险确认在B版上传后完成。";
         } else if (/保密/.test(text)) {
           instruction.textContent = "当前为保密义务相关条款，原则上保持所内标准表述。";
           risk.textContent = "如客户要求特殊保密制度、防火墙、网络安全审计权或限制全所其他服务能力，可能触发底线风险。";
-          action.textContent = "如确需修改，请点击标准条款并提交修改预报备。";
+          action.textContent = "如确已突破底线规则，请发起合同维度底线突破申请。";
         } else if (/违约责任|赔偿|责任/.test(text)) {
           instruction.textContent = "当前为责任限制或违约责任条款，属于重点标准条款。";
           risk.textContent = "删除赔偿上限、接受固定违约金、扩大赔偿范围或接受无限责任，均可能触发底线风险。";
@@ -2619,7 +2813,7 @@
       function getCStatusLabel() {
         if (cFinalStatus === "UPLOADED") return "C版已上传";
         if (cFinalStatus === "CHECKING") return "B/C核查中";
-        if (cFinalStatus === "POST_REVIEW") return "待事后审核";
+        if (cFinalStatus === "POST_REVIEW") return "待抽查说明";
         if (cFinalStatus === "E_ARCHIVED_PAPER_PENDING") return "电子已归档 / 纸质待归档";
         if (cFinalStatus === "ELECTRONIC_ONLY") return "仅电子归档";
         if (cFinalStatus === "ARCHIVED") return "已归档";
@@ -2666,7 +2860,7 @@
           hint.textContent = "纸质归档交接已提交，等待归档人员确认收到纸质合同。";
         } else if (cUploaded) {
           electronic.textContent = "C版已上传";
-          archiveTag.textContent = cFinalStatus === "POST_REVIEW" ? "待事后审核" : "待提交纸质归档";
+          archiveTag.textContent = cFinalStatus === "POST_REVIEW" ? "待抽查说明" : "待提交纸质归档";
           hint.textContent = "C版已上传，请确认纸质归档交接信息并提交给归档人员。";
         } else {
           electronic.textContent = "未上传C版";
@@ -2768,10 +2962,10 @@
         } else {
           setCStatus("UPLOADED");
           panel.className = "check-panel warn";
-          panel.innerHTML = `<strong>系统发现B版与C版存在 2 处差异，请进入事后审核查看。</strong>
+          panel.innerHTML = `<strong>系统发现B版与C版存在 2 处差异，已形成合规抽查线索。</strong>
             <table style="margin-top:12px;"><thead><tr><th>差异位置</th><th>差异类型</th><th>状态</th></tr></thead>
             <tbody><tr><td>第5条 费用及支付方式</td><td>文本差异</td><td>待审核</td></tr><tr><td>签字页</td><td>签署主体差异</td><td>待审核</td></tr></tbody></table>
-            <button class="btn primary" style="margin-top:12px;" onclick="submitPostReview()">提交合规委员会事后审核</button>`;
+            <button class="btn primary" style="margin-top:12px;" onclick="submitPostReview()">提交为合规抽查线索</button>`;
         }
         renderCBottomActions();
       }
@@ -2790,7 +2984,7 @@
               html += `<button class="btn primary" onclick="confirmPaperArchived()">确认归档完成</button>`;
             }
           } else {
-            html += `<button class="btn primary" onclick="submitPostReview()">提交合规委员会事后审核</button>`;
+            html += `<button class="btn primary" onclick="submitPostReview()">提交为合规抽查线索</button>`;
           }
         }
         el.innerHTML = html;
@@ -2803,13 +2997,16 @@
       }
       function submitPostReview() {
         setCStatus("POST_REVIEW");
-        toast("已提交合规委员会事后审核。");
+        toast("已提交为合规抽查线索。");
         renderCBottomActions();
       }
       function validateCommit() {
         const unresolved = !(bReported || aReported);
         document.getElementById("commitWarning").style.display = unresolved ? "block" : "none";
+        document.getElementById("commitWarning").textContent = unresolved ? "请先完成B版风险差异确认或底线突破说明。" : "";
         document.getElementById("submitCommit").disabled = unresolved;
+        const uploadTime = document.getElementById("commitBUploadTime");
+        if (uploadTime) uploadTime.textContent = bUploaded ? (document.getElementById("bUploadTime")?.textContent || "2026-05-28 15:00") : "尚未上传";
       }
       document.querySelectorAll(".tab").forEach(tab => tab.onclick = () => showPage(tab.dataset.page));
       document.getElementById("submitAReport").onclick = () => {
@@ -2837,7 +3034,7 @@
         renderTemplateAgreement();
         renderPreReportList();
         refreshActiveStandardClause(id);
-        toast(standardReports[id].status === "submitted" ? "已更新预报备内容" : "已保存为待提交修改项");
+        toast(standardReports[id].status === "submitted" ? "已更新底线相关记录" : "已保存为待提交底线相关记录");
       };
       document.getElementById("uploadB").onclick = () => {
         bUploaded = true;
@@ -2865,11 +3062,11 @@
         bPreReportStatus = "applied";
         renderBDiffStatus();
         renderRisks();
-        toast("已应用A版已有预报备。");
+        toast("已应用A版已有底线相关记录。");
       };
       document.getElementById("submitBReport").onclick = () => {
         bReported = true;
-        risks.push({ clause: "第9条 协议解除与违约责任", level: "高风险", stage: "B版阶段", reason: document.getElementById("bReason").value, status: "待事后审核" });
+        risks.push({ clause: "第9条 协议解除与违约责任", level: "高风险", stage: "B版阶段", reason: document.getElementById("bReason").value, status: "底线突破说明已保存" });
         if (currentBReportTarget === "preReport") {
           bPreReportStatus = "explained";
         } else {
@@ -2878,7 +3075,7 @@
         renderBDiffStatus();
         closeModal("bModal");
         renderRisks();
-        toast("B版突破说明已提交");
+        toast("B版突破说明已保存");
       };
       document.getElementById("submitUnifiedBReason").onclick = () => {
         const reason = document.getElementById("unifiedBReason").value.trim();
@@ -2889,7 +3086,7 @@
         bReported = true;
         bSupplementStatus = "explained";
         if (bPreReportStatus === "pending") bPreReportStatus = "explained";
-        risks.push({ clause: "B版统一风险差异", level: "高风险", stage: "B版阶段", reason, status: "待事后审核" });
+        risks.push({ clause: "B版统一风险差异", level: "高风险", stage: "B版阶段", reason, status: "底线突破说明已保存" });
         renderBDiffStatus();
         renderRisks();
         toast("统一突破说明已提交");
@@ -2904,7 +3101,7 @@
       };
       document.getElementById("submitCommit").onclick = () => {
         if (!(bReported || aReported)) {
-          toast("仍存在未报备的标准条款修改，请返回B版风险确认完成报备。");
+          toast("请先完成B版风险差异确认或底线突破说明。");
           validateCommit();
           return;
         }
@@ -2948,6 +3145,9 @@
         }
       }
       applyStaticTextFixes();
+      document.querySelectorAll("[data-bottomline-entry]").forEach(button => {
+        button.addEventListener("click", openBottomlineModal);
+      });
       renderTemplateAgreement();
       watchStandardTools();
       setTimeout(() => removeStandardTools(), 0);
@@ -2956,6 +3156,10 @@
       renderCSteps();
       renderCBottomActions();
       renderArchiveStatus();
+      renderBottomlineStatus();
+      if (new URLSearchParams(location.search).get("bottomline") === "1") {
+        setTimeout(openBottomlineModal, 150);
+      }
       renderMatterAssociation();
       updateBConfirmGate();
       renderRelatedAgreementPanel();

@@ -263,7 +263,7 @@ const contracts = [
     caseName: "数据合规专项",
     caseNumber: "SQT112237",
     version: "C",
-    status: "待事后审核",
+    status: "待抽查说明",
     owner: "合规委员会",
     ownerId: "committee-compliance",
     risk: "低",
@@ -349,7 +349,7 @@ const statusClassMap = {
   待发起用印: "status-seal-ready",
   用印中: "status-seal",
   待上传C版: "status-upload-c",
-  待事后审核: "status-review",
+  待抽查说明: "status-review",
   已归档: "status-archived",
   "已撤回/已作废": "status-cancelled",
   已被替换: "status-replaced",
@@ -365,7 +365,7 @@ const actionMap = {
   待发起用印: "发起用印",
   用印中: "查看用印",
   待上传C版: "上传C版",
-  待事后审核: "查看审核",
+  待抽查说明: "查看抽查线索",
   已归档: "查看详情",
   "已撤回/已作废": "查看详情",
   已被替换: "查看详情",
@@ -477,7 +477,7 @@ function canViewContract(contract, user) {
 function canOperateContract(contract, user) {
   if (contract.assigneeId === user.id) return true;
   if (contract.collaborators.includes(user.id) && ["待上传B版", "待上传C版"].includes(contract.status)) return true;
-  if (hasGlobalReviewPermission(user) && ["B版风险确认中", "待事后审核"].includes(contract.status)) return true;
+  if (hasGlobalReviewPermission(user) && ["B版风险确认中", "待抽查说明"].includes(contract.status)) return true;
   return false;
 }
 
@@ -793,7 +793,15 @@ function renderContracts() {
       const action = getAction(contract.status);
       const actionClass = contract.status === "B版风险确认中" ? "row-action risk" : "row-action";
       const actionAttr = `data-next-step="${contract.id}"`;
-      const moreMenu = `<select class="more-select" aria-label="更多操作"><option>更多</option><option>查看详情</option><option>添加协办人</option><option>转交处理</option><option>作废合同</option></select>`;
+      const moreMenu = `
+        <select class="more-select" aria-label="更多操作" data-more-action="${contract.id}">
+          <option value="">更多</option>
+          <option value="detail">查看详情</option>
+          <option value="bottomline">底线突破申请</option>
+          <option value="collaborator">添加协办人</option>
+          <option value="transfer">转交处理</option>
+          <option value="void">作废合同</option>
+        </select>`;
       const actionCell = `<button class="${canOperate ? actionClass : "row-action readonly"}" type="button" ${actionAttr}>${action}</button>`;
 
       return `
@@ -824,6 +832,25 @@ function renderContracts() {
     button.addEventListener("click", () => {
       const contract = contracts.find((item) => item.id === button.dataset.nextStep);
       if (contract) goToNextStep(contract);
+    });
+  });
+
+  contractRows.querySelectorAll("[data-more-action]").forEach((select) => {
+    select.addEventListener("change", () => {
+      const contractId = select.dataset.moreAction;
+      const value = select.value;
+      select.value = "";
+      if (value === "detail") {
+        goToDetail(contractId);
+        return;
+      }
+      if (value === "bottomline") {
+        window.location.href = `./flow-demo.html?page=a&bottomline=1&contractId=${encodeURIComponent(contractId)}`;
+        return;
+      }
+      if (value) {
+        alert("当前为原型演示，暂未展开该操作。");
+      }
     });
   });
 }
