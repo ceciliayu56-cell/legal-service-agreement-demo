@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>上传B版与风险确认</title>
+  </head>
+  <body>
+    <p>正在进入上传B版与风险确认页面...</p>
+    <a id="fallbackLink" href="./flow-demo.html?page=b">如果没有自动跳转，点击进入</a>
+    <script>
+      const params = new URLSearchParams(window.location.search);
+      const contractId = params.get("contractId") || params.get("id") || "";
+      const target = `./flow-demo.html?page=b${contractId ? `&contractId=${encodeURIComponent(contractId)}` : ""}`;
+      document.getElementById("fallbackLink").href = target;
+      window.location.replace(target);
+    </script>
+  </body>
+</html>
