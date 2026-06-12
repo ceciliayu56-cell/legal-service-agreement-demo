@@ -566,6 +566,136 @@
       body.preview-mode .option-row:has(input:checked) { display: block; }
       body.preview-mode .option-row input { display: none; }
       body.preview-mode .optional-clause.preview-empty { display: none !important; }
+
+      /* v2-refined: make A drafting feel like editing a Word document, not filling a form. */
+      .word .template-body { gap: 4px; }
+      .word .template-line {
+        border-color: transparent;
+        background: transparent;
+        padding: 3px 2px;
+        line-height: 1.95;
+      }
+      .word .template-line.standard,
+      .word .template-line.body-editable,
+      .word .template-line.free-line,
+      .word .template-line.free-multiline,
+      .word .template-line.optional-clause,
+      .word .option-group,
+      .word .option-row {
+        border-color: transparent;
+        background: transparent;
+        box-shadow: none;
+      }
+      .word .template-line:hover,
+      .word .template-line.selected-clause {
+        background: #fbfefd;
+        box-shadow: inset 3px 0 0 rgba(17, 100, 102, .35);
+      }
+      .word .template-line.free-line::after,
+      .word .template-line.free-multiline::after { content: none; }
+      .word .multi-fill {
+        min-height: 38px;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        padding: 0;
+        color: inherit;
+        outline: none;
+      }
+      .word .multi-fill:focus,
+      .word .inline-fill:focus,
+      .word .inline-date:focus,
+      .word .inline-choice:focus {
+        background: #f5fbfa;
+        box-shadow: inset 0 -2px 0 rgba(17, 100, 102, .22);
+      }
+      .word .inline-fill,
+      .word .inline-date,
+      .word .inline-choice {
+        display: inline;
+        min-width: 0;
+        max-width: none;
+        width: auto;
+        margin: 0 1px;
+        border: 0;
+        border-bottom: 1px dashed #9ccac6;
+        border-radius: 0;
+        padding: 0 2px;
+        background: transparent;
+        color: #116466;
+        font: inherit;
+        line-height: inherit;
+        outline: none;
+      }
+      .word .inline-date { min-width: 118px; display: inline-block; }
+      .word .inline-select {
+        display: inline;
+        width: auto;
+        max-width: 280px;
+        margin: 0 2px;
+        border: 0;
+        border-bottom: 1px dashed #9ccac6;
+        border-radius: 0;
+        padding: 0 20px 0 2px;
+        background: transparent;
+        color: #116466;
+        font: inherit;
+        line-height: inherit;
+        outline: none;
+      }
+      .word .optional-toggle {
+        display: inline-flex;
+        align-items: center;
+        margin: 0 2px;
+        border: 1px solid #cbd5e1;
+        border-radius: 999px;
+        padding: 0 7px;
+        background: #f8fafc;
+        color: #116466;
+        font: inherit;
+        cursor: pointer;
+      }
+      .word .optional-toggle.is-removed {
+        text-decoration: line-through;
+        color: #94a3b8;
+        background: #f1f5f9;
+      }
+      .word .optional-label,
+      .word .inline-tip,
+      .word .option-group-title {
+        display: inline-block;
+        margin: 0 0 4px;
+        border-radius: 999px;
+        padding: 2px 7px;
+        background: #f8fafc;
+        color: #64748b;
+        font: 12px/1.4 "Microsoft YaHei", sans-serif;
+      }
+      .word .option-row {
+        display: block;
+        margin-top: 3px;
+        padding: 2px 0;
+        line-height: 1.95;
+      }
+      .word .option-row input { width: auto; margin-right: 8px; }
+      .bottom-line-marker,
+      .modified-marker {
+        display: inline-flex;
+        vertical-align: middle;
+        margin-left: 8px;
+        border-radius: 999px;
+        padding: 2px 7px;
+        font: 12px/1.4 "Microsoft YaHei", sans-serif;
+      }
+      .bottom-line-marker { display: none !important; }
+      .modified-marker { display: none; background: #fffbeb; color: #92400e; border: 1px solid #fde68a; }
+      .template-line.bottom-line-modified .modified-marker { display: inline-flex; }
+      body.preview-mode .bottom-line-marker,
+      body.preview-mode .modified-marker,
+      body.preview-mode .optional-toggle.is-removed { display: none !important; }
+      body.preview-mode .inline-select {
+        display: none !important;
+      }
     </style>
   </head>
   <body>
@@ -616,19 +746,17 @@
               <h3>当前条款填写提示</h3>
             </div>
             <div id="currentClauseHint">
-              <div class="hint-section info"><strong>当前填写说明</strong><span id="hintInstruction">当前为协议正文填写区域。请在挖空字段中填写对应内容；黑字标准条款原则上不可修改；如确需修改，可发起底线突破申请。</span></div>
-              <div class="hint-section risk"><strong>合规风险提示</strong><span id="hintRisk">A版可做初步风险提示，正式合规审查将在B版上传页完成。</span></div>
-              <div class="hint-section action"><strong>操作提醒</strong><span id="hintAction">点击左侧不同字段或条款，右侧提示会自动切换。</span></div>
+              <div class="hint-section risk"><strong>合规风险提示</strong><span id="hintRisk">点击左侧不同字段或条款后，相关模板备注和合规提示会在这里显示。</span></div>
               <div class="breakthrough-action" id="breakthroughAction">
                 <button class="btn primary" type="button" id="breakthroughButton">填写突破申请</button>
               </div>
             </div>
           </div>
           <div class="card" id="preReportCard">
-            <div class="section-title"><h3>底线突破申请记录</h3><span class="badge yellow" id="preReportCount">0项</span></div>
-            <p class="tip">底线突破申请是独立流程，只要在用印前均可发起；申请审批结果将影响后续承诺和用印。</p>
+            <div class="section-title"><h3>突破申请记录</h3><span class="badge yellow" id="preReportCount">0项</span></div>
+            <p class="tip">突破申请是合同维度的独立流程，可在用印前发起；A版制作阶段不阻断保存、预览或生成。</p>
             <div id="preReportList"></div>
-            <button class="btn primary" id="mergeSubmitReports" style="display:none;margin-top:12px;width:100%;" onclick="submitAllDraftReports()">提交底线突破申请</button>
+            <button class="btn primary" id="mergeSubmitReports" style="display:none;margin-top:12px;width:100%;" onclick="submitAllDraftReports()">提交突破申请</button>
           </div>
           <div class="card">
             <div class="section-title"><h3>操作日志</h3></div>
@@ -643,7 +771,7 @@
       </main>
       <div class="bottom">
         <div class="bottom-inner">
-          <span class="muted">A版仅为所内模板底稿。底线突破申请可在用印前发起，正式风险确认在B版节点完成。</span>
+          <span class="muted">A版仅为所内模板底稿。特殊安排可在用印前发起突破申请，正式确认在后续节点完成。</span>
           <div class="a-action-group" id="aBottomActions">
             <button class="btn" onclick="openGeneralBreakthroughApplication()">填写突破申请</button>
             <button class="btn" onclick="toast('草稿已保存')">保存草稿</button>
@@ -715,13 +843,26 @@
             </div>
           </div>
           <div class="note" style="background:#f8fafc;border-color:#e2e8f0;color:#17202a;font-size:16px;line-height:2;">
-            我确认已阅读本协议待用印版本，并确认当前版本内容、商务安排及签约条件可进入用印流程。若当前版本存在突破事务所底线规则的事项，我确认已知悉应在发起用印前完成相应申请或审批。
+            我确认已阅读本协议待用印版本，并确认当前版本内容、商务安排及签约条件可进入后续用印流程；如当前版本存在突破事务所底线规则的事项，我已知悉应在发起用印前完成底线突破申请并取得审批。
           </div>
           <p class="muted">点击下方按钮，即表示签约确认人已阅读并确认上述承诺内容。</p>
           <p class="red" id="commitWarning" style="display:none;"></p>
           <div style="display:flex;justify-content:flex-end;gap:10px;">
             <button class="btn primary" id="submitCommit" disabled>确认并承诺，进入用印</button>
           </div>
+        </div>
+        <div class="card" style="margin-top:18px;">
+          <div class="section-title"><h2>底线突破申请状态</h2></div>
+          <div class="readonly">
+            <div class="rows">
+              <div class="row"><span class="muted">当前状态</span><strong id="commitBreakthroughCardStatus">无申请</strong></div>
+              <div class="row"><span class="muted">申请事项摘要</span><strong id="commitBreakthroughSummary">暂无</strong></div>
+              <div class="row"><span class="muted">提交人</span><strong id="commitBreakthroughSubmitter">-</strong></div>
+              <div class="row"><span class="muted">提交时间</span><strong id="commitBreakthroughSubmittedAt">-</strong></div>
+            </div>
+          </div>
+          <p class="tip" id="commitBreakthroughMessage">当前合同暂无底线突破申请。如当前待用印版本存在突破事务所底线规则的事项，请在发起用印前完成底线突破申请审批。</p>
+          <div id="commitBreakthroughActions" style="display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;margin-top:14px;"></div>
         </div>
       </main>
     </section>
@@ -939,6 +1080,22 @@
           <label>拟修改后内容（必填）<textarea id="aModified">世辉承担的赔偿金额不设上限。</textarea></label>
           <label>修改原因（必填）<textarea id="aReason" placeholder="请说明客户要求、业务背景、必须修改的原因。">客户法务要求删除责任限制。</textarea></label>
           <div style="text-align:right;"><button class="btn primary" id="submitAReport">保存申请</button></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-mask" id="bottomLineEditModal">
+      <div class="modal">
+        <div class="modal-head"><h2>你正在修改重点条款</h2><button class="close" onclick="cancelBottomLineEdit()">×</button></div>
+        <div class="modal-body">
+          <div class="note" style="background:#fffbeb;border-color:#fde68a;color:#92400e;">
+            普通文字调整可以继续编辑，不影响A版保存或生成。若最终待用印版本涉及需要审批的特殊安排，请在发起用印前完成突破申请。
+          </div>
+          <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:16px;">
+            <button class="btn" type="button" onclick="continueBottomLineEdit()">继续编辑</button>
+            <button class="btn danger" type="button" onclick="applyBottomLineFromWarning()">发起底线突破申请</button>
+            <button class="btn" type="button" onclick="cancelBottomLineEdit()">取消</button>
+          </div>
         </div>
       </div>
     </div>
@@ -1742,48 +1899,612 @@
     "text": "日期：____年____月____日"
   }
 ];
+      const riskActionsForBottomLine = ["sidebarTip", "showBreakthroughEntry", "softWarningOnEdit", "blockAtSealOnly"];
+      const shihuiEntityOptions = [
+        { label: "北京世辉律师事务所", address: "北京市朝阳区建国门外大街2号北京银泰中心C座42-43层" },
+        { label: "北京世辉（上海）律师事务所", address: "上海市浦东新区富城路99号震旦国际大楼8层" },
+        { label: "北京世辉（深圳）律师事务所", address: "深圳市南山区粤海街道高新南十道16号金地威新中心A座36层3601" }
+      ];
+      const templateRules_v1_2 = [
+        {
+          ruleId: "TPL_BLUE_INTERNAL_PROMPT",
+          priority: 200,
+          anchorText: "彩色文字标注的语言为内部备注",
+          targetText: "蓝色提示/内部备注",
+          rangeType: "paragraph",
+          transformType: "sidebarTip",
+          textType: "prompt",
+          editable: false,
+          editMode: "sidebar",
+          displayMode: "sidebar",
+          riskTag: "guidance",
+          riskAction: ["sidebarTip"],
+          userTip: "蓝色提示仅进入右侧提示栏，不进入最终协议正文。",
+          systemAction: "hideFromBodyShowInSidebar",
+          exportToWord: false,
+          matchStrategy: ["wordColorBlue", "clauseAnchor"],
+          sourceStyle: { wordRgb: "0070C0" }
+        },
+        {
+          ruleId: "TPL_PLACEHOLDER_STAR",
+          priority: 120,
+          anchorText: "【*】",
+          targetText: "【*】",
+          rangeType: "word",
+          transformType: "placeholder",
+          textType: "placeholder",
+          editable: true,
+          editMode: "inline",
+          riskTag: "none",
+          riskAction: ["none"],
+          userTip: "正文中的【*】作为自由填写项，点击后直接填写。",
+          systemAction: "renderInlinePlaceholder",
+          exportToWord: true
+        },
+        {
+          ruleId: "TPL_SELECT_ONE",
+          priority: 110,
+          anchorText: "【根据实际情况选择一项】",
+          targetText: "可选项",
+          rangeType: "sentence",
+          transformType: "dropdown",
+          textType: "selectable",
+          editable: true,
+          editMode: "dropdown",
+          options: [],
+          riskTag: "none",
+          riskAction: ["none"],
+          userTip: "选择后正文只保留选中的文字，不铺开全部候选项。",
+          systemAction: "renderInlineDropdown",
+          exportToWord: true
+        },
+        {
+          ruleId: "TPL_OPTIONAL_DELETE",
+          priority: 105,
+          anchorText: "可删去",
+          targetText: "可删去词语",
+          rangeType: "word",
+          transformType: "toggle",
+          textType: "optional",
+          editable: true,
+          editMode: "toggle",
+          riskTag: "none",
+          riskAction: ["none"],
+          userTip: "模板内置可删项以轻量开关处理，不需要额外申请。",
+          systemAction: "renderOptionalToggle",
+          exportToWord: true
+        },
+        {
+          ruleId: "TPL_SUPPLEMENT",
+          priority: 100,
+          anchorText: "可根据需要补充",
+          targetText: "补充内容",
+          rangeType: "paragraph",
+          transformType: "placeholder",
+          textType: "supplement",
+          editable: true,
+          editMode: "richText",
+          riskTag: "guidance",
+          riskAction: ["sidebarTip", "showBreakthroughEntry"],
+          userTip: "可补充条款直接在正文位置填写；如补充内容属于特殊安排，用印前再确认是否需要突破申请。",
+          systemAction: "renderSupplementField",
+          exportToWord: true
+        },
+        {
+          ruleId: "TPL_STANDARD_BODY",
+          priority: 1,
+          anchorText: "黑色正文段落",
+          targetText: "标准正文",
+          rangeType: "paragraph",
+          transformType: "softLock",
+          textType: "standard",
+          editable: true,
+          editMode: "inline",
+          lockMode: "softLock",
+          riskTag: "none",
+          riskAction: ["softWarningOnEdit"],
+          userTip: "未命中具体规则的黑色正文按标准正文处理，首次修改轻提示，A版阶段不阻断。",
+          systemAction: "fallbackSoftLock",
+          exportToWord: true,
+          isFallback: true
+        }
+      ];
+      const clauseRules_v1_2 = [
+        {
+          clauseId: "DOC_TITLE_AGREEMENT_TYPE",
+          clauseTitle: "协议标题",
+          priority: 900,
+          anchorText: "常年法律顾问协议/专项法律服务协议",
+          targetText: "常年法律顾问协议/专项法律服务协议",
+          rangeType: "sentence",
+          transformType: "dropdown",
+          textType: "selectable",
+          editable: true,
+          editMode: "dropdown",
+          options: ["常年法律顾问协议", "专项法律服务协议"],
+          riskTag: "none",
+          riskAction: ["none"],
+          userTip: "选择协议类型后，标题和正文首段按选择展示。",
+          systemAction: "syncAgreementType",
+          linkedFields: ["PREAMBLE_AGREEMENT_TYPE", "CLAUSE_1_SERVICE_MODE"],
+          exportToWord: true
+        },
+        {
+          clauseId: "PREAMBLE_SIGN_DATE",
+          clauseTitle: "文首协议订立日期",
+          priority: 880,
+          anchorText: "于【*】年【*】月【*】日订立",
+          targetText: "【*】年【*】月【*】日",
+          rangeType: "sentence",
+          transformType: "placeholder",
+          textType: "placeholder",
+          editable: true,
+          editMode: "inline",
+          riskTag: "none",
+          riskAction: ["none"],
+          userTip: "签署日期自由填写，不强制使用日期控件；签字页日期可另行填写。",
+          systemAction: "renderFreeDate",
+          linkedFields: [],
+          defaultSuggestionFields: ["SIGNATURE_CLIENT_DATE", "SIGNATURE_SHIHUI_DATE"],
+          exportToWord: true
+        },
+        {
+          clauseId: "PARTY_CLIENT_BLOCK",
+          clauseTitle: "文首委托人/客户范围",
+          priority: 860,
+          anchorText: "（1）【*】",
+          targetText: "委托人名称和地址",
+          rangeType: "section",
+          transformType: "placeholder",
+          textType: "placeholder",
+          editable: true,
+          editMode: "richText",
+          lockMode: "softLock",
+          riskTag: "bottomLineConcern",
+          riskAction: riskActionsForBottomLine,
+          userTip: "客户主体范围可能影响利冲识别和后续服务边界；如扩大到集团/关联方，用印前确认是否需要额外申请。",
+          systemAction: "renderPartyBlockWithSoftLock",
+          exportToWord: true
+        },
+        {
+          clauseId: "PARTY_CLIENT_ADDRESS",
+          clauseTitle: "委托人地址",
+          priority: 855,
+          anchorText: "地址：【*】",
+          parentAnchor: "（1）【*】",
+          targetText: "【*】",
+          rangeType: "sentence",
+          transformType: "placeholder",
+          textType: "placeholder",
+          editable: true,
+          editMode: "inline",
+          riskTag: "bottomLineConcern",
+          riskAction: riskActionsForBottomLine,
+          userTip: "地址属于委托人主体信息的一部分，应与客户签约主体保持一致。",
+          systemAction: "renderInlinePlaceholder",
+          exportToWord: true
+        },
+        {
+          clauseId: "PARTY_SHIHUI_ENTITY",
+          clauseTitle: "世辉签署主体",
+          priority: 850,
+          anchorText: "北京世辉律师事务所/北京世辉（上海）律师事务所/北京世辉（深圳）律师事务所",
+          targetText: "世辉签署主体",
+          rangeType: "sentence",
+          transformType: "dropdown",
+          textType: "selectable",
+          editable: true,
+          editMode: "dropdown",
+          options: shihuiEntityOptions,
+          riskTag: "none",
+          riskAction: ["none"],
+          userTip: "选择世辉签署主体后，可默认带出对应地址和签字页主体。",
+          systemAction: "syncShihuiEntityAndAddress",
+          linkedFields: ["PARTY_SHIHUI_ADDRESS", "SIGNATURE_SHIHUI_ENTITY"],
+          exportToWord: true
+        },
+        {
+          clauseId: "PARTY_SHIHUI_ADDRESS",
+          clauseTitle: "世辉地址",
+          priority: 845,
+          anchorText: "地址：北京市朝阳区建国门外大街2号北京银泰中心C座42-43层/上海市浦东新区富城路99号震旦国际大楼8层/深圳市南山区粤海街道高新南十道16号金地威新中心A座36层3601",
+          parentAnchor: "（2）北京世辉律师事务所/北京世辉（上海）律师事务所/北京世辉（深圳）律师事务所",
+          targetText: "世辉地址",
+          rangeType: "sentence",
+          transformType: "dropdown",
+          textType: "selectable",
+          editable: true,
+          editMode: "dropdown",
+          options: shihuiEntityOptions.map(item => item.address),
+          riskTag: "none",
+          riskAction: ["none"],
+          userTip: "世辉地址可随签署主体自动建议，也可单独修改。",
+          systemAction: "syncShihuiAddress",
+          linkedFields: ["PARTY_SHIHUI_ENTITY"],
+          exportToWord: true
+        },
+        {
+          clauseId: "RECITAL_PROJECT_BACKGROUND",
+          clauseTitle: "鉴于事项/项目背景",
+          priority: 830,
+          anchorText: "【根据实际情况选择一项或者填写其他适用的语言】",
+          targetText: "鉴于事项",
+          rangeType: "section",
+          transformType: "dropdown",
+          textType: "selectable",
+          editable: true,
+          editMode: "dropdown",
+          options: [
+            "首轮融资项目",
+            "后续轮融资项目",
+            "上市辅导/境内外上市项目",
+            "并购重组项目",
+            "常年法律顾问服务",
+            "争议解决/调查类案件",
+            "其他，自行填写"
+          ],
+          riskTag: "guidance",
+          riskAction: ["sidebarTip"],
+          userTip: "项目背景影响服务范围、客户边界和费用安排，可选择后再微调正文。",
+          systemAction: "renderRecitalOptions",
+          linkedFields: ["CLAUSE_2_SERVICE_SCOPE"],
+          exportToWord: true
+        },
+        {
+          clauseId: "CLAUSE_1_SERVICE_MODE",
+          clauseTitle: "第1条 委托关系",
+          priority: 820,
+          anchorText: "提供相关法律服务/担任委托人的常年法律顾问",
+          targetText: "提供相关法律服务/担任委托人的常年法律顾问",
+          rangeType: "sentence",
+          transformType: "dropdown",
+          textType: "selectable",
+          editable: true,
+          editMode: "dropdown",
+          options: ["提供相关法律服务", "担任委托人的常年法律顾问"],
+          lockMode: "softLock",
+          riskTag: "bottomLineConcern",
+          riskAction: riskActionsForBottomLine,
+          userTip: "委托关系和客户范围会影响利冲识别、服务边界和后续承接限制。",
+          systemAction: "renderInlineDropdownWithBottomLineTip",
+          linkedFields: ["DOC_TITLE_AGREEMENT_TYPE"],
+          exportToWord: true
+        },
+        {
+          clauseId: "CLAUSE_1_SUBCONTRACT_BRANCH",
+          clauseTitle: "第1条 转委托/分委托",
+          priority: 815,
+          anchorText: "总所/其他分所",
+          targetText: "总所/其他分所",
+          rangeType: "sentence",
+          transformType: "dropdown",
+          textType: "selectable",
+          editable: true,
+          editMode: "dropdown",
+          options: ["总所", "其他分所", "总所或其他分所"],
+          riskTag: "guidance",
+          riskAction: ["sidebarTip"],
+          userTip: "转委托/分委托涉及服务主体和责任边界，必要时在右侧提示中提醒确认。",
+          systemAction: "renderInlineDropdown",
+          exportToWord: true
+        },
+        {
+          clauseId: "CLAUSE_2_SERVICE_SCOPE",
+          clauseTitle: "第2条 服务范围",
+          priority: 800,
+          anchorText: "服务范围",
+          targetText: "【服务范围】",
+          rangeType: "section",
+          transformType: "placeholder",
+          textType: "supplement",
+          editable: true,
+          editMode: "richText",
+          lockMode: "softLock",
+          riskTag: "bottomLineConcern",
+          riskAction: riskActionsForBottomLine,
+          userTip: "请明确委托事项、工作范围和服务期限；服务范围过宽可能影响利冲和后续服务边界。",
+          systemAction: "renderServiceScopeRichText",
+          exportToWord: true
+        },
+        {
+          clauseId: "CLAUSE_3_CLIENT_DUTY_EVIDENCE",
+          clauseTitle: "第3条 委托人义务：证据可删项",
+          priority: 790,
+          anchorText: "信息、文件、材料和证据",
+          targetText: "证据",
+          rangeType: "word",
+          transformType: "toggle",
+          textType: "optional",
+          editable: true,
+          editMode: "toggle",
+          options: ["保留证据", "删除证据"],
+          riskTag: "none",
+          riskAction: ["none"],
+          userTip: "非争议解决、调查类案件可删除“证据”，这是模板内置可选项，不需要额外申请。",
+          systemAction: "renderOptionalToggle",
+          exportToWord: true
+        },
+        {
+          clauseId: "CLAUSE_4_COMPLETION_TIMELINE",
+          clauseTitle: "第4条 完成时限",
+          priority: 780,
+          anchorText: "按照约定的时限/本项目的时间表",
+          targetText: "按照约定的时限/本项目的时间表",
+          rangeType: "sentence",
+          transformType: "dropdown",
+          textType: "selectable",
+          editable: true,
+          editMode: "dropdown",
+          options: ["按照约定的时限", "本项目的时间表", "删去本条"],
+          riskTag: "guidance",
+          riskAction: ["sidebarTip"],
+          userTip: "完成时限可按实际项目安排选择，避免承诺无法控制的硬期限。",
+          systemAction: "renderInlineDropdown",
+          exportToWord: true
+        },
+        {
+          clauseId: "CLAUSE_5_FEE_PAYMENT",
+          clauseTitle: "第5条 费用及支付方式",
+          priority: 770,
+          anchorText: "费用及支付方式",
+          targetText: "【费用及支付方式】",
+          rangeType: "section",
+          transformType: "placeholder",
+          textType: "supplement",
+          editable: true,
+          editMode: "richText",
+          lockMode: "softLock",
+          riskTag: "bottomLineConcern",
+          riskAction: riskActionsForBottomLine,
+          userTip: "请关注小时费率、结果收费、预付费和账期安排；如最终版本存在特殊安排，用印前发起突破申请。",
+          systemAction: "renderFeeRichText",
+          exportToWord: true
+        },
+        {
+          clauseId: "CLAUSE_6_CONFIDENTIALITY",
+          clauseTitle: "第6条 保密义务",
+          priority: 760,
+          anchorText: "保密义务",
+          targetText: "保密义务",
+          rangeType: "section",
+          transformType: "softLock",
+          textType: "standard",
+          editable: true,
+          editMode: "inline",
+          lockMode: "softLock",
+          riskTag: "bottomLineConcern",
+          riskAction: riskActionsForBottomLine,
+          userTip: "特殊保密制度、防火墙、网络安全审计等安排需要在用印前重点确认。",
+          systemAction: "softLockWithSidebarTip",
+          exportToWord: true
+        },
+        {
+          clauseId: "CLAUSE_8_CONFLICT",
+          clauseTitle: "第8条 利益冲突",
+          priority: 750,
+          anchorText: "利益冲突",
+          targetText: "利益冲突",
+          rangeType: "section",
+          transformType: "softLock",
+          textType: "standard",
+          editable: true,
+          editMode: "inline",
+          lockMode: "softLock",
+          riskTag: "bottomLineRule",
+          riskAction: riskActionsForBottomLine,
+          userTip: "请关注客户等级、预计费用、利冲限制范围；全所受限或限制承接竞争对手等安排需特别确认。",
+          systemAction: "softLockWithBreakthroughEntry",
+          exportToWord: true
+        },
+        {
+          clauseId: "CLAUSE_9_LIABILITY",
+          clauseTitle: "第9条 解除、赔偿与违约责任",
+          priority: 740,
+          anchorText: "协议解除与违约责任",
+          targetText: "赔偿责任、违约责任",
+          rangeType: "section",
+          transformType: "softLock",
+          textType: "standard",
+          editable: true,
+          editMode: "inline",
+          lockMode: "softLock",
+          riskTag: "bottomLineRule",
+          riskAction: riskActionsForBottomLine,
+          userTip: "请关注赔偿责任限额和固定金额违约金；如客户要求明显偏离模板，用印前再确认是否需要突破申请。",
+          systemAction: "softLockWithBreakthroughEntry",
+          exportToWord: true
+        },
+        {
+          clauseId: "CLAUSE_17_TERM",
+          clauseTitle: "第17条 协议有效期和委托期间",
+          priority: 730,
+          anchorText: "本协议的有效期至【*】年【*】月【*】日/世辉完成本协议第二条所涉之法律服务时止",
+          targetText: "协议有效期",
+          rangeType: "sentence",
+          transformType: "dropdown",
+          textType: "selectable",
+          editable: true,
+          editMode: "dropdown",
+          options: ["至指定日期止", "至世辉完成本协议第二条所涉之法律服务时止", "双方另行书面确认的期限"],
+          lockMode: "softLock",
+          riskTag: "bottomLineConcern",
+          riskAction: riskActionsForBottomLine,
+          userTip: "协议有效期和委托期间影响服务义务持续时间；境内外上市项目可按行业惯例适当调整。",
+          systemAction: "renderTermDropdownWithSoftLock",
+          exportToWord: true
+        },
+        {
+          clauseId: "SIGNATURE_SHIHUI_ENTITY",
+          clauseTitle: "签字页世辉主体",
+          priority: 720,
+          anchorText: "北京世辉律师事务所/北京世辉（上海）律师事务所/北京世辉（深圳）律师事务所【根据实际情况选择一项】（公章）",
+          targetText: "世辉签署主体",
+          rangeType: "sentence",
+          transformType: "dropdown",
+          textType: "selectable",
+          editable: true,
+          editMode: "dropdown",
+          options: shihuiEntityOptions.map(item => `${item.label}（公章）`),
+          riskTag: "none",
+          riskAction: ["none"],
+          userTip: "签字页世辉主体可默认跟随文首世辉主体，但允许单独修改。",
+          systemAction: "syncSignatureEntity",
+          linkedFields: ["PARTY_SHIHUI_ENTITY"],
+          exportToWord: true
+        }
+      ];
+      const hiddenPromptIds = new Set(["p0","p3","p5","p13","p74","p112","p114","p116","p118","p120","p128","p134","p136","p138","p140","p142","p148","p156","p158","p160","p162","p164","p166","p168","p206","p208","p210","p212","p214","p216","p218"]);
       let selectedStandard = null;
       let activeStandardClause = null;
       let standardReports = {};
+      let pendingBottomLineEditTarget = null;
+      const bottomLinePatterns = [
+        { key: "client", label: "底线关注", test: /委托人名称|委托人地址|客户范围|委托人和世辉单称|一方|双方/ },
+        { key: "relationship", label: "底线关注", test: /委托关系|客户范围|关联方|集团主体/ },
+        { key: "scope", label: "底线关注", test: /服务范围|委托事项|法律服务范围/ },
+        { key: "fee", label: "底线关注", test: /费用及支付方式|律师费|账期|支付方式|预付费/ },
+        { key: "confidentiality", label: "底线关注", test: /保密义务|保密/ },
+        { key: "conflict", label: "底线关注", test: /利益冲突|利冲/ },
+        { key: "liability", label: "底线关注", test: /协议解除与违约责任|赔偿责任|违约责任|赔偿|违约金|责任限制/ },
+        { key: "term", label: "底线关注", test: /协议有效期和委托期间|有效期|委托期间/ }
+      ];
 
       function escapeHtml(value) {
         return String(value).replace(/[&<>"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[ch]));
       }
-      function choice(options) {
-        return `<select class="inline-choice">${options.map(o => `<option>${escapeHtml(o)}</option>`).join("")}</select>`;
+      function ruleOptions(rule) {
+        return (rule?.options || []).map(option => typeof option === "string" ? option : option.label || option.address || "");
+      }
+      function selectControl(options, ruleId = "") {
+        const safeOptions = (options || []).filter(Boolean);
+        return `<select class="inline-select" data-rule-id="${escapeHtml(ruleId)}">${safeOptions.map((option, index) => `<option ${index === 0 ? "selected" : ""}>${escapeHtml(option)}</option>`).join("")}</select><span class="preview-text">${escapeHtml(safeOptions[0] || "")}</span>`;
+      }
+      function editableSpan(label, className = "inline-fill", attrs = "") {
+        return `<span class="${className}" contenteditable="true" ${attrs}>${escapeHtml(label)}</span>`;
+      }
+      function optionalToggle(text, ruleId = "") {
+        return `<button type="button" class="optional-toggle" data-rule-id="${escapeHtml(ruleId)}" data-text="${escapeHtml(text)}" onclick="toggleOptionalText(this)">${escapeHtml(text)}</button>`;
+      }
+      function toggleOptionalText(button) {
+        button.classList.toggle("is-removed");
+        button.textContent = button.classList.contains("is-removed") ? `已删：${button.dataset.text}` : button.dataset.text;
+        preparePreviewMirrors();
+      }
+      function findClauseRuleById(id) {
+        const idMap = {
+          party_block: "PARTY_CLIENT_BLOCK",
+          scope_block: "CLAUSE_2_SERVICE_SCOPE",
+          fee_block: "CLAUSE_5_FEE_PAYMENT",
+          recital_options: "RECITAL_PROJECT_BACKGROUND",
+          p7: "DOC_TITLE_AGREEMENT_TYPE",
+          p15: "PARTY_SHIHUI_ENTITY",
+          p16: "PARTY_SHIHUI_ADDRESS",
+          p54: "CLAUSE_1_SERVICE_MODE",
+          p56: "CLAUSE_1_SERVICE_MODE",
+          p62: "CLAUSE_1_SERVICE_MODE",
+          p66: "CLAUSE_1_SUBCONTRACT_BRANCH",
+          p82: "CLAUSE_3_CLIENT_DUTY_EVIDENCE",
+          p98: "CLAUSE_4_COMPLETION_TIMELINE",
+          p110: "CLAUSE_5_FEE_PAYMENT",
+          p124: "CLAUSE_6_CONFIDENTIALITY",
+          p132: "CLAUSE_8_CONFLICT",
+          p170: "CLAUSE_9_LIABILITY",
+          p172: "CLAUSE_9_LIABILITY",
+          p178: "CLAUSE_9_LIABILITY",
+          p190: "CLAUSE_9_LIABILITY",
+          p198: "CLAUSE_9_LIABILITY",
+          p200: "CLAUSE_9_LIABILITY",
+          p202: "CLAUSE_9_LIABILITY",
+          p250: "CLAUSE_17_TERM",
+          p273: "SIGNATURE_SHIHUI_ENTITY"
+        };
+        return clauseRules_v1_2.find(rule => rule.clauseId === idMap[id]);
+      }
+      function findRuleForText(text = "", id = "", type = "") {
+        const direct = findClauseRuleById(id);
+        if (direct) return direct;
+        const candidates = clauseRules_v1_2
+          .filter(rule => rule.anchorText && text.includes(rule.anchorText))
+          .sort((a, b) => (b.priority || 0) - (a.priority || 0));
+        if (candidates[0]) return candidates[0];
+        if (type === "blue") return templateRules_v1_2.find(rule => rule.ruleId === "TPL_BLUE_INTERNAL_PROMPT");
+        return templateRules_v1_2.find(rule => rule.isFallback);
+      }
+      function bottomLineRuleFromKey(key) {
+        const map = {
+          client: "PARTY_CLIENT_BLOCK",
+          relationship: "CLAUSE_1_SERVICE_MODE",
+          scope: "CLAUSE_2_SERVICE_SCOPE",
+          fee: "CLAUSE_5_FEE_PAYMENT",
+          confidentiality: "CLAUSE_6_CONFIDENTIALITY",
+          conflict: "CLAUSE_8_CONFLICT",
+          liability: "CLAUSE_9_LIABILITY",
+          term: "CLAUSE_17_TERM"
+        };
+        return clauseRules_v1_2.find(rule => rule.clauseId === map[key]);
+      }
+      function choice(options, ruleId = "") {
+        return selectControl(options, ruleId);
       }
       function applyKnownChoices(text) {
+        const titleRule = clauseRules_v1_2.find(rule => rule.clauseId === "DOC_TITLE_AGREEMENT_TYPE");
+        const entityRule = clauseRules_v1_2.find(rule => rule.clauseId === "PARTY_SHIHUI_ENTITY");
+        const addressRule = clauseRules_v1_2.find(rule => rule.clauseId === "PARTY_SHIHUI_ADDRESS");
+        const serviceModeRule = clauseRules_v1_2.find(rule => rule.clauseId === "CLAUSE_1_SERVICE_MODE");
+        const branchRule = clauseRules_v1_2.find(rule => rule.clauseId === "CLAUSE_1_SUBCONTRACT_BRANCH");
+        const timelineRule = clauseRules_v1_2.find(rule => rule.clauseId === "CLAUSE_4_COMPLETION_TIMELINE");
+        const termRule = clauseRules_v1_2.find(rule => rule.clauseId === "CLAUSE_17_TERM");
+        const signatureEntityRule = clauseRules_v1_2.find(rule => rule.clauseId === "SIGNATURE_SHIHUI_ENTITY");
         return text
-          .replaceAll("常年法律顾问协议/专项法律服务协议", choice(["常年法律顾问协议", "专项法律服务协议"]))
-          .replaceAll("本《常年法律顾问协议》/《专项法律服务协议》", `本${choice(["《常年法律顾问协议》", "《专项法律服务协议》"])}`)
-          .replaceAll("北京世辉律师事务所/北京世辉（上海）律师事务所/北京世辉（深圳）律师事务所", choice(["北京世辉律师事务所", "北京世辉（上海）律师事务所", "北京世辉（深圳）律师事务所"]))
-          .replaceAll("北京市朝阳区建国门外大街2号北京银泰中心C座42-43层/上海市浦东新区富城路99号震旦国际大楼8层/深圳市南山区粤海街道高新南十道16号金地威新中心A座36层3601", choice(["北京市朝阳区建国门外大街2号北京银泰中心C座42-43层", "上海市浦东新区富城路99号震旦国际大楼8层", "深圳市南山区粤海街道高新南十道16号金地威新中心A座36层3601"]))
-          .replaceAll("提供相关法律服务/担任委托人的常年法律顾问", choice(["提供相关法律服务", "担任委托人的常年法律顾问"]))
-          .replaceAll("相关的法律服务/担任委托人的常年法律顾问", choice(["相关的法律服务", "担任委托人的常年法律顾问"]))
-          .replaceAll("总所/其他分所", choice(["总所", "其他分所"]))
-          .replaceAll("按照约定的时限/本项目的时间表", choice(["按照约定的时限", "本项目的时间表"]))
-          .replaceAll("到【*】年【*】月【*】日/世辉完成本协议第二条所涉之法律服务时止", `到【*】年【*】月【*】日${choice(["到期终止", "世辉完成本协议第二条所涉之法律服务时止"])}`);
+          .replaceAll("常年法律顾问协议/专项法律服务协议", choice(ruleOptions(titleRule), titleRule.clauseId))
+          .replaceAll("本《常年法律顾问协议》/《专项法律服务协议》", `本${choice(["《常年法律顾问协议》", "《专项法律服务协议》"], titleRule.clauseId)}`)
+          .replaceAll("北京世辉律师事务所/北京世辉（上海）律师事务所/北京世辉（深圳）律师事务所【根据实际情况选择一项】（公章）", choice(ruleOptions(signatureEntityRule), signatureEntityRule.clauseId))
+          .replaceAll("北京世辉律师事务所/北京世辉（上海）律师事务所/北京世辉（深圳）律师事务所", choice(ruleOptions(entityRule), entityRule.clauseId))
+          .replaceAll("北京市朝阳区建国门外大街2号北京银泰中心C座42-43层/上海市浦东新区富城路99号震旦国际大楼8层/深圳市南山区粤海街道高新南十道16号金地威新中心A座36层3601", choice(ruleOptions(addressRule), addressRule.clauseId))
+          .replaceAll("提供相关法律服务/担任委托人的常年法律顾问", choice(ruleOptions(serviceModeRule), serviceModeRule.clauseId))
+          .replaceAll("相关的法律服务/担任委托人的常年法律顾问", choice(["相关的法律服务", "担任委托人的常年法律顾问"], serviceModeRule.clauseId))
+          .replaceAll("总所/其他分所", choice(ruleOptions(branchRule), branchRule.clauseId))
+          .replaceAll("按照约定的时限/本项目的时间表", choice(ruleOptions(timelineRule).filter(option => option !== "删去本条"), timelineRule.clauseId))
+          .replaceAll("到【*】年【*】月【*】日/世辉完成本协议第二条所涉之法律服务时止", `到【*】年【*】月【*】日${choice(ruleOptions(termRule), termRule.clauseId)}`);
       }
       function renderInline(text, isBlue) {
         let escaped = escapeHtml(text);
         escaped = escaped.replaceAll("【根据实际情况选择一项】", "");
         escaped = applyKnownChoices(escaped);
-        escaped = escaped.replace("于【*】年【*】月【*】日订立", '于 <input class="inline-date" id="homeAgreementDate" type="date" onchange="syncSignatureDates()" /> 订立');
-        escaped = escaped.replace("日期：____年____月____日", '日期：<input class="inline-date signature-date" type="date" />');
+        escaped = escaped.replace("信息、文件、材料和证据", `信息、文件、材料和${optionalToggle("证据", "CLAUSE_3_CLIENT_DUTY_EVIDENCE")}`);
+        escaped = escaped.replace("于【*】年【*】月【*】日订立", '于 <span class="inline-date" id="homeAgreementDate" contenteditable="true">____年____月____日</span> 订立');
+        escaped = escaped.replace("日期：____年____月____日", '日期：<span class="inline-date signature-date" contenteditable="true">____年____月____日</span>');
         if (!isBlue || text.includes("【*】")) {
           escaped = escaped.replace(/【([^】]+)】/g, (_, inner) => {
             const clean = inner.trim();
             const editable = clean.includes("*") || clean.length <= 12 || /委托人|首轮|并购|15/.test(clean);
             if (!editable) return `【${escapeHtml(clean)}】`;
             const label = clean === "*" ? "填写" : clean;
-            return `<span class="inline-fill" contenteditable="true" title="可填写：${escapeHtml(clean)}">${escapeHtml(label)}</span>`;
+            return editableSpan(label, "inline-fill", `title="可填写：${escapeHtml(clean)}"`);
           });
         }
         return escaped;
       }
+      function getBottomLineInfo(text, id = "") {
+        const configuredRule = findRuleForText(text, id);
+        if (configuredRule?.riskTag === "bottomLineConcern" || configuredRule?.riskTag === "bottomLineRule") {
+          return { key: configuredRule.clauseId, label: configuredRule.riskTag === "bottomLineRule" ? "底线规则" : "底线关注", rule: configuredRule, test: /.*/ };
+        }
+        if (["party_block", "scope_block", "fee_block"].includes(id)) {
+          const map = { party_block: bottomLinePatterns[0], scope_block: bottomLinePatterns[2], fee_block: bottomLinePatterns[3] };
+          return map[id];
+        }
+        return bottomLinePatterns.find(item => item.test.test(text || ""));
+      }
+      function getLineOriginalText(line) {
+        return line?.dataset.text || line?.innerText?.replace(/底线关注|底线规则|已修改，请确认是否涉及底线突破|已修改，请在用印前确认是否需申请/g, "").trim() || "";
+      }
+      function bottomLineMarkers(info) {
+        return info ? `<span class="bottom-line-marker" contenteditable="false"></span><span class="modified-marker" contenteditable="false">已修改，请在用印前确认是否需申请</span>` : "";
+      }
       function renderTemplateAgreement() {
         const body = document.getElementById("templateBody");
-        const hiddenBlueIds = new Set(["p0","p3","p5","p13","p74","p112","p114","p116","p118","p120","p128","p134","p136","p138","p140","p142","p148","p156","p158","p160","p162","p164","p166","p168","p206","p208","p210","p212","p214","p216","p218"]);
+        const hiddenBlueIds = hiddenPromptIds;
         const visibleParas = templateParas.filter(p => !hiddenBlueIds.has(p.id));
         const mergedParas = [];
         for (let i = 0; i < visibleParas.length; i++) {
@@ -1822,25 +2543,29 @@
         body.innerHTML = mergedParas.map((p, index) => {
           const isBlue = p.type === "blue";
           const text = p.text;
+          const rule = findRuleForText(text, p.id, p.type);
+          const dataRuleAttr = ` data-rule-id="${escapeHtml(rule?.clauseId || rule?.ruleId || "")}" data-rule-priority="${escapeHtml(rule?.priority || "")}"`;
           if (p.type === "free_multiline") {
             const shortTip = p.id === "scope_block"
               ? `<span class="inline-tip">服务范围：请明确委托事项和服务边界</span>`
               : p.id === "fee_block"
                 ? `<span class="inline-tip">费用及支付方式：请注意最低费率、账期和付款节点要求</span>`
                 : "";
-            return `<div class="template-line free-multiline" data-id="${p.id}" data-text="${escapeHtml(text)}">${shortTip}<div class="multi-fill" contenteditable="true" tabindex="0">${escapeHtml(text)}</div></div>`;
+            const bottomInfo = getBottomLineInfo(text, p.id);
+            return `<div class="template-line free-multiline${bottomInfo ? " bottom-line-attention" : ""}" data-bottom-key="${bottomInfo?.key || ""}" data-id="${p.id}" data-text="${escapeHtml(text)}"${dataRuleAttr}>${shortTip}${bottomLineMarkers(bottomInfo)}<div class="multi-fill" contenteditable="true" tabindex="0">${renderInline(text, false)}</div></div>`;
           }
           if (p.id === "p21") {
-            return `<div class="template-line optional-clause" data-id="${p.id}" data-default-text="${escapeHtml(text)}"><div class="optional-label">可选条款，适用时填写；不适用时下载正式版可隐藏</div><div class="multi-fill" contenteditable="true">${escapeHtml(text)}</div></div>`;
+            return `<div class="template-line optional-clause" data-id="${p.id}" data-default-text="${escapeHtml(text)}"><div class="optional-label">可选条款，适用时填写；不适用时下载正式版可隐藏</div><div class="multi-fill" contenteditable="true">${renderInline(text, false)}</div></div>`;
           }
           if (p.type === "option_group") {
+            const recitalRule = findClauseRuleById("recital_options");
             const options = p.options.slice(0, -1).map((option, optionIndex) => `
               <label class="option-row">
                 <input type="radio" name="recitalOption" ${optionIndex === 0 ? "checked" : ""} />
                 <span>${renderInline(option, false)}</span>
               </label>
             `).join("");
-            return `<div class="template-line body-editable" data-id="${p.id}">
+            return `<div class="template-line body-editable" data-id="${p.id}" data-text="${escapeHtml(recitalRule?.targetText || "鉴于事项")}" data-rule-id="${escapeHtml(recitalRule?.clauseId || "")}">
               <div class="option-group">
                 <div class="option-group-title">鉴于事项，以下选项择一适用：</div>
                 ${options}
@@ -1864,27 +2589,76 @@
               ? '<span class="clause-status submitted">审批中</span>'
               : "";
           const cls = bodyEditable ? "body-editable" : isBlue ? "blue-note" : `${baseClass}${heading ? " heading" : ""}${title ? " template-title-line" : ""}${reportClass}`;
-          const editableAttr = freeLine ? ' contenteditable="true"' : "";
-          return `<div class="template-line ${cls}"${editableAttr} data-id="${p.id}" data-text="${escapeHtml(text)}">${reportStatusTag}${renderInline(text, isBlue)}</div>`;
+          const bottomInfo = !isBlue ? getBottomLineInfo(text, p.id) : null;
+          const editableAttr = !isBlue || freeLine || bodyEditable ? ' contenteditable="true"' : "";
+          return `<div class="template-line ${cls}${bottomInfo ? " bottom-line-attention" : ""}"${editableAttr} data-bottom-key="${bottomInfo?.key || ""}" data-id="${p.id}" data-text="${escapeHtml(text)}"${dataRuleAttr}>${reportStatusTag}${renderInline(text, isBlue)}${bottomLineMarkers(bottomInfo)}</div>`;
         }).join("");
         document.querySelectorAll(".template-line").forEach(el => {
           el.addEventListener("click", () => selectTemplateClause(el));
           el.addEventListener("focusin", () => selectTemplateClause(el));
         });
+        bindBottomLineEditingGuards(body);
         removeStandardTools(body);
         preparePreviewMirrors(body);
       }
 
+      function bindBottomLineEditingGuards(root = document) {
+        root.querySelectorAll(".bottom-line-attention").forEach(line => {
+          if (line.dataset.bottomGuardBound) return;
+          line.dataset.bottomGuardBound = "true";
+          line.addEventListener("beforeinput", event => {
+            if (document.body.classList.contains("preview-mode")) return;
+            if (line.dataset.bottomWarningAccepted === "true") return;
+            pendingBottomLineEditTarget = line;
+            event.preventDefault();
+            selectTemplateClause(line);
+            document.getElementById("bottomLineEditModal").classList.add("show");
+          });
+          line.addEventListener("input", () => {
+            if (line.dataset.bottomWarningAccepted === "true") {
+              line.classList.add("bottom-line-modified");
+              renderBreakthroughAction(line);
+            }
+          });
+        });
+      }
+
+      function continueBottomLineEdit() {
+        if (pendingBottomLineEditTarget) {
+          pendingBottomLineEditTarget.dataset.bottomWarningAccepted = "true";
+          pendingBottomLineEditTarget.focus();
+        }
+        closeModal("bottomLineEditModal");
+        toast("可继续编辑。本阶段不阻断A版生成；如需申请可在用印前处理。");
+      }
+
+      function applyBottomLineFromWarning() {
+        const target = pendingBottomLineEditTarget;
+        if (target) {
+          target.dataset.bottomWarningAccepted = "true";
+          activeStandardClause = target;
+          target.classList.add("selected-clause");
+        }
+        closeModal("bottomLineEditModal");
+        if (target) openStandardReportModal(target);
+      }
+
+      function cancelBottomLineEdit() {
+        pendingBottomLineEditTarget = null;
+        closeModal("bottomLineEditModal");
+      }
+
       function selectTemplateClause(el) {
         document.querySelectorAll(".template-line.selected-clause").forEach(item => item.classList.remove("selected-clause"));
-        updateClauseHint(el.dataset.text || el.innerText || "");
-        if (document.body.classList.contains("preview-mode") || !el.classList.contains("standard")) {
+        if (document.body.classList.contains("preview-mode") || !el.classList.contains("bottom-line-attention")) {
           activeStandardClause = null;
+          updateClauseHint(el.dataset.text || el.innerText || "");
           renderBreakthroughAction();
           return;
         }
         activeStandardClause = el;
         el.classList.add("selected-clause");
+        updateClauseHint(el.dataset.text || el.innerText || "");
         renderBreakthroughAction(el);
       }
 
@@ -1892,7 +2666,7 @@
         const wrap = document.getElementById("breakthroughAction");
         const button = document.getElementById("breakthroughButton");
         if (!wrap || !button) return;
-        if (!el || !el.classList.contains("standard")) {
+        if (!el || !el.classList.contains("bottom-line-attention")) {
           wrap.classList.remove("show");
           return;
         }
@@ -1911,7 +2685,7 @@
           renderBreakthroughAction(null);
           return;
         }
-        const next = document.querySelector(`.template-line.standard[data-id="${id}"]`);
+        const next = document.querySelector(`.template-line.bottom-line-attention[data-id="${id}"]`);
         activeStandardClause = next || null;
         if (next) next.classList.add("selected-clause");
         renderBreakthroughAction(next);
@@ -1930,7 +2704,7 @@
       }
 
       function openGeneralBreakthroughApplication() {
-        const target = activeStandardClause || document.querySelector(".template-line.standard");
+        const target = activeStandardClause || document.querySelector(".template-line.bottom-line-attention");
         if (target) {
           openStandardReportModal(target);
           return;
@@ -1988,7 +2762,7 @@
         refreshActiveStandardClause();
         renderRisks();
         renderBreakthroughStatus();
-        toast("底线突破申请已提交，当前状态：审批中。");
+        toast("突破申请已提交，当前状态：审批中。");
       }
 
       const steps = ["制作A版","B版上传与底线突破确认","签约确认人承诺","发起用印申请","上传C版"];
@@ -2028,11 +2802,41 @@
       ];
       const risks = [{ clause: "第7条 保密义务", level: "中风险", stage: "A版阶段", reason: "客户集团合规政策要求统一保密期限。", status: "底线突破：已通过" }];
       const breakthroughStatusMeta = {
-        none: { label: "无申请", hint: "无底线突破申请时，可继续发起用印。", blocking: false },
-        pending: { label: "审批中", hint: "底线突破申请审批中，不可发起用印。", blocking: true },
-        approved: { label: "已通过", hint: "底线突破申请已通过，可继续发起用印。", blocking: false },
-        rejected: { label: "不通过", hint: "底线突破申请未通过，不可发起用印。", blocking: true },
-        withdrawn: { label: "已撤回", hint: "申请已撤回，可继续发起用印；签约确认人需承诺当前版本不存在底线突破。", blocking: false }
+        none: {
+          label: "无申请",
+          hint: "无底线突破申请时，可继续发起用印。",
+          blocking: false,
+          commitMessage: "当前合同暂无底线突破申请。如当前待用印版本存在突破事务所底线规则的事项，请在发起用印前完成底线突破申请审批。",
+          actions: ["start"]
+        },
+        pending: {
+          label: "审批中",
+          hint: "底线突破申请审批中，不可发起用印。",
+          blocking: true,
+          commitMessage: "当前合同存在审批中的底线突破申请。你可以完成签约确认，但在审批完成前不可发起用印。",
+          actions: ["view"]
+        },
+        approved: {
+          label: "已通过",
+          hint: "底线突破申请已通过，可继续发起用印。",
+          blocking: false,
+          commitMessage: "当前合同已有通过的底线突破申请。发起用印时将自动关联审批记录。",
+          actions: ["view"]
+        },
+        rejected: {
+          label: "未通过",
+          hint: "底线突破申请未通过，不可发起用印。",
+          blocking: true,
+          commitMessage: "当前底线突破申请未通过。请修改待用印版本或重新发起申请；发起用印时将被阻断。",
+          actions: ["view", "restart"]
+        },
+        withdrawn: {
+          label: "已撤回",
+          hint: "申请已撤回，可继续发起用印；签约确认人需承诺当前版本不存在底线突破。",
+          blocking: false,
+          commitMessage: "底线突破申请已撤回。签约确认人需确认当前待用印版本不存在底线突破事项。",
+          actions: ["view", "restart"]
+        }
       };
 
       function getBreakthroughMeta() {
@@ -2043,6 +2847,24 @@
         const meta = getBreakthroughMeta();
         [document.getElementById("bBreakthroughStatus"), document.getElementById("commitBreakthroughStatus"), document.getElementById("sealBreakthroughStatus")]
           .forEach(el => { if (el) el.textContent = meta.label; });
+        const cardStatus = document.getElementById("commitBreakthroughCardStatus");
+        const summary = document.getElementById("commitBreakthroughSummary");
+        const submitter = document.getElementById("commitBreakthroughSubmitter");
+        const submittedAt = document.getElementById("commitBreakthroughSubmittedAt");
+        const message = document.getElementById("commitBreakthroughMessage");
+        const actions = document.getElementById("commitBreakthroughActions");
+        if (cardStatus) cardStatus.textContent = meta.label;
+        if (summary) summary.textContent = breakthroughReviewStatus === "none" ? "暂无" : "第9条 协议解除与违约责任相关底线突破申请";
+        if (submitter) submitter.textContent = breakthroughReviewStatus === "none" ? "-" : "秘书A";
+        if (submittedAt) submittedAt.textContent = breakthroughReviewStatus === "none" ? "-" : "2026-05-28 15:30";
+        if (message) message.textContent = meta.commitMessage;
+        if (actions) {
+          actions.innerHTML = meta.actions.map(action => {
+            if (action === "start") return `<button class="btn danger" type="button" onclick="openCommitBreakthroughApplication()">发起底线突破申请</button>`;
+            if (action === "restart") return `<button class="btn danger" type="button" onclick="openCommitBreakthroughApplication()">重新发起申请</button>`;
+            return `<button class="btn" type="button" onclick="viewCommitBreakthroughRecords()">查看申请记录</button>`;
+          }).join("");
+        }
         const hint = document.getElementById("sealBreakthroughHint");
         if (hint) {
           hint.textContent = meta.hint;
@@ -2056,6 +2878,15 @@
         breakthroughReviewStatus = breakthroughStatusMeta[status] ? status : "none";
         renderBreakthroughStatus();
         renderSealPage();
+      }
+
+      function openCommitBreakthroughApplication() {
+        currentBReportTarget = "supplement";
+        document.getElementById("bModal").classList.add("show");
+      }
+
+      function viewCommitBreakthroughRecords() {
+        toast(breakthroughReviewStatus === "none" ? "暂无底线突破申请记录。" : "底线突破申请记录：第9条 协议解除与违约责任，当前状态：" + getBreakthroughMeta().label);
       }
 
       function openMatterModal() {
@@ -2420,13 +3251,16 @@
         if (control.matches("select")) {
           return control.options[control.selectedIndex]?.text || "";
         }
+        if (control.classList?.contains("optional-toggle")) {
+          return control.classList.contains("is-removed") ? "" : control.dataset.text || control.textContent?.trim() || "";
+        }
         if (control.type === "date") {
           return formatPreviewDate(control.value);
         }
         return control.value || control.textContent?.trim() || "____";
       }
       function preparePreviewMirrors(root = document) {
-        root.querySelectorAll("#templateBody .inline-choice, #templateBody .inline-date").forEach(control => {
+        root.querySelectorAll("#templateBody .inline-choice, #templateBody .inline-date, #templateBody .inline-select, #templateBody .optional-toggle").forEach(control => {
           let mirror = control.nextElementSibling;
           if (!mirror || !mirror.classList.contains("preview-text")) {
             mirror = document.createElement("span");
@@ -2476,6 +3310,7 @@
         document.getElementById("editModeBtn").classList.toggle("active", !enabled);
         document.getElementById("previewModeBtn").classList.toggle("active", enabled);
         document.querySelectorAll("[contenteditable]").forEach(el => {
+          if (el.classList.contains("bottom-line-marker") || el.classList.contains("modified-marker")) return;
           el.setAttribute("contenteditable", enabled ? "false" : "true");
         });
       }
@@ -2492,16 +3327,25 @@
         clone.querySelectorAll(".inline-tip").forEach(el => el.remove());
         clone.querySelectorAll(".apply-tag").forEach(el => el.remove());
         clone.querySelectorAll(".standard-tools").forEach(el => el.remove());
+        clone.querySelectorAll(".bottom-line-marker, .modified-marker").forEach(el => el.remove());
         clone.querySelectorAll(".preview-text").forEach(el => el.remove());
         clone.querySelectorAll(".optional-clause").forEach(clause => {
           if (isOptionalClauseEmpty(clause)) clause.remove();
         });
-        clone.querySelectorAll(".inline-choice").forEach(select => {
+        clone.querySelectorAll(".inline-select").forEach(select => {
           const text = document.createTextNode(select.options[select.selectedIndex]?.text || "");
           select.replaceWith(text);
         });
+        clone.querySelectorAll(".inline-choice").forEach(select => {
+          const text = document.createTextNode(select.options ? (select.options[select.selectedIndex]?.text || "") : (select.textContent.trim() || ""));
+          select.replaceWith(text);
+        });
+        clone.querySelectorAll(".optional-toggle").forEach(button => {
+          const text = document.createTextNode(button.classList.contains("is-removed") ? "" : button.dataset.text || button.textContent.trim());
+          button.replaceWith(text);
+        });
         clone.querySelectorAll(".inline-date").forEach(input => {
-          const text = document.createTextNode(formatPreviewDate(input.value));
+          const text = document.createTextNode(input.value ? formatPreviewDate(input.value) : (input.textContent.trim() || "____年____月____日"));
           input.replaceWith(text);
         });
         clone.querySelectorAll(".inline-fill").forEach(field => {
@@ -2526,54 +3370,74 @@
         setTimeout(() => el.classList.remove("show"), 1800);
       }
       function syncSignatureDates() {
-        const value = document.getElementById("homeAgreementDate")?.value || "";
+        const source = document.getElementById("homeAgreementDate");
+        const value = source?.value || source?.textContent?.trim() || "";
         document.querySelectorAll(".signature-date").forEach(input => {
-          if (!input.dataset.manualChanged) input.value = value;
+          if (!input.dataset.manualChanged) {
+            if ("value" in input) input.value = value;
+            else input.textContent = value;
+          }
         });
         if (document.body.classList.contains("preview-mode")) preparePreviewMirrors();
+      }
+      function syncShihuiEntitySelection(select) {
+        const selected = shihuiEntityOptions.find(item => item.label === select.value);
+        if (!selected) return;
+        document.querySelectorAll('.inline-select[data-rule-id="PARTY_SHIHUI_ADDRESS"]').forEach(addressSelect => {
+          if (!addressSelect.dataset.manualChanged) addressSelect.value = selected.address;
+        });
+        document.querySelectorAll('.inline-select[data-rule-id="SIGNATURE_SHIHUI_ENTITY"]').forEach(entitySelect => {
+          if (!entitySelect.dataset.manualChanged) entitySelect.value = `${selected.label}（公章）`;
+        });
       }
       document.addEventListener("change", event => {
         if (event.target.classList && event.target.classList.contains("signature-date")) {
           event.target.dataset.manualChanged = "true";
         }
-        if (event.target.matches?.("#templateBody .inline-choice, #templateBody .inline-date")) {
+        if (event.target.matches?.("#templateBody .inline-choice, #templateBody .inline-date, #templateBody .inline-select")) {
+          if (event.target.dataset.ruleId === "PARTY_SHIHUI_ADDRESS" || event.target.dataset.ruleId === "SIGNATURE_SHIHUI_ENTITY") {
+            event.target.dataset.manualChanged = "true";
+          }
+          if (event.target.dataset.ruleId === "PARTY_SHIHUI_ENTITY") syncShihuiEntitySelection(event.target);
           preparePreviewMirrors();
         }
       });
       document.addEventListener("input", event => {
+        if (event.target.matches?.("#templateBody .inline-date, #templateBody .inline-choice, #templateBody .inline-select")) {
+          if (event.target.id === "homeAgreementDate") syncSignatureDates();
+          preparePreviewMirrors();
+        }
         if (event.target.closest?.(".optional-clause")) {
           updateOptionalClausePreviewState();
         }
       });
       function updateClauseHint(text) {
-        const instruction = document.getElementById("hintInstruction");
         const risk = document.getElementById("hintRisk");
-        const action = document.getElementById("hintAction");
-        if (!instruction || !risk || !action) return;
-        if (/服务范围/.test(text)) {
-          instruction.textContent = "请在服务范围条款处填写本次委托事项、服务边界、交付内容和不包含事项，可多行填写。";
-          risk.textContent = "服务范围应明确委托事项和工作边界，避免过宽表述导致利冲范围或责任范围扩大。";
-          action.textContent = "如客户要求覆盖集团、关联方或未来不确定事项，请在B版风险确认时重点核查。";
+        if (!risk) return;
+        const selected = document.querySelector(".template-line.selected-clause");
+        const rule = selected ? findRuleForText(selected.dataset.text || text, selected.dataset.id, selected.classList.contains("blue-note") ? "blue" : "") : findRuleForText(text);
+        if (rule && !rule.isFallback && rule.userTip) {
+          risk.textContent = rule.userTip;
+          return;
+        }
+        if (/委托人名称|委托人地址|客户范围|委托人和世辉|一方|双方/.test(text)) {
+          risk.textContent = "客户主体范围可能影响利冲识别和后续服务边界。若委托人范围包括集团、关联方或未来主体，建议在用印前确认是否需要额外申请。";
+        } else if (/委托关系|关联方|集团主体/.test(text)) {
+          risk.textContent = "客户范围过宽可能扩大服务边界、保密义务和利冲限制范围。最终版本如涉及特殊审批事项，仅在发起用印前作为卡点处理。";
+        } else if (/服务范围|委托事项|法律服务范围/.test(text)) {
+          risk.textContent = "服务范围应清楚界定委托事项、工作范围、服务期限和不包含事项，避免过宽或不确定表述导致责任范围扩大。";
         } else if (/费用及支付方式|律师费|账期|预付费/.test(text)) {
-          instruction.textContent = "请填写收费方式、金额或计算方式、付款节点、账期、开票安排及办案费用承担范围。";
-          risk.textContent = "小时费率不得低于所内最低标准；账期不得超过管理办法规定期限；如存在低费率、超长账期或特殊付款安排，请发起底线突破申请。";
-          action.textContent = "A版可先生成底稿；正式合规审查在B版上传后完成。";
+          risk.textContent = "请关注收费方式、金额或计算方式、付款节点、账期、开票安排及办案费用承担范围。A版可继续编辑和生成，真正卡点在发起用印前。";
         } else if (/保密/.test(text)) {
-          instruction.textContent = "当前为保密义务相关条款，原则上保持所内标准表述。";
-          risk.textContent = "如客户要求特殊保密制度、防火墙、网络安全审计权或限制全所其他服务能力，可能触发底线风险。";
-          action.textContent = "如确需修改，请点击标准条款并发起底线突破申请。";
+          risk.textContent = "请关注特殊保密制度、防火墙、网络安全审计、限制全所服务能力等安排。普通文字调整无需申请；如涉及特殊安排，用印前完成申请审批。";
+        } else if (/利益冲突|利冲/.test(text)) {
+          risk.textContent = "利冲条款可能影响事务所后续承接其他客户或项目。请关注客户等级、预计费用、服务对象和限制范围。";
         } else if (/违约责任|赔偿|责任/.test(text)) {
-          instruction.textContent = "当前为责任限制或违约责任条款，属于重点标准条款。";
-          risk.textContent = "删除赔偿上限、接受固定违约金、扩大赔偿范围或接受无限责任，均可能触发底线风险。";
-          action.textContent = "如确需修改，请在B版风险确认阶段发起底线突破申请。";
-        } else if (/委托人名称|委托人地址|委托人/.test(text)) {
-          instruction.textContent = "请填写准确的客户签约主体名称、地址及简称。如客户范围包含关联方或集团主体，请写明范围。";
-          risk.textContent = "客户主体范围过宽可能影响利冲识别和后续服务边界。";
-          action.textContent = "如需覆盖关联方，请在服务范围或客户范围描述中同步明确。";
+          risk.textContent = "请关注赔偿责任限额、固定金额违约金、无限责任、扩大赔偿范围等事项。修改本身不阻断A版。";
+        } else if (/协议有效期|委托期间|有效期/.test(text)) {
+          risk.textContent = "请确认协议有效期、委托期间、自动续期或终止节点。超长服务期间或不明确终止条件可能影响收费、责任和利冲边界。";
         } else {
-          instruction.textContent = "当前为协议正文填写区域。请在挖空字段中填写对应内容；黑字标准条款原则上不可修改。";
-          risk.textContent = "该内容为所内标准条款，原则上不可修改。";
-          action.textContent = "如客户版本存在修改，请在B版风险确认阶段说明原因并留痕。";
+          risk.textContent = "普通文字调整不会在A版阶段触发审批；复杂风险识别进入合规后台，发起用印前再进行必要校验。";
         }
       }
       function renderABottomActions() {
@@ -2581,11 +3445,11 @@
         if (!el) return;
         const top = document.getElementById("aTopActions");
         if (!aGenerated) {
-          el.innerHTML = `<button class="btn" onclick="openGeneralBreakthroughApplication()">填写突破申请</button><button class="btn" onclick="toast('草稿已保存')">保存草稿</button><button class="btn" onclick="openFormalPreview()">预览正式版</button><button class="btn primary" onclick="generateA()">生成A版</button>`;
-          if (top) top.innerHTML = `<button class="btn" onclick="openGeneralBreakthroughApplication()">填写突破申请</button><button class="btn" onclick="toast('草稿已保存')">保存草稿</button><button class="btn primary" onclick="generateA()">生成A版</button>`;
+          el.innerHTML = `<button class="btn" onclick="openGeneralBreakthroughApplication()">填写突破申请</button><button class="btn" onclick="toast('草稿已保存')">保存草稿</button><button class="btn" onclick="openFormalPreview()">预览</button><button class="btn primary" onclick="generateA()">生成/下载A版</button><button class="btn primary" onclick="showPage('b')">进入上传待用印版本</button>`;
+          if (top) top.innerHTML = `<button class="btn" onclick="openGeneralBreakthroughApplication()">填写突破申请</button><button class="btn" onclick="toast('草稿已保存')">保存草稿</button><button class="btn primary" onclick="generateA()">生成/下载A版</button>`;
         } else {
-          el.innerHTML = `<button class="btn" onclick="openGeneralBreakthroughApplication()">填写突破申请</button><button class="btn primary" onclick="toast('A版已生成并开始下载')">下载A版</button><button class="btn primary" onclick="showPage('b')">进入上传B版</button>`;
-          if (top) top.innerHTML = `<button class="btn" onclick="openGeneralBreakthroughApplication()">填写突破申请</button><button class="btn primary" onclick="toast('A版已生成并开始下载')">下载A版</button><button class="btn primary" onclick="showPage('b')">进入上传B版</button>`;
+          el.innerHTML = `<button class="btn" onclick="openGeneralBreakthroughApplication()">填写突破申请</button><button class="btn" onclick="openFormalPreview()">预览</button><button class="btn primary" onclick="toast('A版已生成并开始下载')">生成/下载A版</button><button class="btn primary" onclick="showPage('b')">进入上传待用印版本</button>`;
+          if (top) top.innerHTML = `<button class="btn" onclick="openGeneralBreakthroughApplication()">填写突破申请</button><button class="btn primary" onclick="toast('A版已生成并开始下载')">生成/下载A版</button><button class="btn primary" onclick="showPage('b')">进入上传待用印版本</button>`;
         }
       }
       function generateA() {
