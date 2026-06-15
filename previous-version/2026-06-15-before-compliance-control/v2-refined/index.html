@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>法律服务协议管理</title>
+    <link rel="stylesheet" href="./styles.css?v=14" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div>
+          <h1>法律服务协议管理</h1>
+        </div>
+        <div class="topbar-actions">
+          <label class="search-box" aria-label="搜索客户、案件、案号、合同ID或签约确认人">
+            <span>⌕</span>
+            <input id="searchInput" type="search" placeholder="搜索客户/案件/案号/合同ID/签约确认人" />
+          </label>
+          <button class="primary-button" id="newContractButton" type="button">
+            <span>+</span>
+            新建法律服务协议
+          </button>
+          <a class="secondary-link" id="complianceReviewLink" href="./compliance-review.html">合规审查</a>
+        </div>
+      </header>
+
+      <main class="workspace">
+        <section class="main-panel">
+          <section class="view-switch" id="viewSwitch" aria-label="视图切换" hidden>
+            <button type="button" class="active" data-view="todo">我的待办</button>
+            <button type="button" data-view="global">全局合同管理</button>
+            <button type="button" data-view="risk">风险审查</button>
+          </section>
+
+          <div class="overview-heading">
+            <h2>今日需处理事项</h2>
+            <p>展示今天到期、即将超期或影响流程继续推进的事项</p>
+          </div>
+
+          <section class="task-grid" id="taskGrid" aria-label="今日需处理事项">
+            <button class="task-card" type="button" data-task-filter="todo">
+              <span class="task-label">待我处理</span>
+              <strong id="taskTodoCount">0</strong>
+            </button>
+            <button class="task-card" type="button" data-task-filter="pending-upload-b">
+              <span class="task-label">待上传B版</span>
+              <strong id="taskUploadBCount">0</strong>
+            </button>
+            <button class="task-card" type="button" data-task-filter="commitment-pending">
+              <span class="task-label">待签约确认人承诺</span>
+              <strong id="taskCommitmentCount">0</strong>
+            </button>
+            <button class="task-card" type="button" data-task-filter="seal-ready">
+              <span class="task-label">可用印</span>
+              <strong id="taskSealReadyCount">0</strong>
+            </button>
+            <button class="task-card" type="button" data-task-filter="pending-upload-c">
+              <span class="task-label">待上传C版</span>
+              <strong id="taskUploadCCount">0</strong>
+            </button>
+            <button class="task-card" type="button" data-task-filter="unlinked-over-5-days">
+              <span class="task-label">待补关联案件</span>
+              <strong id="taskUnlinkedCount">0</strong>
+            </button>
+          </section>
+
+          <section class="contract-section">
+            <div class="section-heading">
+              <div>
+                <h2 id="listTitle">我的合同操作台</h2>
+                <p>查看全部合同状态，并处理当前节点操作</p>
+              </div>
+              <div class="filter-row" aria-label="合同筛选">
+                <select id="statusFilter" aria-label="状态筛选">
+                  <option value="全部状态">全部状态</option>
+                  <option value="草稿中">草稿中</option>
+                  <option value="待制作A版">待制作A版</option>
+                  <option value="待上传B版">待上传B版</option>
+                  <option value="B版风险确认中">B版风险确认中</option>
+                  <option value="待签约确认人承诺">待签约确认人承诺</option>
+                  <option value="可用印">可用印</option>
+                  <option value="用印中">用印中</option>
+                  <option value="待上传C版">待上传C版</option>
+                  <option value="待事后审核">待事后审核</option>
+                  <option value="已归档">已归档</option>
+                  <option value="已撤回/已作废">已撤回/已作废</option>
+                  <option value="已被替换">已被替换</option>
+                </select>
+                <select id="riskFilter" aria-label="风险等级筛选">
+                  <option value="全部">全部风险</option>
+                  <option value="高">高风险</option>
+                  <option value="中">中风险</option>
+                  <option value="低">低风险</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="chip-row" aria-label="快捷筛选">
+              <button type="button" data-chip-filter="created-by-me">我创建的</button>
+              <button type="button" data-chip-filter="assisted-by-me">我协办的</button>
+              <button type="button" data-chip-filter="blocked-by-others">待他人处理</button>
+              <button type="button" data-chip-filter="customer-template">客户模板</button>
+              <button type="button" data-chip-filter="unlinked-case">未关联案件</button>
+            </div>
+
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>合同名称</th>
+                    <th>当前状态</th>
+                    <th>当前处理人</th>
+                    <th>下一步操作</th>
+                    <th>客户名称</th>
+                    <th>关联案件</th>
+                    <th>案件编号</th>
+                    <th>签约确认人</th>
+                    <th>当前版本</th>
+                    <th>更多操作</th>
+                    <th>更新时间</th>
+                  </tr>
+                </thead>
+                <tbody id="contractRows"></tbody>
+              </table>
+              <div id="emptyState" class="empty-state" hidden>暂无匹配合同</div>
+            </div>
+          </section>
+        </section>
+
+      </main>
+    </div>
+
+    <div class="modal-backdrop" id="modalBackdrop" hidden>
+      <section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <div class="modal-header">
+          <h2 id="modalTitle">新建法律服务协议</h2>
+          <button id="closeModalButton" class="icon-button" type="button" aria-label="关闭">×</button>
+        </div>
+        <form id="contractForm" class="contract-form">
+          <label>
+            合同名称 <span>*</span>
+            <input name="contractName" required placeholder="输入合同名称" />
+          </label>
+          <label>
+            客户名称 <span>*</span>
+            <input name="client" required placeholder="搜索选择客户" />
+          </label>
+          <label class="field-with-note">
+            关联案件
+            <input name="caseName" id="caseNameInput" list="caseOptions" placeholder="暂不关联案件" />
+            <datalist id="caseOptions"></datalist>
+            <small>用印前必须关联案件/案号</small>
+          </label>
+          <label>
+            协议关系类型
+            <select name="relationshipType" id="relationshipType">
+              <option value="independent">独立新协议</option>
+              <option value="replace">替换原协议</option>
+              <option value="append">追加新协议</option>
+              <option value="supplement">补充原协议</option>
+            </select>
+          </label>
+          <section class="relationship-fields" id="relationshipFields" hidden>
+            <label>
+              选择关联原协议
+              <input
+                name="relatedContractSearch"
+                id="relatedContractSearch"
+                list="relatedContractOptions"
+                placeholder="搜索合同名称/客户简称/合同编号/案号"
+              />
+              <datalist id="relatedContractOptions"></datalist>
+            </label>
+            <div class="related-contract-card" id="relatedContractCard" hidden>
+              <dl>
+                <dt>原合同名称</dt>
+                <dd id="relatedName">-</dd>
+                <dt>原合同编号</dt>
+                <dd id="relatedId">-</dd>
+                <dt>客户名称</dt>
+                <dd id="relatedClient">-</dd>
+                <dt>当前状态</dt>
+                <dd id="relatedStatus">-</dd>
+                <dt>关联案件</dt>
+                <dd id="relatedCase">-</dd>
+              </dl>
+            </div>
+            <label class="relationship-extra" id="replaceReasonField" hidden>
+              替换原因 <span>*</span>
+              <textarea name="replaceReason" placeholder="填写替换原因"></textarea>
+            </label>
+            <label class="relationship-extra" id="supplementMatterField" hidden>
+              补充事项 <span>*</span>
+              <select name="supplementMatter">
+                <option value="">请选择补充事项</option>
+                <option>费用变更</option>
+                <option>付款主体变更</option>
+                <option>服务范围变更</option>
+                <option>服务期限变更</option>
+                <option>其他</option>
+              </select>
+            </label>
+            <p class="relationship-tip" id="relationshipTip"></p>
+          </section>
+          <fieldset class="choice-field">
+            <legend>制作方式 <span>*</span></legend>
+            <label class="choice-card">
+              <input type="radio" name="creationMode" value="internal" checked />
+              <span>
+                <strong>使用所内模板制作</strong>
+                <em>先制作规则版/A版，再上传B版</em>
+              </span>
+            </label>
+            <label class="choice-card">
+              <input type="radio" name="creationMode" value="customer" />
+              <span>
+                <strong>客户模板/客户版本</strong>
+                <em>跳过A版，直接上传待用印版/B版</em>
+              </span>
+            </label>
+          </fieldset>
+          <label>
+            协议类型
+            <select name="agreementType">
+              <option>常年法律顾问协议</option>
+              <option>专项法律服务协议</option>
+            </select>
+          </label>
+          <label>
+            语言版本
+            <select name="language">
+              <option>中文版</option>
+              <option>英文版</option>
+              <option>中英双语版</option>
+              <option>纯英文版</option>
+            </select>
+          </label>
+          <label>
+            主签约确认人 <span>*</span>
+            <input name="primaryConfirmer" required placeholder="输入主签约确认人" />
+          </label>
+          <label>
+            备选确认人
+            <input name="backupConfirmer" placeholder="可为空" />
+          </label>
+          <label class="field-with-note">
+            协作人
+            <input name="collaboratorNames" list="collaboratorOptions" placeholder="可添加协办人，多个用逗号分隔" />
+            <datalist id="collaboratorOptions">
+              <option value="陈秘书"></option>
+              <option value="李**秘书"></option>
+              <option value="王律师"></option>
+              <option value="李律师"></option>
+              <option value="周合伙人"></option>
+              <option value="孙合伙人"></option>
+            </datalist>
+            <small>协作人可以是秘书、律师或合伙人；可查看该合同，并按授权协助处理节点。</small>
+          </label>
+          <section class="participant-picker" id="participantPicker" hidden>
+            <div class="participant-picker-head">
+              <strong>案件参与人</strong>
+              <span>可点击选择为协作人</span>
+            </div>
+            <div class="participant-grid" id="participantGrid"></div>
+          </section>
+          <label>
+            制作人
+            <input name="producer" readonly />
+          </label>
+          <div class="modal-actions">
+            <button type="button" class="secondary-button" id="saveDraftButton">保存草稿</button>
+            <button type="submit" class="primary-button" id="primaryCreateButton">开始制作A版</button>
+          </div>
+        </form>
+      </section>
+    </div>
+
+    <script src="./app.js?v=21"></script>
+  </body>
+</html>

@@ -1,0 +1,320 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="2100" viewBox="0 0 1800 2100">
+  <defs>
+    <style>
+      .bg { fill: #f5f7fb; }
+      .title { font: 700 44px "Microsoft YaHei", "PingFang SC", Arial, sans-serif; fill: #172033; }
+      .subtitle { font: 400 24px "Microsoft YaHei", "PingFang SC", Arial, sans-serif; fill: #667085; }
+      .lane-title { font: 700 26px "Microsoft YaHei", "PingFang SC", Arial, sans-serif; fill: #344054; }
+      .node-title { font: 700 24px "Microsoft YaHei", "PingFang SC", Arial, sans-serif; fill: #172033; }
+      .node-text { font: 400 19px "Microsoft YaHei", "PingFang SC", Arial, sans-serif; fill: #475467; }
+      .decision-title { font: 700 22px "Microsoft YaHei", "PingFang SC", Arial, sans-serif; fill: #172033; }
+      .small { font: 400 17px "Microsoft YaHei", "PingFang SC", Arial, sans-serif; fill: #667085; }
+      .pill { font: 700 17px "Microsoft YaHei", "PingFang SC", Arial, sans-serif; fill: #fff; }
+      .card { fill: #fff; stroke: #d0d5dd; stroke-width: 2; rx: 16; }
+      .card-blue { fill: #eff8ff; stroke: #84caff; stroke-width: 2; rx: 16; }
+      .card-green { fill: #ecfdf3; stroke: #75e0a7; stroke-width: 2; rx: 16; }
+      .card-amber { fill: #fffaeb; stroke: #fdb022; stroke-width: 2; rx: 16; }
+      .card-red { fill: #fff1f3; stroke: #f97066; stroke-width: 2; rx: 16; }
+      .diamond { fill: #fff; stroke: #98a2b3; stroke-width: 2; }
+      .lane { fill: #ffffff; stroke: #e4e7ec; stroke-width: 2; rx: 24; }
+      .arrow { stroke: #667085; stroke-width: 3; fill: none; marker-end: url(#arrow); }
+      .arrow-red { stroke: #d92d20; stroke-width: 3; fill: none; marker-end: url(#arrow-red); }
+      .arrow-green { stroke: #079455; stroke-width: 3; fill: none; marker-end: url(#arrow-green); }
+      .label { font: 700 18px "Microsoft YaHei", "PingFang SC", Arial, sans-serif; fill: #344054; }
+      .label-red { font: 700 18px "Microsoft YaHei", "PingFang SC", Arial, sans-serif; fill: #b42318; }
+      .label-green { font: 700 18px "Microsoft YaHei", "PingFang SC", Arial, sans-serif; fill: #067647; }
+    </style>
+    <marker id="arrow" markerWidth="14" markerHeight="14" refX="12" refY="7" orient="auto" markerUnits="strokeWidth">
+      <path d="M 0 0 L 14 7 L 0 14 z" fill="#667085"/>
+    </marker>
+    <marker id="arrow-red" markerWidth="14" markerHeight="14" refX="12" refY="7" orient="auto" markerUnits="strokeWidth">
+      <path d="M 0 0 L 14 7 L 0 14 z" fill="#d92d20"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="14" markerHeight="14" refX="12" refY="7" orient="auto" markerUnits="strokeWidth">
+      <path d="M 0 0 L 14 7 L 0 14 z" fill="#079455"/>
+    </marker>
+  </defs>
+
+  <rect class="bg" width="1800" height="2100"/>
+  <text x="90" y="95" class="title">法律服务协议线上化建议流程图</text>
+  <text x="90" y="138" class="subtitle">基于现有 A/B/C 版本流与访谈反馈：底线条款突破前置审批，用印作为总闸口</text>
+
+  <rect x="70" y="180" width="1660" height="360" class="lane"/>
+  <text x="100" y="230" class="lane-title">一、发起与版本生成</text>
+
+  <rect x="120" y="280" width="260" height="130" class="card"/>
+  <text x="150" y="325" class="node-title">新建协议</text>
+  <text x="150" y="360" class="node-text">客户、案件、签约主体</text>
+  <text x="150" y="390" class="node-text">签约确认人、业务组</text>
+
+  <polygon points="520,265 660,345 520,425 380,345" class="diamond"/>
+  <text x="455" y="340" class="decision-title">制作路径</text>
+  <text x="462" y="370" class="small">所内 / 客户</text>
+
+  <rect x="750" y="220" width="290" height="130" class="card-blue"/>
+  <text x="780" y="265" class="node-title">所内模板路径</text>
+  <text x="780" y="300" class="node-text">制作规则版 / A版</text>
+  <text x="780" y="330" class="node-text">可做标准条款预报备</text>
+
+  <rect x="750" y="390" width="290" height="120" class="card-amber"/>
+  <text x="780" y="435" class="node-title">客户模板路径</text>
+  <text x="780" y="470" class="node-text">跳过A版，直接上传B版</text>
+  <text x="780" y="500" class="node-text">默认更高风险路径</text>
+
+  <rect x="1190" y="300" width="300" height="130" class="card"/>
+  <text x="1220" y="345" class="node-title">上传B版</text>
+  <text x="1220" y="380" class="node-text">待用印版本</text>
+  <text x="1220" y="410" class="node-text">后续风控以B版为准</text>
+
+  <path d="M 380 345 L 372 345" class="arrow"/>
+  <path d="M 660 345 C 700 345 705 285 750 285" class="arrow"/>
+  <path d="M 660 345 C 700 345 705 450 750 450" class="arrow"/>
+  <path d="M 1040 285 C 1090 285 1120 365 1190 365" class="arrow"/>
+  <path d="M 1040 450 C 1090 450 1120 365 1190 365" class="arrow"/>
+  <text x="675" y="275" class="label-green">所内模板</text>
+  <text x="675" y="455" class="label">客户模板</text>
+
+  <rect x="70" y="590" width="1660" height="480" class="lane"/>
+  <text x="100" y="640" class="lane-title">二、B版风险识别与分层处理</text>
+
+  <rect x="120" y="720" width="300" height="135" class="card-blue"/>
+  <text x="150" y="765" class="node-title">系统识别B版风险</text>
+  <text x="150" y="800" class="node-text">A/B差异、标准条款修改</text>
+  <text x="150" y="830" class="node-text">案件/主体/签约信息校验</text>
+
+  <polygon points="600,675 760,785 600,895 440,785" class="diamond"/>
+  <text x="520" y="780" class="decision-title">是否突破</text>
+  <text x="512" y="812" class="decision-title">底线条款？</text>
+
+  <rect x="850" y="645" width="310" height="135" class="card-red"/>
+  <text x="880" y="690" class="node-title">底线突破专项审批</text>
+  <text x="880" y="725" class="node-text">合规/授权审批人判断</text>
+  <text x="880" y="755" class="node-text">未通过不得继续用印</text>
+
+  <rect x="850" y="845" width="310" height="135" class="card-amber"/>
+  <text x="880" y="890" class="node-title">一般风险处理</text>
+  <text x="880" y="925" class="node-text">填写说明、补充报备</text>
+  <text x="880" y="955" class="node-text">形成留痕但不强制审批</text>
+
+  <polygon points="1320,675 1480,785 1320,895 1160,785" class="diamond"/>
+  <text x="1255" y="780" class="decision-title">审批是否</text>
+  <text x="1285" y="812" class="decision-title">通过？</text>
+
+  <rect x="1510" y="650" width="170" height="130" class="card-green"/>
+  <text x="1542" y="700" class="node-title">放行</text>
+  <text x="1532" y="735" class="node-text">记录依据</text>
+  <text x="1532" y="765" class="node-text">可继续</text>
+
+  <rect x="1510" y="850" width="170" height="130" class="card-red"/>
+  <text x="1535" y="900" class="node-title">驳回</text>
+  <text x="1530" y="935" class="node-text">退回修改</text>
+  <text x="1530" y="965" class="node-text">或终止</text>
+
+  <path d="M 420 785 L 440 785" class="arrow"/>
+  <path d="M 760 785 C 795 785 810 712 850 712" class="arrow-red"/>
+  <path d="M 760 785 C 795 785 810 912 850 912" class="arrow"/>
+  <path d="M 1160 712 C 1195 712 1205 785 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 L 1160 712" class="arrow-red"/>
+  <path d="M 1160 712 C 1195 712 1210 785 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 L 1160 712" class="arrow-red"/>
+  <path d="M 1160 712 C 1200 712 1200 785 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 C 1195 712 1195 785 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 C 1185 712 1195 785 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 C 1205 712 1220 785 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 C 1200 712 1210 785 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 C 1190 712 1200 785 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 C 1188 735 1188 755 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 C 1195 735 1195 755 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 C 1205 735 1205 755 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 L 1160 712" class="arrow-red"/>
+  <path d="M 1160 712 C 1190 740 1190 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 L 1165 715" class="arrow-red"/>
+  <path d="M 1160 712 C 1195 735 1195 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 C 1190 735 1190 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 C 1190 735 1190 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 L 1165 715" class="arrow-red"/>
+  <path d="M 1160 712 C 1190 735 1190 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 C 1190 735 1190 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 C 1190 735 1190 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 C 1190 735 1190 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 C 1190 735 1190 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 L 1160 712" class="arrow-red"/>
+  <path d="M 1160 712 C 1200 735 1200 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 C 1200 735 1200 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 C 1200 735 1200 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 L 1160 712" class="arrow-red"/>
+  <path d="M 1160 712 C 1200 735 1200 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 C 1200 735 1200 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 C 1200 735 1200 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 C 1200 735 1200 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 C 1200 735 1200 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 C 1200 735 1200 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 L 1160 712" class="arrow-red"/>
+  <path d="M 1160 712 L 1160 712" class="arrow-red"/>
+  <path d="M 1160 712 C 1200 735 1200 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 L 1160 712" class="arrow-red"/>
+  <path d="M 1160 712 C 1200 735 1200 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 C 1195 735 1195 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 C 1200 735 1200 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 C 1200 735 1200 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 C 1200 735 1200 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 L 1160 712" class="arrow-red"/>
+  <path d="M 1160 712 C 1205 735 1205 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 C 1205 735 1205 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 C 1195 735 1195 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 C 1210 735 1210 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 C 1210 735 1210 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 C 1210 735 1210 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 L 1160 712" class="arrow-red"/>
+  <path d="M 1160 712 C 1200 735 1200 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 C 1200 735 1200 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 C 1200 735 1200 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 C 1200 735 1200 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 L 1160 712" class="arrow-red"/>
+  <path d="M 1160 712 C 1195 735 1195 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 C 1195 735 1195 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 C 1195 735 1195 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 C 1195 735 1195 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 C 1195 735 1195 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 C 1195 735 1195 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 C 1200 735 1200 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 C 1198 735 1198 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 C 1198 735 1198 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 C 1198 735 1198 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 C 1198 735 1198 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 C 1198 735 1198 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 C 1198 735 1198 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 C 1198 735 1198 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 C 1198 735 1198 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 C 1198 735 1198 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 C 1198 735 1198 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 C 1198 735 1198 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 C 1198 735 1198 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 C 1198 735 1198 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 C 1200 735 1200 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 C 1200 735 1200 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 C 1200 735 1200 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 C 1200 735 1200 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 C 1200 735 1200 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 L 1160 712" class="arrow-red"/>
+  <path d="M 1160 712 L 1160 712" class="arrow-red"/>
+  <path d="M 1160 712 C 1200 735 1200 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 L 1160 712" class="arrow-red"/>
+  <path d="M 1160 712 C 1195 735 1195 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 C 1195 735 1195 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 C 1195 735 1195 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 L 1160 712" class="arrow-red"/>
+  <path d="M 1160 712 C 1200 735 1200 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 L 1160 712" class="arrow-red"/>
+  <path d="M 1160 712 C 1195 735 1195 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 L 1160 712" class="arrow-red"/>
+  <path d="M 1160 712 C 1195 735 1195 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 C 1195 735 1195 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 L 1160 712" class="arrow-red"/>
+  <path d="M 1160 712 C 1195 735 1195 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 C 1195 735 1195 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 C 1195 735 1195 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 L 1160 712" class="arrow-red"/>
+  <path d="M 1160 712 C 1195 735 1195 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 C 1195 735 1195 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 C 1195 735 1195 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 C 1195 735 1195 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 L 1160 712" class="arrow-red"/>
+  <path d="M 1160 712 L 1160 712" class="arrow-red"/>
+  <path d="M 1160 712 C 1195 735 1195 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 L 1160 712" class="arrow-red"/>
+  <path d="M 1160 712 C 1205 735 1205 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 C 1205 735 1205 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 C 1205 735 1205 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 C 1205 735 1205 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 L 1160 712" class="arrow-red"/>
+  <path d="M 1160 712 C 1205 735 1205 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 C 1205 735 1205 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 C 1205 735 1205 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 C 1205 735 1205 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 C 1205 735 1205 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 C 1205 735 1205 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 712 L 1160 712" class="arrow-red"/>
+  <path d="M 1160 712 C 1210 735 1210 760 1160 785" class="arrow-red"/>
+  <path d="M 1160 912 C 1210 912 1210 860 1160 785" class="arrow"/>
+  <path d="M 1480 785 L 1510 715" class="arrow-green"/>
+  <path d="M 1480 785 L 1510 915" class="arrow-red"/>
+  <path d="M 1510 915 C 1420 1015 1260 1040 1040 995 C 850 956 820 960 760 950 C 690 938 640 915 600 895" class="arrow-red"/>
+  <text x="775" y="700" class="label-red">是</text>
+  <text x="775" y="910" class="label">否</text>
+  <text x="1488" y="700" class="label-green">通过</text>
+  <text x="1488" y="900" class="label-red">不通过</text>
+
+  <rect x="70" y="1120" width="1660" height="360" class="lane"/>
+  <text x="100" y="1170" class="lane-title">三、签约确认与用印总闸口</text>
+
+  <rect x="150" y="1240" width="320" height="130" class="card-green"/>
+  <text x="180" y="1285" class="node-title">签约确认人承诺</text>
+  <text x="180" y="1320" class="node-text">确认已阅读B版</text>
+  <text x="180" y="1350" class="node-text">知悉风险与授权结论</text>
+
+  <polygon points="680,1195 850,1305 680,1415 510,1305" class="diamond"/>
+  <text x="602" y="1300" class="decision-title">用印前置</text>
+  <text x="620" y="1332" class="decision-title">是否齐备？</text>
+
+  <rect x="980" y="1205" width="310" height="130" class="card-blue"/>
+  <text x="1010" y="1250" class="node-title">发起用印申请</text>
+  <text x="1010" y="1285" class="node-text">带出B版、案件、主体</text>
+  <text x="1010" y="1315" class="node-text">进入飞书/用印审批</text>
+
+  <rect x="980" y="1365" width="310" height="90" class="card-red"/>
+  <text x="1010" y="1405" class="node-title">阻断用印</text>
+  <text x="1010" y="1438" class="node-text">提示补齐或退回B版</text>
+
+  <rect x="1420" y="1235" width="220" height="120" class="card"/>
+  <text x="1450" y="1280" class="node-title">用印完成</text>
+  <text x="1450" y="1315" class="node-text">等待上传C版</text>
+
+  <path d="M 1680 715 C 1735 960 450 1095 310 1240" class="arrow-green"/>
+  <path d="M 1160 912 C 1200 1050 410 1110 310 1240" class="arrow"/>
+  <path d="M 470 1305 L 510 1305" class="arrow"/>
+  <path d="M 850 1305 L 980 1270" class="arrow-green"/>
+  <path d="M 850 1305 L 980 1410" class="arrow-red"/>
+  <path d="M 1290 1270 L 1420 1295" class="arrow"/>
+  <text x="880" y="1260" class="label-green">通过</text>
+  <text x="880" y="1408" class="label-red">不通过</text>
+
+  <rect x="70" y="1530" width="1660" height="400" class="lane"/>
+  <text x="100" y="1580" class="lane-title">四、C版核查、合规审查与归档</text>
+
+  <rect x="140" y="1660" width="280" height="130" class="card"/>
+  <text x="170" y="1705" class="node-title">上传C版</text>
+  <text x="170" y="1740" class="node-text">双方签署/盖章最终版</text>
+  <text x="170" y="1770" class="node-text">作为归档版本保存</text>
+
+  <rect x="560" y="1660" width="280" height="130" class="card-blue"/>
+  <text x="590" y="1705" class="node-title">B/C一致性核查</text>
+  <text x="590" y="1740" class="node-text">确认盖章版未被替换</text>
+  <text x="590" y="1770" class="node-text">发现差异则进入审查</text>
+
+  <polygon points="1040,1635 1200,1725 1040,1815 880,1725" class="diamond"/>
+  <text x="975" y="1720" class="decision-title">是否异常？</text>
+  <text x="960" y="1752" class="small">差异/材料/归档</text>
+
+  <rect x="1320" y="1595" width="280" height="120" class="card-amber"/>
+  <text x="1350" y="1640" class="node-title">事后合规审查</text>
+  <text x="1350" y="1675" class="node-text">补充说明、标记问题</text>
+  <text x="1350" y="1705" class="node-text">或审查通过</text>
+
+  <rect x="1320" y="1765" width="280" height="120" class="card-green"/>
+  <text x="1350" y="1810" class="node-title">电子/纸质归档</text>
+  <text x="1350" y="1845" class="node-text">台账沉淀</text>
+  <text x="1350" y="1875" class="node-text">流程结束</text>
+
+  <path d="M 1640 1295 C 1710 1490 250 1505 280 1660" class="arrow"/>
+  <path d="M 420 1725 L 560 1725" class="arrow"/>
+  <path d="M 840 1725 L 880 1725" class="arrow"/>
+  <path d="M 1200 1725 L 1320 1655" class="arrow-red"/>
+  <path d="M 1200 1725 L 1320 1825" class="arrow-green"/>
+  <path d="M 1460 1715 L 1460 1765" class="arrow"/>
+  <text x="1215" y="1655" class="label-red">是</text>
+  <text x="1215" y="1815" class="label-green">否</text>
+
+  <rect x="95" y="1970" width="1610" height="80" rx="18" fill="#172033"/>
+  <text x="130" y="2018" class="pill">流程原则：B版是正式风控节点；底线突破必须授权放行；用印是总闸口；C版核查确保最终盖章版与批准版本一致。</text>
+</svg>

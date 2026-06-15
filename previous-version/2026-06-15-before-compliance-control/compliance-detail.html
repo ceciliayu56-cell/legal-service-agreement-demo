@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>合规审查详情</title>
+    <style>
+      :root { --bg:#f5f7fb; --panel:#fff; --text:#172033; --muted:#667085; --line:#e5eaf0; --primary:#1f6feb; --red:#d92d20; --green:#079455; --amber:#b54708; }
+      * { box-sizing:border-box; }
+      body { margin:0; background:var(--bg); color:var(--text); font-family:"PingFang SC","Microsoft YaHei",Arial,sans-serif; }
+      header { height:72px; display:flex; align-items:center; justify-content:space-between; padding:0 32px; background:#fff; border-bottom:1px solid var(--line); }
+      main { max-width:1160px; margin:26px auto 96px; padding:0 24px; display:grid; gap:18px; }
+      h1,h2,h3,p { margin:0; }
+      h1 { font-size:22px; } h2 { font-size:18px; margin-bottom:14px; } h3 { font-size:15px; margin-bottom:10px; }
+      .muted { color:var(--muted); }
+      .panel { background:#fff; border:1px solid var(--line); border-radius:8px; box-shadow:0 8px 24px rgba(16,24,40,.06); padding:20px; }
+      .denied { min-height:300px; display:grid; place-items:center; font-size:22px; font-weight:700; color:var(--muted); }
+      .grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px 16px; }
+      .field { border:1px solid var(--line); border-radius:8px; padding:12px; background:#fbfcfe; }
+      .field span { display:block; color:var(--muted); font-size:12px; margin-bottom:6px; }
+      .field strong { font-size:14px; }
+      .files { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+      .file-card { border:1px solid var(--line); border-radius:8px; padding:16px; background:#fbfcfe; display:grid; gap:10px; }
+      .tag { display:inline-flex; width:max-content; border-radius:999px; padding:4px 9px; font-size:12px; font-weight:700; background:#eef4ff; color:#175cd3; }
+      .tag.red { background:#fff1f3; color:var(--red); } .tag.green { background:#ecfdf3; color:var(--green); } .tag.amber { background:#fffaeb; color:var(--amber); } .tag.gray { background:#f2f4f7; color:#475467; }
+      table { width:100%; border-collapse:collapse; }
+      th,td { padding:11px 10px; border-bottom:1px solid var(--line); text-align:left; font-size:13px; vertical-align:top; }
+      th { color:var(--muted); background:#fbfcfe; }
+      .tabs { display:flex; gap:8px; margin-bottom:14px; }
+      .tabs button.active { background:#1f6feb; color:#fff; border-color:#1f6feb; }
+      .tab-panel { display:none; } .tab-panel.active { display:block; }
+      textarea,select,input { width:100%; min-height:36px; border:1px solid #cfd8e3; border-radius:7px; padding:8px 10px; font:inherit; background:#fff; }
+      textarea { min-height:90px; resize:vertical; }
+      button,a { color:var(--primary); font-weight:650; text-decoration:none; }
+      button { min-height:32px; border:1px solid #b9cff8; border-radius:7px; padding:0 12px; background:#fff; cursor:pointer; }
+      button.primary { background:#1f6feb; border-color:#1f6feb; color:#fff; }
+      .actions { position:fixed; left:0; right:0; bottom:0; display:flex; justify-content:flex-end; gap:10px; padding:14px 32px; background:rgba(255,255,255,.96); border-top:1px solid var(--line); }
+      .two { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div>
+        <h1>合规审查详情</h1>
+        <p class="muted" id="subtitle">-</p>
+      </div>
+      <a href="./compliance-review.html">返回审核台</a>
+    </header>
+
+    <main id="app"></main>
+
+    <script>
+      const roleParam = new URLSearchParams(location.search).get("role");
+      const canReview = roleParam !== "secretary" && roleParam !== "lawyer" && roleParam !== "partner";
+      const id = new URLSearchParams(location.search).get("contractId") || "LSA-20260526-005";
+      const data = {
+        "LSA-20260526-005": { no:"HT-2026-005", name:"华辰制造法律服务协议", short:"华辰制造 / 劳动争议", principal:"华辰制造股份有限公司", matter:"劳动争议专项（SQT112236）", confirmer:"孙合伙人", maker:"王律师", bUploader:"李**秘书", cUploader:"王律师", path:"所内模板", relation:"补充", original:"星河置业专项法律服务协议（LSA-20260527-003）", bc:"无明显差异", paper:"已收到纸质版", group:"争议解决组", cAt:"2026-05-29 16:22", riskCount:3, highRiskCount:0 },
+        "LSA-20260525-007": { no:"HT-2026-007", name:"启明数据付款协议", short:"启明数据 / 数据合规", principal:"启明数据科技有限公司", matter:"数据合规专项（SQT112237）", confirmer:"周合伙人", maker:"李律师", bUploader:"李**秘书", cUploader:"李律师", path:"客户模板或既有版本", relation:"追加", original:"星河置业专项法律服务协议（LSA-20260527-003）", bc:"存在差异", paper:"无纸质版", group:"数据合规组", cAt:"2026-05-28 14:10", riskCount:5, highRiskCount:2 },
+        "LSA-20260526-004": { no:"HT-2026-004", name:"云岚资本英文版服务协议", short:"云岚资本 / 美元基金", principal:"Cloud Capital LP", matter:"美元基金设立（SQT112235）", confirmer:"周合伙人", maker:"陈秘书", bUploader:"陈秘书", cUploader:"陈秘书", path:"客户模板或既有版本", relation:"替换", original:"远航贸易框架协议（LSA-20260520-009）", bc:"无法自动比对", paper:"已完成纸质归档", group:"资本市场组", cAt:"2026-05-26 18:06", riskCount:6, highRiskCount:3 }
+      };
+      const item = data[id] || data["LSA-20260526-005"];
+
+      function tag(text) {
+        const cls = /高|存在|异常|不充分|问题/.test(text) ? "red" : /无法|需|待/.test(text) ? "amber" : /通过|完成|无明显|已/.test(text) ? "green" : "gray";
+        return `<span class="tag ${cls}">${text}</span>`;
+      }
+      function fileCard(title, status, name, time, person, extra = "") {
+        return `<div class="file-card"><h3>${title}</h3>${tag(status)}<p><strong>${name}</strong></p><p class="muted">${time}</p><p class="muted">${person}</p>${extra}<div><button>查看</button> <button>下载</button></div></div>`;
+      }
+      function renderDenied() {
+        document.getElementById("app").innerHTML = `<section class="panel denied">暂无权限访问该页面。</section>`;
+      }
+      function render() {
+        if (!canReview) return renderDenied();
+        document.getElementById("subtitle").textContent = `${item.no}｜${item.name}`;
+        const aCard = item.path === "客户模板或既有版本"
+          ? fileCard("规则版/A版", "未生成A版", "客户模板/既有版本路径", "-", "客户模板路径，未生成规则版/A版。")
+          : fileCard("规则版/A版", "已生成", `${item.name}_A版.docx`, "2026-05-27 10:42", item.maker);
+        document.getElementById("app").innerHTML = `
+          <section class="panel"><h2>合同基础信息</h2><div class="grid">
+            ${field("合同编号", item.no)}${field("合同名称", item.name)}${field("客户/项目简称", item.short)}${field("委托人签约主体", item.principal)}
+            ${field("关联案件", item.matter)}${field("签约确认人", item.confirmer)}${field("制作人", item.maker)}${field("上传B版人", item.bUploader)}
+            ${field("上传C版人", item.cUploader)}${field("协议路径", item.path)}${field("协议关系", item.relation)}${field("关联原协议", item.relation === "独立" ? "-" : item.original)}
+          </div></section>
+          <section class="panel"><h2>版本文件</h2><div class="files">
+            ${aCard}
+            ${fileCard("待用印版/B版", "已上传", `${item.name}_B版.docx`, "2026-05-28 15:00", item.bUploader)}
+            ${fileCard("双章归档版/C版", "已上传", `${item.name}_C版_双章.pdf`, item.cAt, item.cUploader)}
+          </div></section>
+          <section class="panel"><h2>风险与差异</h2><div class="tabs">
+            <button class="active" data-tab="risk">B版规则审查</button><button data-tab="ab">A/B差异记录</button><button data-tab="bc">B/C一致性核查</button>
+          </div>
+          <div class="tab-panel active" id="risk">${riskTable()}</div>
+          <div class="tab-panel" id="ab">${abTable()}</div>
+          <div class="tab-panel" id="bc">${bcPanel()}</div></section>
+          <section class="panel"><h2>签约确认与报备记录</h2><div class="two">
+            <div>${field("签约确认人", item.confirmer)}${field("确认时间", "2026-05-28 17:30")}${field("承诺状态", "已承诺")}</div>
+            <div>${reportTable()}</div>
+          </div><h3 style="margin-top:14px;">操作日志</h3><p class="muted">B版上传、风险说明、签约确认、C版上传均已记录操作人和时间。</p></section>
+          <section class="panel"><h2>归档信息</h2><div class="grid">
+            ${field("电子归档状态", "C版已上传")} ${field("纸质归档状态", item.paper)} ${field("C版上传人", item.cUploader)} ${field("C版上传时间", item.cAt)}
+            ${field("合同编号", item.no)} ${field("归属组/业务组", item.group)}
+          </div></section>
+          <section class="panel"><h2>审查结论</h2><div class="two">
+            <label>审查结论<select><option>审查通过</option><option>标记问题</option><option>要求补充说明</option></select></label>
+            <label>问题类型<select><option>风险报备不充分</option><option>B/C版本不一致</option><option>未按模板路径处理</option><option>签约确认异常</option><option>案件关联异常</option><option>归档信息异常</option><option>其他</option></select></label>
+            <label>指派补充人<input value="${item.maker}" /></label>
+            <label>审查意见<textarea placeholder="填写合规审查意见"></textarea></label>
+          </div></section>
+          <div class="actions"><button onclick="location.href='./compliance-review.html'">返回审核台</button><button>导出审核记录</button><button>要求补充说明</button><button>标记问题</button><button class="primary">审查通过</button></div>`;
+        document.querySelectorAll("[data-tab]").forEach(btn => btn.onclick = () => {
+          document.querySelectorAll("[data-tab]").forEach(item => item.classList.remove("active"));
+          document.querySelectorAll(".tab-panel").forEach(panel => panel.classList.remove("active"));
+          btn.classList.add("active");
+          document.getElementById(btn.dataset.tab).classList.add("active");
+        });
+      }
+      function field(label, value) { return `<div class="field"><span>${label}</span><strong>${value}</strong></div>`; }
+      function riskTable() { return `<table><thead><tr><th>条款位置</th><th>风险类型</th><th>风险等级</th><th>系统识别结果</th><th>处理状态</th><th>报备说明</th></tr></thead><tbody><tr><td>第7条 保密义务</td><td>标准条款修改</td><td>中风险</td><td>客户要求调整保密期限</td><td>${tag("已应用A版预报备")}</td><td>与A版预报备一致</td></tr><tr><td>第9条 责任限制</td><td>责任扩大</td><td>高风险</td><td>赔偿上限被删除</td><td>${tag("B版阶段补充说明")}</td><td>签约确认人已承诺</td></tr><tr><td>签署主体</td><td>主体差异</td><td>低风险</td><td>未发现风险</td><td>${tag("未发现风险")}</td><td>-</td></tr></tbody></table>`; }
+      function abTable() { return `<table><thead><tr><th>差异位置</th><th>A版内容</th><th>B版内容</th><th>是否涉及风险</th></tr></thead><tbody><tr><td>费用支付</td><td>30日内支付</td><td>60日内支付</td><td>${tag("涉及风险")}</td></tr><tr><td>服务范围</td><td>项目专项服务</td><td>增加境外咨询协调</td><td>${tag("低风险")}</td></tr></tbody></table>`; }
+      function bcPanel() { return `<p>${tag(item.bc)}</p><p class="muted" style="margin-top:10px;">${item.bc === "无法自动比对" ? "C版为扫描件，系统无法完成完整文本比对，请审核人结合B版和C版人工查看。" : item.bc === "存在差异" ? "系统发现B版与C版存在文本差异，请审核人复核差异位置。" : "未发现B版与C版存在明显内容差异。"}</p>`; }
+      function reportTable() { return `<table><thead><tr><th>报备阶段</th><th>条款位置</th><th>报备人</th><th>报备时间</th><th>报备说明</th><th>用于B版</th></tr></thead><tbody><tr><td>A版</td><td>保密义务</td><td>${item.maker}</td><td>2026-05-27</td><td>客户集团政策要求</td><td>是</td></tr><tr><td>B版</td><td>责任限制</td><td>${item.bUploader}</td><td>2026-05-28</td><td>客户法务坚持调整</td><td>是</td></tr></tbody></table>`; }
+      render();
+    </script>
+  </body>
+</html>

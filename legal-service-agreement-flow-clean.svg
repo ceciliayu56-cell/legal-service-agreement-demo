@@ -1,0 +1,185 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="2100" viewBox="0 0 1800 2100">
+  <defs>
+    <style>
+      .bg { fill: #f5f7fb; }
+      .title { font: 700 44px "Microsoft YaHei", "PingFang SC", Arial, sans-serif; fill: #172033; }
+      .subtitle { font: 400 24px "Microsoft YaHei", "PingFang SC", Arial, sans-serif; fill: #667085; }
+      .lane-title { font: 700 26px "Microsoft YaHei", "PingFang SC", Arial, sans-serif; fill: #344054; }
+      .node-title { font: 700 23px "Microsoft YaHei", "PingFang SC", Arial, sans-serif; fill: #172033; }
+      .node-text { font: 400 18px "Microsoft YaHei", "PingFang SC", Arial, sans-serif; fill: #475467; }
+      .decision { font: 700 21px "Microsoft YaHei", "PingFang SC", Arial, sans-serif; fill: #172033; }
+      .small { font: 400 16px "Microsoft YaHei", "PingFang SC", Arial, sans-serif; fill: #667085; }
+      .foot { font: 700 22px "Microsoft YaHei", "PingFang SC", Arial, sans-serif; fill: #fff; }
+      .lane { fill: #fff; stroke: #e4e7ec; stroke-width: 2; rx: 24; }
+      .card { fill: #fff; stroke: #d0d5dd; stroke-width: 2; rx: 16; }
+      .blue { fill: #eff8ff; stroke: #84caff; stroke-width: 2; rx: 16; }
+      .green { fill: #ecfdf3; stroke: #75e0a7; stroke-width: 2; rx: 16; }
+      .amber { fill: #fffaeb; stroke: #fdb022; stroke-width: 2; rx: 16; }
+      .red { fill: #fff1f3; stroke: #f97066; stroke-width: 2; rx: 16; }
+      .diamond { fill: #fff; stroke: #98a2b3; stroke-width: 2; }
+      .arrow { stroke: #667085; stroke-width: 3; fill: none; marker-end: url(#arrow); }
+      .arrow-green { stroke: #079455; stroke-width: 3; fill: none; marker-end: url(#arrow-green); }
+      .arrow-red { stroke: #d92d20; stroke-width: 3; fill: none; marker-end: url(#arrow-red); }
+      .label { font: 700 18px "Microsoft YaHei", "PingFang SC", Arial, sans-serif; fill: #344054; }
+      .label-green { font: 700 18px "Microsoft YaHei", "PingFang SC", Arial, sans-serif; fill: #067647; }
+      .label-red { font: 700 18px "Microsoft YaHei", "PingFang SC", Arial, sans-serif; fill: #b42318; }
+    </style>
+    <marker id="arrow" markerWidth="14" markerHeight="14" refX="12" refY="7" orient="auto">
+      <path d="M0,0 L14,7 L0,14 Z" fill="#667085"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="14" markerHeight="14" refX="12" refY="7" orient="auto">
+      <path d="M0,0 L14,7 L0,14 Z" fill="#079455"/>
+    </marker>
+    <marker id="arrow-red" markerWidth="14" markerHeight="14" refX="12" refY="7" orient="auto">
+      <path d="M0,0 L14,7 L0,14 Z" fill="#d92d20"/>
+    </marker>
+  </defs>
+
+  <rect class="bg" width="1800" height="2100"/>
+  <text x="90" y="95" class="title">法律服务协议线上化建议流程图</text>
+  <text x="90" y="138" class="subtitle">访谈结论版：B版正式风控，底线突破前置审批，用印作为总闸口，C版核查后归档</text>
+
+  <rect x="70" y="185" width="1660" height="360" class="lane"/>
+  <text x="100" y="235" class="lane-title">一、发起与版本生成</text>
+
+  <rect x="120" y="290" width="260" height="130" class="card"/>
+  <text x="150" y="333" class="node-title">新建协议</text>
+  <text x="150" y="368" class="node-text">客户、案件、主体</text>
+  <text x="150" y="398" class="node-text">签约确认人、业务组</text>
+
+  <polygon points="520,270 660,355 520,440 380,355" class="diamond"/>
+  <text x="455" y="350" class="decision">制作路径</text>
+  <text x="462" y="380" class="small">所内 / 客户</text>
+
+  <rect x="760" y="235" width="310" height="125" class="blue"/>
+  <text x="790" y="278" class="node-title">所内模板路径</text>
+  <text x="790" y="313" class="node-text">制作规则版 / A版</text>
+  <text x="790" y="343" class="node-text">可做标准条款预报备</text>
+
+  <rect x="760" y="395" width="310" height="125" class="amber"/>
+  <text x="790" y="438" class="node-title">客户模板路径</text>
+  <text x="790" y="473" class="node-text">跳过A版，直接上传B版</text>
+  <text x="790" y="503" class="node-text">默认更高风险路径</text>
+
+  <rect x="1220" y="315" width="300" height="125" class="card"/>
+  <text x="1250" y="358" class="node-title">上传B版</text>
+  <text x="1250" y="393" class="node-text">待用印版本</text>
+  <text x="1250" y="423" class="node-text">后续风控以B版为准</text>
+
+  <path d="M380 355 L380 355" class="arrow"/>
+  <path d="M660 355 C700 355 710 298 760 298" class="arrow-green"/>
+  <path d="M660 355 C700 355 710 458 760 458" class="arrow"/>
+  <path d="M1070 298 C1125 298 1150 378 1220 378" class="arrow-green"/>
+  <path d="M1070 458 C1125 458 1150 378 1220 378" class="arrow"/>
+  <text x="685" y="292" class="label-green">所内模板</text>
+  <text x="685" y="465" class="label">客户模板</text>
+
+  <rect x="70" y="600" width="1660" height="450" class="lane"/>
+  <text x="100" y="650" class="lane-title">二、B版风险识别与分层处理</text>
+
+  <rect x="120" y="730" width="320" height="135" class="blue"/>
+  <text x="150" y="775" class="node-title">系统识别B版风险</text>
+  <text x="150" y="810" class="node-text">A/B差异、标准条款修改</text>
+  <text x="150" y="840" class="node-text">案件/主体/签约信息校验</text>
+
+  <polygon points="625,685 795,798 625,910 455,798" class="diamond"/>
+  <text x="545" y="792" class="decision">是否突破</text>
+  <text x="535" y="824" class="decision">底线条款？</text>
+
+  <rect x="910" y="665" width="320" height="135" class="red"/>
+  <text x="940" y="710" class="node-title">底线突破专项审批</text>
+  <text x="940" y="745" class="node-text">合规/授权审批人判断</text>
+  <text x="940" y="775" class="node-text">未通过不得继续用印</text>
+
+  <rect x="910" y="860" width="320" height="135" class="amber"/>
+  <text x="940" y="905" class="node-title">一般风险处理</text>
+  <text x="940" y="940" class="node-text">填写说明、补充报备</text>
+  <text x="940" y="970" class="node-text">形成留痕但不强制审批</text>
+
+  <polygon points="1435,685 1605,798 1435,910 1265,798" class="diamond"/>
+  <text x="1365" y="792" class="decision">审批是否</text>
+  <text x="1390" y="824" class="decision">通过？</text>
+
+  <path d="M1520 440 C1520 560 280 580 280 730" class="arrow"/>
+  <path d="M440 798 L455 798" class="arrow"/>
+  <path d="M795 798 C835 798 855 732 910 732" class="arrow-red"/>
+  <path d="M795 798 C835 798 855 928 910 928" class="arrow"/>
+  <path d="M1230 732 C1260 732 1265 798 1265 798" class="arrow-red"/>
+  <path d="M1230 928 C1270 928 1270 830 1265 798" class="arrow"/>
+  <path d="M1605 798 C1640 798 1640 675 1520 650 C1390 620 1030 615 625 685" class="arrow-red"/>
+  <text x="815" y="725" class="label-red">是</text>
+  <text x="815" y="925" class="label">否</text>
+  <text x="1562" y="724" class="label-green">通过</text>
+  <text x="1562" y="905" class="label-red">不通过，退回B版</text>
+
+  <rect x="70" y="1105" width="1660" height="375" class="lane"/>
+  <text x="100" y="1155" class="lane-title">三、签约确认与用印总闸口</text>
+
+  <rect x="150" y="1240" width="330" height="130" class="green"/>
+  <text x="180" y="1285" class="node-title">签约确认人承诺</text>
+  <text x="180" y="1320" class="node-text">确认已阅读B版</text>
+  <text x="180" y="1350" class="node-text">知悉风险与授权结论</text>
+
+  <polygon points="700,1195 875,1305 700,1415 525,1305" class="diamond"/>
+  <text x="620" y="1300" class="decision">用印前置</text>
+  <text x="638" y="1332" class="decision">是否齐备？</text>
+
+  <rect x="1010" y="1215" width="330" height="130" class="blue"/>
+  <text x="1040" y="1260" class="node-title">发起用印申请</text>
+  <text x="1040" y="1295" class="node-text">带出B版、案件、主体</text>
+  <text x="1040" y="1325" class="node-text">进入飞书/用印审批</text>
+
+  <rect x="1010" y="1375" width="330" height="80" class="red"/>
+  <text x="1040" y="1422" class="node-title">阻断用印：补齐事项或退回B版</text>
+
+  <rect x="1480" y="1240" width="200" height="120" class="card"/>
+  <text x="1510" y="1285" class="node-title">用印完成</text>
+  <text x="1510" y="1320" class="node-text">等待上传C版</text>
+
+  <path d="M1605 798 C1700 1020 420 1050 315 1240" class="arrow-green"/>
+  <path d="M1230 928 C1225 1070 430 1085 315 1240" class="arrow"/>
+  <path d="M480 1305 L525 1305" class="arrow"/>
+  <path d="M875 1305 L1010 1280" class="arrow-green"/>
+  <path d="M875 1305 L1010 1415" class="arrow-red"/>
+  <path d="M1340 1280 L1480 1300" class="arrow"/>
+  <text x="900" y="1262" class="label-green">通过</text>
+  <text x="900" y="1415" class="label-red">不通过</text>
+
+  <rect x="70" y="1535" width="1660" height="400" class="lane"/>
+  <text x="100" y="1585" class="lane-title">四、C版核查、合规审查与归档</text>
+
+  <rect x="140" y="1665" width="300" height="130" class="card"/>
+  <text x="170" y="1710" class="node-title">上传C版</text>
+  <text x="170" y="1745" class="node-text">双方签署/盖章最终版</text>
+  <text x="170" y="1775" class="node-text">作为归档版本保存</text>
+
+  <rect x="570" y="1665" width="310" height="130" class="blue"/>
+  <text x="600" y="1710" class="node-title">B/C一致性核查</text>
+  <text x="600" y="1745" class="node-text">确认盖章版未被替换</text>
+  <text x="600" y="1775" class="node-text">发现差异则进入审查</text>
+
+  <polygon points="1090,1640 1255,1730 1090,1820 925,1730" class="diamond"/>
+  <text x="1022" y="1725" class="decision">是否异常？</text>
+  <text x="1010" y="1755" class="small">差异/材料/归档</text>
+
+  <rect x="1370" y="1605" width="290" height="120" class="amber"/>
+  <text x="1400" y="1650" class="node-title">事后合规审查</text>
+  <text x="1400" y="1685" class="node-text">补充说明、标记问题</text>
+  <text x="1400" y="1715" class="node-text">或审查通过</text>
+
+  <rect x="1370" y="1775" width="290" height="120" class="green"/>
+  <text x="1400" y="1820" class="node-title">电子/纸质归档</text>
+  <text x="1400" y="1855" class="node-text">台账沉淀，流程结束</text>
+
+  <path d="M1680 1300 C1730 1515 290 1510 290 1665" class="arrow"/>
+  <path d="M440 1730 L570 1730" class="arrow"/>
+  <path d="M880 1730 L925 1730" class="arrow"/>
+  <path d="M1255 1730 L1370 1665" class="arrow-red"/>
+  <path d="M1255 1730 L1370 1835" class="arrow-green"/>
+  <path d="M1515 1725 L1515 1775" class="arrow"/>
+  <text x="1270" y="1665" class="label-red">是</text>
+  <text x="1270" y="1828" class="label-green">否</text>
+
+  <rect x="95" y="1980" width="1610" height="82" rx="18" fill="#172033"/>
+  <text x="130" y="2030" class="foot">流程原则：B版是正式风控节点；底线突破必须授权放行；用印是总闸口；C版核查确保最终盖章版与批准版本一致。</text>
+</svg>

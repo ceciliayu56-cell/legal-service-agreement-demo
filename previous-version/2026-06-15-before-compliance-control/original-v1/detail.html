@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>合同详情</title>
+    <style>
+      :root {
+        --bg: #f5f7fb;
+        --panel: #fff;
+        --text: #182033;
+        --muted: #697386;
+        --line: #e6eaf0;
+        --primary: #1f6feb;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family:
+          Inter, "PingFang SC", "Microsoft YaHei", system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+      }
+
+      header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 72px;
+        padding: 0 32px;
+        background: #fff;
+        border-bottom: 1px solid var(--line);
+      }
+
+      main {
+        display: grid;
+        gap: 20px;
+        max-width: 1040px;
+        margin: 28px auto;
+        padding: 0 24px;
+      }
+
+      section {
+        padding: 22px;
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        box-shadow: 0 8px 24px rgba(22, 34, 51, 0.08);
+      }
+
+      h1,
+      h2,
+      p {
+        margin: 0;
+      }
+
+      h1 {
+        font-size: 22px;
+      }
+
+      h2 {
+        margin-bottom: 14px;
+        font-size: 18px;
+      }
+
+      .section-note {
+        margin: -6px 0 14px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      dl {
+        display: grid;
+        grid-template-columns: 128px 1fr 128px 1fr;
+        gap: 12px 16px;
+        margin: 0;
+      }
+
+      dt {
+        color: var(--muted);
+      }
+
+      dd {
+        margin: 0;
+        font-weight: 650;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      th,
+      td {
+        padding: 12px;
+        border-bottom: 1px solid var(--line);
+        text-align: left;
+        font-size: 14px;
+      }
+
+      th {
+        color: var(--muted);
+        background: #fbfcfe;
+      }
+
+      a,
+      button {
+        color: var(--primary);
+        font-weight: 650;
+        text-decoration: none;
+      }
+
+      button {
+        min-height: 32px;
+        padding: 0 12px;
+        border: 1px solid #b9cff8;
+        border-radius: 8px;
+        background: #fff;
+        cursor: pointer;
+      }
+
+      .empty {
+        color: var(--muted);
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>合同详情</h1>
+      <a href="./index.html">返回合同操作台</a>
+    </header>
+    <main>
+      <section>
+        <h2 id="contractTitle">-</h2>
+        <dl>
+          <dt>合同编号</dt>
+          <dd id="contractId">-</dd>
+          <dt>客户名称</dt>
+          <dd id="client">-</dd>
+          <dt>当前状态</dt>
+          <dd id="status">-</dd>
+          <dt>关联案件</dt>
+          <dd id="caseInfo">-</dd>
+          <dt>合规审查状态</dt>
+          <dd id="reviewStatus">-</dd>
+        </dl>
+      </section>
+      <section>
+        <h2>关联原协议</h2>
+        <p class="section-note">用于查看替换、追加、补充协议对应的原协议；点击“查看详情”可进入原协议详情。</p>
+        <table>
+          <thead>
+            <tr>
+              <th>关系类型</th>
+              <th>关联合同名称</th>
+              <th>关联合同编号</th>
+              <th>关联合同状态</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody id="relationRows"></tbody>
+        </table>
+      </section>
+    </main>
+    <script>
+      const contracts = [
+        {
+          id: "LSA-20260527-001",
+          name: "锐景科技常年法律服务协议",
+          client: "锐景科技有限公司",
+          status: "待制作A版",
+          caseName: "未关联案件",
+          caseNumber: "",
+          relationshipType: "independent",
+          relatedContractId: "",
+          reviewStatus: "待审查",
+        },
+        {
+          id: "LSA-20260527-002",
+          name: "凌岳新能源承诺版协议",
+          client: "凌岳新能源",
+          status: "待签约确认人承诺",
+          caseName: "未关联案件",
+          caseNumber: "",
+          relationshipType: "append",
+          relatedContractId: "LSA-20260526-006",
+          reviewStatus: "待审查",
+        },
+        {
+          id: "LSA-20260526-004",
+          name: "云岚资本英文版服务协议",
+          client: "云岚资本",
+          status: "B版风险确认中",
+          caseName: "美元基金设立",
+          caseNumber: "SQT112235",
+          relationshipType: "replace",
+          relatedContractId: "LSA-20260520-009",
+          reviewStatus: "发现问题",
+        },
+        {
+          id: "LSA-20260526-005",
+          name: "华辰制造法律服务协议",
+          client: "华辰制造股份",
+          status: "待上传C版",
+          caseName: "劳动争议专项",
+          caseNumber: "SQT112236",
+          relationshipType: "supplement",
+          relatedContractId: "LSA-20260527-003",
+          reviewStatus: "待审查",
+        },
+        {
+          id: "LSA-20260527-003",
+          name: "星河置业专项法律服务协议",
+          client: "星河置业集团",
+          status: "待上传B版",
+          caseName: "星河并购专项",
+          caseNumber: "SQT112233",
+          relationshipType: "independent",
+          relatedContractId: "",
+          reviewStatus: "待审查",
+        },
+        {
+          id: "LSA-20260526-006",
+          name: "南山医疗框架协议",
+          client: "南山医疗投资",
+          status: "可用印",
+          caseName: "年度框架服务",
+          caseNumber: "SQT112234",
+          relationshipType: "independent",
+          relatedContractId: "",
+          reviewStatus: "审查通过",
+        },
+        {
+          id: "LSA-20260525-007",
+          name: "启明数据付款协议",
+          client: "启明数据",
+          status: "待事后审核",
+          caseName: "数据合规专项",
+          caseNumber: "SQT112237",
+          relationshipType: "append",
+          relatedContractId: "LSA-20260527-003",
+          reviewStatus: "待补充说明",
+        },
+        {
+          id: "LSA-20260524-008",
+          name: "方舟生物标准法律服务协议",
+          client: "方舟生物",
+          status: "已归档",
+          caseName: "许可合作谈判",
+          caseNumber: "SQT112238",
+          relationshipType: "independent",
+          relatedContractId: "",
+          reviewStatus: "审查通过",
+        },
+        {
+          id: "LSA-20260520-009",
+          name: "远航贸易框架协议",
+          client: "远航贸易",
+          status: "已被替换",
+          caseName: "未关联案件",
+          caseNumber: "",
+          relationshipType: "independent",
+          relatedContractId: "",
+          reviewStatus: "审查通过",
+        },
+      ];
+
+      const relationLabels = {
+        replace: "替换原协议",
+        append: "追加新协议",
+        supplement: "补充原协议",
+      };
+
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get("id") || "LSA-20260526-004";
+      const contract = contracts.find((item) => item.id === id) || contracts[0];
+      const outgoing = contract.relatedContractId
+        ? [
+            {
+              type: contract.relationshipType,
+              contract: contracts.find((item) => item.id === contract.relatedContractId),
+            },
+          ].filter((item) => item.contract)
+        : [];
+      const incoming = contracts
+        .filter((item) => item.relatedContractId === contract.id)
+        .map((item) => ({ type: item.relationshipType, contract: item }));
+      const relations = [...outgoing, ...incoming];
+
+      document.querySelector("#contractTitle").textContent = contract.name;
+      document.querySelector("#contractId").textContent = contract.id;
+      document.querySelector("#client").textContent = contract.client;
+      document.querySelector("#status").textContent = contract.status;
+      document.querySelector("#caseInfo").textContent = contract.caseNumber
+        ? `${contract.caseName}（${contract.caseNumber}）`
+        : contract.caseName;
+      document.querySelector("#reviewStatus").textContent = contract.reviewStatus || "待审查";
+
+      document.querySelector("#relationRows").innerHTML = relations.length
+        ? relations
+            .map(
+              (relation) => `
+                <tr>
+                  <td>${relationLabels[relation.type]}</td>
+                  <td>${relation.contract.name}</td>
+                  <td>${relation.contract.id}</td>
+                  <td>${relation.contract.status}</td>
+                  <td><button type="button" onclick="location.href='./detail.html?id=${relation.contract.id}'">查看详情</button></td>
+                </tr>
+              `,
+            )
+            .join("")
+        : `<tr><td colspan="5" class="empty">暂无关联协议</td></tr>`;
+    </script>
+  </body>
+</html>

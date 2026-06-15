@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>法律服务协议 demo 版本入口</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif;
+      background: #eef3f8;
+      color: #17202a;
+    }
+    main {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 64px 24px;
+    }
+    h1 { margin: 0 0 10px; font-size: 30px; }
+    p { margin: 0; color: #64748b; line-height: 1.7; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 28px;
+    }
+    .card {
+      background: #fff;
+      border: 1px solid #dbe3ec;
+      border-radius: 8px;
+      padding: 24px;
+      box-shadow: 0 12px 28px rgba(15, 23, 42, .05);
+    }
+    .card h2 { margin: 0 0 10px; font-size: 22px; }
+    .tag {
+      display: inline-flex;
+      margin-bottom: 14px;
+      border-radius: 4px;
+      padding: 4px 8px;
+      background: #eff6ff;
+      color: #1d4ed8;
+      font-weight: 800;
+      font-size: 12px;
+    }
+    .actions { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
+    a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 40px;
+      border: 1px solid #cbd5e1;
+      border-radius: 7px;
+      padding: 9px 14px;
+      color: #17202a;
+      text-decoration: none;
+      font-weight: 800;
+      background: #fff;
+    }
+    a.primary { background: #116466; border-color: #116466; color: #fff; }
+    @media (max-width: 760px) { .grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>法律服务协议 demo 版本入口</h1>
+    <p>原版 v1 用于保留当前复杂流程对照，新版 v2-refined 基于原版工作台收敛普通用户侧流程。</p>
+    <section class="grid">
+      <article class="card">
+        <span class="tag">original-v1</span>
+        <h2>原版 v1：当前复杂流程版</h2>
+        <p>保留当前首页、A/B/C流程、签约承诺、用印、合规审查等原型页面，用于后续对比。</p>
+        <div class="actions">
+          <a class="primary" href="./original-v1/index.html">打开原版首页</a>
+          <a href="./original-v1/flow-demo.html?page=a">打开原版流程</a>
+        </div>
+      </article>
+      <article class="card">
+        <span class="tag">v2-refined</span>
+        <h2>新版 v2：基于原版的流程收敛版</h2>
+        <p>保留原版首页工作台和 A 版制作界面，普通用户侧弱化风险/差异展示；底线突破独立为合同维度能力，仅在发起用印前卡点。</p>
+        <div class="actions">
+          <a class="primary" href="./v2-refined/index.html">打开新版首页</a>
+          <a href="./v2-refined/flow-demo.html?page=a">打开新版流程</a>
+        </div>
+      </article>
+    </section>
+  </main>
+</body>
+</html>

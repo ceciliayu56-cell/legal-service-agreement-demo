@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>法律服务协议流程工作台 simplified-v2</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif;
+      background: #eef3f8;
+      color: #17202a;
+    }
+    header {
+      background: #fff;
+      border-bottom: 1px solid #dbe3ec;
+      padding: 20px 34px;
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+    .topbar, .hero, .tabs, main { max-width: 1180px; margin: 0 auto; }
+    .topbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { margin-bottom: 6px; font-size: 26px; }
+    h2 { margin-bottom: 10px; font-size: 20px; }
+    h3 { margin-bottom: 8px; font-size: 16px; }
+    .muted { color: #64748b; line-height: 1.7; }
+    .version-links { display: flex; gap: 10px; flex-wrap: wrap; }
+    .btn {
+      border: 1px solid #cbd5e1;
+      background: #fff;
+      color: #17202a;
+      border-radius: 7px;
+      padding: 9px 14px;
+      font-weight: 800;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    .btn.primary { background: #116466; border-color: #116466; color: #fff; }
+    .btn.danger { color: #b91c1c; border-color: #fecaca; background: #fff; }
+    .btn:disabled { opacity: .45; cursor: not-allowed; }
+    [hidden] { display: none !important; }
+    .hero { padding: 24px 0 18px; }
+    .status-row {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 12px;
+    }
+    .status-card, .panel {
+      background: #fff;
+      border: 1px solid #dbe3ec;
+      border-radius: 8px;
+      box-shadow: 0 12px 28px rgba(15, 23, 42, .05);
+    }
+    .status-card { padding: 16px; text-align: left; cursor: pointer; }
+    .status-card span { color: #64748b; font-size: 13px; }
+    .status-card strong { display: block; font-size: 28px; margin-top: 8px; }
+    .tabs {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      padding: 0 0 18px;
+    }
+    .tab {
+      border: 1px solid #cbd5e1;
+      background: #fff;
+      border-radius: 7px;
+      padding: 10px 14px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+    .tab.active { background: #116466; border-color: #116466; color: #fff; }
+    main { padding: 0 0 90px; }
+    .page { display: none; }
+    .page.active { display: block; }
+    .panel { padding: 22px; margin-bottom: 16px; }
+    .two { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .three { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    label { display: block; color: #475569; font-size: 14px; }
+    input, select, textarea {
+      width: 100%;
+      border: 1px solid #cbd5e1;
+      border-radius: 7px;
+      padding: 10px;
+      margin-top: 6px;
+      font: inherit;
+    }
+    textarea { min-height: 90px; resize: vertical; line-height: 1.7; }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th, td { border-bottom: 1px solid #e2e8f0; padding: 12px 10px; text-align: left; vertical-align: top; }
+    th { color: #64748b; background: #f8fafc; }
+    .tag { display: inline-flex; border-radius: 4px; padding: 4px 8px; font-weight: 800; font-size: 12px; background: #f1f5f9; color: #475569; }
+    .tag.green { background: #ecfdf5; color: #047857; }
+    .tag.red { background: #fff1f2; color: #be123c; }
+    .tag.blue { background: #eff6ff; color: #1d4ed8; }
+    .tag.amber { background: #fffbeb; color: #b45309; }
+    .notice {
+      border-radius: 8px;
+      border: 1px solid #bae6fd;
+      background: #eff8ff;
+      color: #075985;
+      padding: 14px;
+      line-height: 1.8;
+    }
+    .warn { border-color: #fed7aa; background: #fff7ed; color: #9a3412; }
+    .upload {
+      border: 1px dashed #94a3b8;
+      background: #f8fafc;
+      min-height: 150px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 24px;
+    }
+    .bottom {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255,255,255,.96);
+      border-top: 1px solid #dbe3ec;
+      padding: 12px 34px;
+      z-index: 30;
+    }
+    .bottom-inner { max-width: 1180px; margin: 0 auto; display: flex; justify-content: flex-end; gap: 10px; }
+    @media (max-width: 840px) {
+      .status-row, .two, .three { grid-template-columns: 1fr; }
+      header, .bottom { padding-left: 18px; padding-right: 18px; }
+      main, .hero, .tabs { padding-left: 18px; padding-right: 18px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="topbar">
+      <div>
+        <h1>法律服务协议工作台 v2</h1>
+        <p class="muted">流程收敛版：普通用户侧只处理关键节点，复杂识别和抽查进入合规后台。</p>
+      </div>
+      <div class="version-links">
+        <button class="btn" id="roleToggle" onclick="toggleRole()">当前：普通用户</button>
+        <a class="btn" href="./versions.html">版本入口</a>
+        <a class="btn" href="./original-v1/index.html">原版 v1</a>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="status-row">
+      <button class="status-card" onclick="openPage('draft')"><span>新建协议</span><strong>3</strong></button>
+      <button class="status-card" onclick="openPage('upload')"><span>待上传待用印版本</span><strong>5</strong></button>
+      <button class="status-card" onclick="openPage('commit')"><span>待签约确认</span><strong>4</strong></button>
+      <button class="status-card" onclick="openPage('seal')"><span>可发起用印</span><strong id="sealReadyCount">2</strong></button>
+      <button class="status-card" onclick="openPage('archive')"><span>待上传归档版</span><strong>6</strong></button>
+    </div>
+  </section>
+
+  <nav class="tabs">
+    <button class="tab active" data-page="workbench">工作台</button>
+    <button class="tab" data-page="draft">制作协议底稿</button>
+    <button class="tab" data-page="upload">上传待用印版本</button>
+    <button class="tab" data-page="commit">签约确认</button>
+    <button class="tab" data-page="seal">发起用印</button>
+    <button class="tab" data-page="archive">上传归档版</button>
+    <button class="tab compliance-only" data-page="compliance" hidden>合规事后抽查</button>
+  </nav>
+
+  <main>
+    <section class="page active" id="page-workbench">
+      <div class="panel">
+        <h2>我的合同操作台</h2>
+        <p class="muted">普通用户只看到当前节点、处理人和下一步动作。底线突破申请作为合同维度事项展示，不绑定 A版或 B版。</p>
+        <table>
+          <thead>
+            <tr><th>合同名称</th><th>当前状态</th><th>底线突破</th><th>当前处理人</th><th>下一步</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>锐景科技常年法律服务协议</td><td><span class="tag blue">待上传待用印版本</span></td><td><span class="tag">无申请</span></td><td>李秘书</td><td><button class="btn primary" onclick="openPage('upload')">上传B版</button></td></tr>
+            <tr><td>云岚资本英文服务协议</td><td><span class="tag amber">待签约确认</span></td><td><span class="tag green">已通过</span></td><td>周合伙人</td><td><button class="btn primary" onclick="openPage('commit')">确认承诺</button></td></tr>
+            <tr><td>星河科技专项法律服务协议</td><td><span class="tag blue">可发起用印</span></td><td><span class="tag red">审批中</span></td><td>王律师</td><td><button class="btn" onclick="openPage('seal')">查看卡点</button></td></tr>
+            <tr><td>华辰制造补充协议</td><td><span class="tag">待上传归档版</span></td><td><span class="tag">已撤回</span></td><td>王律师</td><td><button class="btn primary" onclick="openPage('archive')">上传C版</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="page" id="page-draft">
+      <div class="panel">
+        <h2>制作协议底稿 / 所内模板</h2>
+        <p class="muted">A版降级为协议底稿制作，不再展示复杂预报备和风险报告。确需突破底线时，可从合同维度发起申请。</p>
+        <div class="two">
+          <label>协议类型<select><option>专项法律服务协议</option><option>常年法律顾问协议</option></select></label>
+          <label>语言版本<select><option>中文版</option><option>英文版</option><option>中英双语版</option></select></label>
+        </div>
+        <label style="margin-top:14px;">服务范围<textarea>请填写本次委托事项、服务边界和交付内容。</textarea></label>
+        <div class="bottom-inner" style="margin-top:16px;">
+          <button class="btn" onclick="openBreakthrough()">填写突破申请</button>
+          <button class="btn">保存底稿</button>
+          <button class="btn primary" onclick="openPage('upload')">生成底稿并进入上传</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="page" id="page-upload">
+      <div class="panel">
+        <h2>上传待用印版本</h2>
+        <p class="muted">请上传与客户沟通后的待用印版本。签约确认人将基于该版本作出承诺。</p>
+        <div class="notice" style="margin-bottom:14px;">当前合同尚未关联案件，可在发起用印申请前完成关联。 <button class="btn" onclick="toast('原型：关联案件')">关联案件</button></div>
+        <div class="upload" onclick="markUploaded()">
+          <div>
+            <h3>点击上传待用印版 / B版</h3>
+            <p class="muted">本页不展示完整差异对比报告。复杂识别进入合规后台。</p>
+            <button class="btn primary">上传B版</button>
+          </div>
+        </div>
+        <div class="panel" style="margin:16px 0 0;padding:16px;">
+          <h3>底线突破申请</h3>
+          <p class="muted">底线突破申请为合同维度事项，不绑定于 A版或 B版。审批完成前可以继续替换B版，但不得发起用印。</p>
+          <button class="btn danger" onclick="openBreakthrough()">发起底线突破申请</button>
+          <button class="btn" onclick="toast('原型：查看申请记录')">查看申请记录</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="page" id="page-commit">
+      <div class="panel">
+        <h2>签约确认</h2>
+        <div class="three">
+          <div class="notice"><strong>待用印版本文件</strong><br />锐景科技_B版_待用印.docx</div>
+          <div class="notice"><strong>上传人</strong><br />李秘书</div>
+          <div class="notice"><strong>底线突破状态</strong><br /><span id="commitBreakthroughText">无申请</span></div>
+        </div>
+        <div class="notice" style="margin-top:16px;background:#f8fafc;border-color:#e2e8f0;color:#17202a;">
+          我确认已阅读本协议待用印版本；如存在底线突破事项，我确认已完成相应申请或审批；我确认当前版本可进入用印流程。
+        </div>
+        <div class="bottom-inner" style="margin-top:16px;">
+          <button class="btn primary" onclick="openPage('seal')">确认并承诺，进入用印</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="page" id="page-seal">
+      <div class="panel">
+        <h2>发起用印</h2>
+        <p class="muted">这里是普通用户侧唯一强卡点。系统只校验底线突破申请状态和案件关联状态。</p>
+        <div class="two">
+          <div class="notice"><strong>当前B版文件</strong><br />锐景科技_B版_待用印.docx</div>
+          <div class="notice"><strong>底线突破申请状态</strong><br /><span id="breakthroughStatusLabel" class="tag">无申请</span></div>
+        </div>
+        <div class="panel" style="margin-top:16px;padding:16px;">
+          <h3>模拟底线突破状态</h3>
+          <div class="version-links">
+            <button class="btn" onclick="setBreakthrough('none')">无申请</button>
+            <button class="btn" onclick="setBreakthrough('approved')">已通过</button>
+            <button class="btn" onclick="setBreakthrough('pending')">审批中</button>
+            <button class="btn" onclick="setBreakthrough('rejected')">未通过</button>
+            <button class="btn" onclick="setBreakthrough('withdrawn')">已撤回</button>
+          </div>
+        </div>
+        <div id="sealGateNotice" class="notice" style="margin-top:16px;"></div>
+        <div class="bottom-inner" style="margin-top:16px;">
+          <button id="sealButton" class="btn primary" onclick="toast('已发起用印申请')">发起用印申请</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="page" id="page-archive">
+      <div class="panel">
+        <h2>上传归档版 / C版</h2>
+        <p class="muted">保持简单归档：上传最终双章版，确认电子归档和纸质归档状态。</p>
+        <div class="upload" onclick="toast('C版已上传')">
+          <div>
+            <h3>点击上传C版/双章版</h3>
+            <p class="muted">支持 PDF、Word 文件。</p>
+            <button class="btn primary">上传归档版</button>
+          </div>
+        </div>
+        <div class="two" style="margin-top:16px;">
+          <div class="notice"><strong>电子归档</strong><br />待确认</div>
+          <div class="notice"><strong>纸质归档</strong><br />待提交归档交接</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="page" id="page-compliance">
+      <div class="panel">
+        <h2>合规事后抽查</h2>
+        <p class="muted">仅合规角色可见。复杂风险识别、差异比对、B/C一致性、底线突破申请记录均在后台查看。</p>
+        <table>
+          <thead><tr><th>合同编号</th><th>合同名称</th><th>底线突破</th><th>B/C一致性</th><th>抽查状态</th><th>操作</th></tr></thead>
+          <tbody>
+            <tr><td>HG-2026-0001</td><td>星河科技专项法律服务协议</td><td><span class="tag red">审批中</span></td><td>无法自动比对</td><td>待抽查</td><td><button class="btn">查看</button></td></tr>
+            <tr><td>ZY-2026-0032</td><td>云岚资本英文服务协议</td><td><span class="tag green">已通过</span></td><td>无明显差异</td><td>已通过</td><td><button class="btn">查看</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <div class="bottom">
+    <div class="bottom-inner">
+      <button class="btn" onclick="openPage('workbench')">返回工作台</button>
+      <button class="btn primary" onclick="toast('原型状态已保存')">保存当前状态</button>
+    </div>
+  </div>
+
+  <script>
+    const labels = {
+      none: ["无申请", "green", "无底线突破申请，可发起用印。"],
+      approved: ["已通过", "green", "底线突破申请已通过，可发起用印。"],
+      pending: ["审批中", "red", "底线突破申请审批中，不可发起用印。"],
+      rejected: ["未通过", "red", "底线突破申请未通过，不可发起用印。"],
+      withdrawn: ["已撤回", "amber", "申请已撤回，可发起用印，但签约确认人需承诺当前版本不存在底线突破。"]
+    };
+    let breakthroughStatus = "none";
+    let role = "normal";
+    function openPage(page) {
+      if (page === "compliance" && role !== "compliance") {
+        toast("普通用户不可见合规事后抽查后台。");
+        return;
+      }
+      document.querySelectorAll(".page").forEach(item => item.classList.remove("active"));
+      document.querySelectorAll(".tab").forEach(item => item.classList.remove("active"));
+      document.getElementById(`page-${page}`).classList.add("active");
+      document.querySelector(`[data-page="${page}"]`)?.classList.add("active");
+      if (page === "seal") renderGate();
+      if (page === "commit") document.getElementById("commitBreakthroughText").textContent = labels[breakthroughStatus][0];
+    }
+    document.querySelectorAll(".tab").forEach(tab => tab.onclick = () => openPage(tab.dataset.page));
+    function toggleRole() {
+      role = role === "normal" ? "compliance" : "normal";
+      document.getElementById("roleToggle").textContent = role === "normal" ? "当前：普通用户" : "当前：合规角色";
+      document.querySelectorAll(".compliance-only").forEach(item => item.hidden = role !== "compliance");
+      if (role === "normal" && document.getElementById("page-compliance").classList.contains("active")) {
+        openPage("workbench");
+      }
+    }
+    function setBreakthrough(status) {
+      breakthroughStatus = status;
+      renderGate();
+    }
+    function renderGate() {
+      const [text, color, message] = labels[breakthroughStatus];
+      const label = document.getElementById("breakthroughStatusLabel");
+      const notice = document.getElementById("sealGateNotice");
+      const button = document.getElementById("sealButton");
+      label.textContent = text;
+      label.className = `tag ${color}`;
+      notice.textContent = message;
+      notice.className = `notice ${["pending", "rejected"].includes(breakthroughStatus) ? "warn" : ""}`;
+      button.disabled = ["pending", "rejected"].includes(breakthroughStatus);
+    }
+    function openBreakthrough() {
+      setBreakthrough("pending");
+      toast("已创建底线突破申请，状态：审批中。");
+    }
+    function markUploaded() {
+      toast("待用印版本已上传。");
+    }
+    function toast(message) {
+      window.alert(message);
+    }
+    renderGate();
+  </script>
+</body>
+</html>
