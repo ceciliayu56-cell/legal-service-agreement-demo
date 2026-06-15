@@ -256,9 +256,6 @@
         box-shadow: 0 12px 30px rgba(15, 23, 42, .08);
       }
       .home-grid { display: grid; grid-template-columns: 320px 1fr; gap: 18px; }
-      .dashboard-metrics { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; margin-bottom: 18px; }
-      .dashboard-metric { border: 1px solid #dbe3ec; border-radius: 8px; background: #fff; padding: 16px; }
-      .dashboard-metric strong { display: block; margin-top: 8px; font-size: 28px; color: #0f4f51; }
       .status-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
       .status-box { border: 1px solid #e2e8f0; border-radius: 8px; background: #f8fafc; padding: 13px; min-height: 76px; }
       .status-box strong { display: block; margin-top: 6px; }
@@ -578,45 +575,68 @@
 
     <section class="page active" id="page-home">
       <main class="single">
-        <div class="dashboard-metrics">
-          <div class="dashboard-metric"><span class="muted">待处理协议</span><strong>12</strong></div>
-          <div class="dashboard-metric"><span class="muted">待发起用印</span><strong>4</strong></div>
-          <div class="dashboard-metric"><span class="muted">底线突破申请中</span><strong>3</strong></div>
-          <div class="dashboard-metric"><span class="muted">待上传归档版</span><strong>6</strong></div>
-          <div class="dashboard-metric"><span class="muted">建议抽查合同</span><strong>8</strong></div>
-        </div>
-        <div class="card">
-          <div class="section-title">
-            <div>
-              <h2>协议合规状态</h2>
-              <p class="muted">系统突出待用印版本、底线突破状态、用印前卡点和归档抽查线索，不以合同制作作为首页重心。</p>
+        <div class="home-grid">
+          <aside>
+            <div class="section-title">
+              <h2>我的待办</h2>
             </div>
-            <button class="btn primary" onclick="openNewContractModal()">新增协议底稿</button>
-          </div>
-          <table>
-            <thead><tr><th>合同名称</th><th>客户名称</th><th>当前版本状态</th><th>底线突破状态</th><th>用印状态</th><th>归档状态</th><th>合规抽查状态</th><th>操作</th></tr></thead>
-            <tbody>
-              <tr><td>锐景科技常年法律服务协议</td><td>锐景科技有限公司</td><td><span class="status-tag">B版待用印</span></td><td>无申请</td><td>待发起</td><td>未归档</td><td>建议抽查</td><td><button class="mini-btn" onclick="showPage('e')">发起用印</button></td></tr>
-              <tr><td>星河科技融资项目专项法律服务协议</td><td>星河科技有限公司</td><td><span class="status-tag">用印完成</span></td><td>已通过</td><td>已完成</td><td>待上传C版</td><td>待B/C核查</td><td><button class="mini-btn" onclick="showPage('d')">上传归档版</button></td></tr>
-              <tr><td>知产保护专项法律服务协议</td><td>知产科技有限公司</td><td><span class="status-tag">A版底稿</span></td><td>审批中</td><td>未发起</td><td>未归档</td><td>暂不抽查</td><td><button class="mini-btn" onclick="showPage('b')">上传B版</button></td></tr>
-              <tr><td>启明数据合规顾问协议</td><td>启明数据有限公司</td><td><span class="status-tag">B版待用印</span></td><td>未通过</td><td>阻断</td><td>未归档</td><td>重点关注</td><td><button class="mini-btn" onclick="showPage('f')">查看后台</button></td></tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="grid2" style="margin-top:18px;">
-          <div class="card">
-            <div class="section-title"><h2>流程责任边界</h2></div>
-            <div class="rows">
-              <div class="row"><span>用户侧</span><strong>提交版本并确认责任</strong></div>
-              <div class="row"><span>系统侧</span><strong>识别版本变化和疑似底线风险</strong></div>
-              <div class="row"><span>管理侧</span><strong>审批突破并开展事后抽查</strong></div>
-              <div class="row"><span>强卡点</span><strong>仅在发起用印申请前</strong></div>
+            <div class="todo-item">
+              <strong>待发起用印</strong>
+              <p class="muted">4份协议已完成签约确认，等待用印前最终合规校验。</p>
             </div>
-          </div>
-          <div class="card">
-            <div class="section-title"><h2>AI能力边界</h2></div>
-            <div class="ai-note">AI识别结果仅作为合规提示，不替代签约人、合规委员会及管委会判断。系统用于识别版本变化、提取疑似底线风险条款、标记重点风险类型，并生成合规抽查线索。</div>
-          </div>
+            <div class="todo-item">
+              <strong>底线突破申请中</strong>
+              <p class="muted">3份协议存在审批中的底线突破申请，暂不可发起用印。</p>
+            </div>
+            <div class="todo-item">
+              <strong>待上传归档版</strong>
+              <p class="muted">6份协议已完成用印，等待上传C版/双章版。</p>
+            </div>
+            <div class="todo-item">
+              <strong>建议抽查合同</strong>
+              <p class="muted">8份协议已生成合规抽查线索，可在管理后台查看。</p>
+            </div>
+          </aside>
+
+          <section>
+            <div class="section-title">
+              <div>
+                <h2>协议操作台</h2>
+                <p class="muted">查看协议当前版本、底线突破申请、用印、归档和合规抽查状态。</p>
+              </div>
+              <button class="btn primary" onclick="openNewContractModal()">新增协议底稿</button>
+            </div>
+            <div class="contract-list">
+              <div class="contract-row">
+                <div>
+                  <strong>锐景科技常年法律服务协议</strong>
+                  <span class="contract-no">客户：锐景科技有限公司｜版本：B版待用印｜底线突破：无申请｜用印：待发起｜归档：未归档｜抽查：建议抽查</span>
+                </div>
+                <button class="btn primary" onclick="showPage('e')">发起用印</button>
+              </div>
+              <div class="contract-row">
+                <div>
+                  <strong>星河科技融资项目专项法律服务协议</strong>
+                  <span class="contract-no">客户：星河科技有限公司｜版本：用印完成｜底线突破：已通过｜用印：已完成｜归档：待上传C版｜抽查：待B/C核查</span>
+                </div>
+                <button class="btn primary" onclick="showPage('d')">上传归档版</button>
+              </div>
+              <div class="contract-row">
+                <div>
+                  <strong>知产保护专项法律服务协议</strong>
+                  <span class="contract-no">客户：知产科技有限公司｜版本：A版底稿｜底线突破：审批中｜用印：未发起｜归档：未归档｜抽查：暂不抽查</span>
+                </div>
+                <button class="btn" onclick="showPage('b')">上传B版</button>
+              </div>
+              <div class="contract-row">
+                <div>
+                  <strong>启明数据合规顾问协议</strong>
+                  <span class="contract-no">客户：启明数据有限公司｜版本：B版待用印｜底线突破：未通过｜用印：阻断｜归档：未归档｜抽查：重点关注</span>
+                </div>
+                <button class="btn" onclick="showPage('f')">查看后台</button>
+              </div>
+            </div>
+          </section>
         </div>
       </main>
     </section>
